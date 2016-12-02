@@ -1,3 +1,3 @@
-/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/edit_cache.dir
-/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/rebuild_cache.dir
-/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/triangulate.dir
+/home/stanly/kinect/DP/triangulation/build/CMakeFiles/edit_cache.dir
+/home/stanly/kinect/DP/triangulation/build/CMakeFiles/rebuild_cache.dir
+/home/stanly/kinect/DP/triangulation/build/CMakeFiles/triangulate.dir

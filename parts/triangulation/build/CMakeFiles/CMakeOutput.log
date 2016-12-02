@@ -10,7 +10,7 @@ The output was:
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
 
-The C compiler identification is GNU, found in "/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/3.5.1/CompilerIdC/a.out"
+The C compiler identification is GNU, found in "/home/stanly/kinect/DP/triangulation/build/CMakeFiles/3.5.1/CompilerIdC/a.out"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler: /usr/bin/c++ 
@@ -23,33 +23,33 @@ The output was:
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
 
-The CXX compiler identification is GNU, found in "/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/3.5.1/CompilerIdCXX/a.out"
+The CXX compiler identification is GNU, found in "/home/stanly/kinect/DP/triangulation/build/CMakeFiles/3.5.1/CompilerIdCXX/a.out"
 
 Determining if the C compiler works passed with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_bc45a/fast"
-/usr/bin/make -f CMakeFiles/cmTC_bc45a.dir/build.make CMakeFiles/cmTC_bc45a.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building C object CMakeFiles/cmTC_bc45a.dir/testCCompiler.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_bc45a.dir/testCCompiler.c.o   -c /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_bc45a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bc45a.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_bc45a.dir/testCCompiler.c.o  -o cmTC_bc45a -rdynamic 
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+Run Build Command:"/usr/bin/make" "cmTC_0a5eb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0a5eb.dir/build.make CMakeFiles/cmTC_0a5eb.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building C object CMakeFiles/cmTC_0a5eb.dir/testCCompiler.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_0a5eb.dir/testCCompiler.c.o   -c /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_0a5eb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0a5eb.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_0a5eb.dir/testCCompiler.c.o  -o cmTC_0a5eb -rdynamic 
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_2ab37/fast"
-/usr/bin/make -f CMakeFiles/cmTC_2ab37.dir/build.make CMakeFiles/cmTC_2ab37.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building C object CMakeFiles/cmTC_2ab37.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_2ab37.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
-Linking C executable cmTC_2ab37
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2ab37.dir/link.txt --verbose=1
-/usr/bin/cc      -v CMakeFiles/cmTC_2ab37.dir/CMakeCCompilerABI.c.o  -o cmTC_2ab37 -rdynamic  
+Run Build Command:"/usr/bin/make" "cmTC_b87f6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b87f6.dir/build.make CMakeFiles/cmTC_b87f6.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building C object CMakeFiles/cmTC_b87f6.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_b87f6.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_b87f6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b87f6.dir/link.txt --verbose=1
+/usr/bin/cc      -v CMakeFiles/cmTC_b87f6.dir/CMakeCCompilerABI.c.o  -o cmTC_b87f6 -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
@@ -59,23 +59,23 @@ Thread model: posix
 gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_2ab37' '-rdynamic' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccfeE1Tk.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_2ab37 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_2ab37.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_b87f6' '-rdynamic' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccrBtsMz.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_b87f6 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_b87f6.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
 Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_2ab37/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_2ab37.dir/build.make CMakeFiles/cmTC_2ab37.dir/build]
-  ignore line: [make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“]
-  ignore line: [Building C object CMakeFiles/cmTC_2ab37.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_2ab37.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTC_2ab37]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2ab37.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_2ab37.dir/CMakeCCompilerABI.c.o  -o cmTC_2ab37 -rdynamic  ]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_b87f6/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_b87f6.dir/build.make CMakeFiles/cmTC_b87f6.dir/build]
+  ignore line: [make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“]
+  ignore line: [Building C object CMakeFiles/cmTC_b87f6.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_b87f6.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_b87f6]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b87f6.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_b87f6.dir/CMakeCCompilerABI.c.o  -o cmTC_b87f6 -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
@@ -85,13 +85,13 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_2ab37' '-rdynamic' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccfeE1Tk.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_2ab37 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_2ab37.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_b87f6' '-rdynamic' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccrBtsMz.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_b87f6 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_b87f6.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccfeE1Tk.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccrBtsMz.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -109,7 +109,7 @@ Parsed C implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_2ab37] ==> ignore
+    arg [cmTC_b87f6] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
@@ -121,7 +121,7 @@ Parsed C implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
-    arg [CMakeFiles/cmTC_2ab37.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_b87f6.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -153,17 +153,17 @@ Parsed C implicit link information from above output:
 
 
 Detecting C [-std=c11] compiler features compiled with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_70406/fast"
-/usr/bin/make -f CMakeFiles/cmTC_70406.dir/build.make CMakeFiles/cmTC_70406.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building C object CMakeFiles/cmTC_70406.dir/feature_tests.c.o
-/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_70406.dir/feature_tests.c.o   -c /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_70406
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_70406.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_70406.dir/feature_tests.c.o  -o cmTC_70406 -rdynamic 
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+Run Build Command:"/usr/bin/make" "cmTC_08307/fast"
+/usr/bin/make -f CMakeFiles/cmTC_08307.dir/build.make CMakeFiles/cmTC_08307.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building C object CMakeFiles/cmTC_08307.dir/feature_tests.c.o
+/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_08307.dir/feature_tests.c.o   -c /home/stanly/kinect/DP/triangulation/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_08307
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_08307.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_08307.dir/feature_tests.c.o  -o cmTC_08307 -rdynamic 
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -173,17 +173,17 @@ make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/tria
 
 
 Detecting C [-std=c99] compiler features compiled with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_da820/fast"
-/usr/bin/make -f CMakeFiles/cmTC_da820.dir/build.make CMakeFiles/cmTC_da820.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building C object CMakeFiles/cmTC_da820.dir/feature_tests.c.o
-/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_da820.dir/feature_tests.c.o   -c /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_da820
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_da820.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_da820.dir/feature_tests.c.o  -o cmTC_da820 -rdynamic 
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+Run Build Command:"/usr/bin/make" "cmTC_ed7bb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ed7bb.dir/build.make CMakeFiles/cmTC_ed7bb.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building C object CMakeFiles/cmTC_ed7bb.dir/feature_tests.c.o
+/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_ed7bb.dir/feature_tests.c.o   -c /home/stanly/kinect/DP/triangulation/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_ed7bb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ed7bb.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_ed7bb.dir/feature_tests.c.o  -o cmTC_ed7bb -rdynamic 
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -193,17 +193,17 @@ make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/tria
 
 
 Detecting C [-std=c90] compiler features compiled with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_215d0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_215d0.dir/build.make CMakeFiles/cmTC_215d0.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building C object CMakeFiles/cmTC_215d0.dir/feature_tests.c.o
-/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_215d0.dir/feature_tests.c.o   -c /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_215d0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_215d0.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_215d0.dir/feature_tests.c.o  -o cmTC_215d0 -rdynamic 
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+Run Build Command:"/usr/bin/make" "cmTC_054a1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_054a1.dir/build.make CMakeFiles/cmTC_054a1.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building C object CMakeFiles/cmTC_054a1.dir/feature_tests.c.o
+/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_054a1.dir/feature_tests.c.o   -c /home/stanly/kinect/DP/triangulation/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_054a1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_054a1.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_054a1.dir/feature_tests.c.o  -o cmTC_054a1 -rdynamic 
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -211,30 +211,30 @@ make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/tria
     Feature record: C_FEATURE:0c_static_assert
     Feature record: C_FEATURE:0c_variadic_macros
 Determining if the CXX compiler works passed with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_0bf6a/fast"
-/usr/bin/make -f CMakeFiles/cmTC_0bf6a.dir/build.make CMakeFiles/cmTC_0bf6a.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building CXX object CMakeFiles/cmTC_0bf6a.dir/testCXXCompiler.cxx.o
-/usr/bin/c++      -o CMakeFiles/cmTC_0bf6a.dir/testCXXCompiler.cxx.o -c /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_0bf6a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0bf6a.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_0bf6a.dir/testCXXCompiler.cxx.o  -o cmTC_0bf6a -rdynamic 
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+Run Build Command:"/usr/bin/make" "cmTC_f125f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f125f.dir/build.make CMakeFiles/cmTC_f125f.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building CXX object CMakeFiles/cmTC_f125f.dir/testCXXCompiler.cxx.o
+/usr/bin/c++      -o CMakeFiles/cmTC_f125f.dir/testCXXCompiler.cxx.o -c /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_f125f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f125f.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_f125f.dir/testCXXCompiler.cxx.o  -o cmTC_f125f -rdynamic 
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_8c2db/fast"
-/usr/bin/make -f CMakeFiles/cmTC_8c2db.dir/build.make CMakeFiles/cmTC_8c2db.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building CXX object CMakeFiles/cmTC_8c2db.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++      -o CMakeFiles/cmTC_8c2db.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_8c2db
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8c2db.dir/link.txt --verbose=1
-/usr/bin/c++       -v CMakeFiles/cmTC_8c2db.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_8c2db -rdynamic  
+Run Build Command:"/usr/bin/make" "cmTC_8eb8f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8eb8f.dir/build.make CMakeFiles/cmTC_8eb8f.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building CXX object CMakeFiles/cmTC_8eb8f.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++      -o CMakeFiles/cmTC_8eb8f.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_8eb8f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8eb8f.dir/link.txt --verbose=1
+/usr/bin/c++       -v CMakeFiles/cmTC_8eb8f.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_8eb8f -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
@@ -244,23 +244,23 @@ Thread model: posix
 gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8c2db' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cc1B6gpQ.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_8c2db /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_8c2db.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8eb8f' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cc5XAJL8.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_8eb8f /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_8eb8f.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
 Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_8c2db/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_8c2db.dir/build.make CMakeFiles/cmTC_8c2db.dir/build]
-  ignore line: [make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“]
-  ignore line: [Building CXX object CMakeFiles/cmTC_8c2db.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++      -o CMakeFiles/cmTC_8c2db.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTC_8c2db]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8c2db.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++       -v CMakeFiles/cmTC_8c2db.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_8c2db -rdynamic  ]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_8eb8f/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_8eb8f.dir/build.make CMakeFiles/cmTC_8eb8f.dir/build]
+  ignore line: [make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“]
+  ignore line: [Building CXX object CMakeFiles/cmTC_8eb8f.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++      -o CMakeFiles/cmTC_8eb8f.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_8eb8f]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8eb8f.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++       -v CMakeFiles/cmTC_8eb8f.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_8eb8f -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
@@ -270,13 +270,13 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8c2db' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cc1B6gpQ.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_8c2db /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_8c2db.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8eb8f' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cc5XAJL8.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_8eb8f /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_8eb8f.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/cc1B6gpQ.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/cc5XAJL8.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -294,7 +294,7 @@ Parsed CXX implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_8c2db] ==> ignore
+    arg [cmTC_8eb8f] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
@@ -306,7 +306,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
-    arg [CMakeFiles/cmTC_8c2db.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_8eb8f.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -336,17 +336,17 @@ Parsed CXX implicit link information from above output:
 
 
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_b690d/fast"
-/usr/bin/make -f CMakeFiles/cmTC_b690d.dir/build.make CMakeFiles/cmTC_b690d.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building CXX object CMakeFiles/cmTC_b690d.dir/feature_tests.cxx.o
-/usr/bin/c++     -std=c++14 -o CMakeFiles/cmTC_b690d.dir/feature_tests.cxx.o -c /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_b690d
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b690d.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_b690d.dir/feature_tests.cxx.o  -o cmTC_b690d -rdynamic 
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+Run Build Command:"/usr/bin/make" "cmTC_538fa/fast"
+/usr/bin/make -f CMakeFiles/cmTC_538fa.dir/build.make CMakeFiles/cmTC_538fa.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building CXX object CMakeFiles/cmTC_538fa.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++14 -o CMakeFiles/cmTC_538fa.dir/feature_tests.cxx.o -c /home/stanly/kinect/DP/triangulation/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_538fa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_538fa.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_538fa.dir/feature_tests.cxx.o  -o cmTC_538fa -rdynamic 
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
@@ -409,17 +409,17 @@ make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/tria
 
 
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_b79c1/fast"
-/usr/bin/make -f CMakeFiles/cmTC_b79c1.dir/build.make CMakeFiles/cmTC_b79c1.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building CXX object CMakeFiles/cmTC_b79c1.dir/feature_tests.cxx.o
-/usr/bin/c++     -std=c++11 -o CMakeFiles/cmTC_b79c1.dir/feature_tests.cxx.o -c /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_b79c1
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b79c1.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_b79c1.dir/feature_tests.cxx.o  -o cmTC_b79c1 -rdynamic 
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+Run Build Command:"/usr/bin/make" "cmTC_43e86/fast"
+/usr/bin/make -f CMakeFiles/cmTC_43e86.dir/build.make CMakeFiles/cmTC_43e86.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building CXX object CMakeFiles/cmTC_43e86.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++11 -o CMakeFiles/cmTC_43e86.dir/feature_tests.cxx.o -c /home/stanly/kinect/DP/triangulation/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_43e86
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_43e86.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_43e86.dir/feature_tests.cxx.o  -o cmTC_43e86 -rdynamic 
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -482,17 +482,17 @@ make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/tria
 
 
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_9264a/fast"
-/usr/bin/make -f CMakeFiles/cmTC_9264a.dir/build.make CMakeFiles/cmTC_9264a.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building CXX object CMakeFiles/cmTC_9264a.dir/feature_tests.cxx.o
-/usr/bin/c++     -std=c++98 -o CMakeFiles/cmTC_9264a.dir/feature_tests.cxx.o -c /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_9264a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9264a.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_9264a.dir/feature_tests.cxx.o  -o cmTC_9264a -rdynamic 
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+Run Build Command:"/usr/bin/make" "cmTC_c1c65/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c1c65.dir/build.make CMakeFiles/cmTC_c1c65.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building CXX object CMakeFiles/cmTC_c1c65.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++98 -o CMakeFiles/cmTC_c1c65.dir/feature_tests.cxx.o -c /home/stanly/kinect/DP/triangulation/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_c1c65
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c1c65.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_c1c65.dir/feature_tests.cxx.o  -o cmTC_c1c65 -rdynamic 
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -553,30 +553,30 @@ make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/tria
     Feature record: CXX_FEATURE:0cxx_variadic_macros
     Feature record: CXX_FEATURE:0cxx_variadic_templates
 Determining if the include file pthread.h exists passed with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_36b36/fast"
-/usr/bin/make -f CMakeFiles/cmTC_36b36.dir/build.make CMakeFiles/cmTC_36b36.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building C object CMakeFiles/cmTC_36b36.dir/CheckIncludeFile.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_36b36.dir/CheckIncludeFile.c.o   -c /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_36b36
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_36b36.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_36b36.dir/CheckIncludeFile.c.o  -o cmTC_36b36 -rdynamic 
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+Run Build Command:"/usr/bin/make" "cmTC_d907c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d907c.dir/build.make CMakeFiles/cmTC_d907c.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building C object CMakeFiles/cmTC_d907c.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_d907c.dir/CheckIncludeFile.c.o   -c /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_d907c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d907c.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_d907c.dir/CheckIncludeFile.c.o  -o cmTC_d907c -rdynamic 
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
 Determining if the function pthread_create exists in the pthread passed with the following output:
-Change Dir: /home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp
+Change Dir: /home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_74e79/fast"
-/usr/bin/make -f CMakeFiles/cmTC_74e79.dir/build.make CMakeFiles/cmTC_74e79.dir/build
-make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
-Building C object CMakeFiles/cmTC_74e79.dir/CheckFunctionExists.c.o
-/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_74e79.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
-Linking C executable cmTC_74e79
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_74e79.dir/link.txt --verbose=1
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_74e79.dir/CheckFunctionExists.c.o  -o cmTC_74e79 -rdynamic -lpthread 
-make[1]: Opouští se adresář „/home/stanly/kinect/DP/RoomScanner/parts/triangulation/build/CMakeFiles/CMakeTmp“
+Run Build Command:"/usr/bin/make" "cmTC_88919/fast"
+/usr/bin/make -f CMakeFiles/cmTC_88919.dir/build.make CMakeFiles/cmTC_88919.dir/build
+make[1]: Vstupuje se do adresáře „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
+Building C object CMakeFiles/cmTC_88919.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_88919.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_88919
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_88919.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_88919.dir/CheckFunctionExists.c.o  -o cmTC_88919 -rdynamic -lpthread 
+make[1]: Opouští se adresář „/home/stanly/kinect/DP/triangulation/build/CMakeFiles/CMakeTmp“
 
 
