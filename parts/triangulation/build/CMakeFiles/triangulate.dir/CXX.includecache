@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/stanly/kinect/DP/triangulation/triangulate.cpp
+/home/stanly/kinect/DP/RoomScanner/parts/triangulation/triangulate.cpp
 pcl/point_types.h
 -
 pcl/io/pcd_io.h
