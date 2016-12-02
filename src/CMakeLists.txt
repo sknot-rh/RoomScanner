@@ -8,5 +8,5 @@ include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
-add_executable (openni_grabber openni_grabber.cpp)
-target_link_libraries (openni_grabber ${PCL_LIBRARIES})
+add_executable (RoomScanner RoomScanner.cpp)
+target_link_libraries (RoomScanner ${PCL_LIBRARIES})
