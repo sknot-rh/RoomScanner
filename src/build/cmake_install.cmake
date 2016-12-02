@@ -1,4 +1,4 @@
-# Install script for directory: /home/stanly/kinect/DP/gettingPC
+# Install script for directory: /home/stanly/kinect/DP/RoomScanner/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/stanly/kinect/DP/gettingPC/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/stanly/kinect/DP/RoomScanner/src/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

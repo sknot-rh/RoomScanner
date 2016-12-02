@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/stanly/kinect/DP/gettingPC
+CMAKE_SOURCE_DIR = /home/stanly/kinect/DP/RoomScanner/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/stanly/kinect/DP/gettingPC/build
+CMAKE_BINARY_DIR = /home/stanly/kinect/DP/RoomScanner/src/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/gettingPC/build/CMakeFiles /home/stanly/kinect/DP/gettingPC/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/RoomScanner/src/build/CMakeFiles /home/stanly/kinect/DP/RoomScanner/src/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/gettingPC/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/RoomScanner/src/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named openni_grabber
+# Target rules for targets named RoomScanner
 
 # Build rule for target.
-openni_grabber: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 openni_grabber
-.PHONY : openni_grabber
+RoomScanner: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 RoomScanner
+.PHONY : RoomScanner
 
 # fast build rule for target.
-openni_grabber/fast:
-	$(MAKE) -f CMakeFiles/openni_grabber.dir/build.make CMakeFiles/openni_grabber.dir/build
-.PHONY : openni_grabber/fast
+RoomScanner/fast:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/build
+.PHONY : RoomScanner/fast
 
-openni_grabber.o: openni_grabber.cpp.o
+RoomScanner.o: RoomScanner.cpp.o
 
-.PHONY : openni_grabber.o
+.PHONY : RoomScanner.o
 
 # target to build an object file
-openni_grabber.cpp.o:
-	$(MAKE) -f CMakeFiles/openni_grabber.dir/build.make CMakeFiles/openni_grabber.dir/openni_grabber.cpp.o
-.PHONY : openni_grabber.cpp.o
+RoomScanner.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/RoomScanner.cpp.o
+.PHONY : RoomScanner.cpp.o
 
-openni_grabber.i: openni_grabber.cpp.i
+RoomScanner.i: RoomScanner.cpp.i
 
-.PHONY : openni_grabber.i
+.PHONY : RoomScanner.i
 
 # target to preprocess a source file
-openni_grabber.cpp.i:
-	$(MAKE) -f CMakeFiles/openni_grabber.dir/build.make CMakeFiles/openni_grabber.dir/openni_grabber.cpp.i
-.PHONY : openni_grabber.cpp.i
+RoomScanner.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/RoomScanner.cpp.i
+.PHONY : RoomScanner.cpp.i
 
-openni_grabber.s: openni_grabber.cpp.s
+RoomScanner.s: RoomScanner.cpp.s
 
-.PHONY : openni_grabber.s
+.PHONY : RoomScanner.s
 
 # target to generate assembly for a file
-openni_grabber.cpp.s:
-	$(MAKE) -f CMakeFiles/openni_grabber.dir/build.make CMakeFiles/openni_grabber.dir/openni_grabber.cpp.s
-.PHONY : openni_grabber.cpp.s
+RoomScanner.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/RoomScanner.cpp.s
+.PHONY : RoomScanner.cpp.s
 
 # Help Target
 help:
@@ -158,10 +158,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... openni_grabber"
-	@echo "... openni_grabber.o"
-	@echo "... openni_grabber.i"
-	@echo "... openni_grabber.s"
+	@echo "... RoomScanner"
+	@echo "... RoomScanner.o"
+	@echo "... RoomScanner.i"
+	@echo "... RoomScanner.s"
 .PHONY : help
 
 

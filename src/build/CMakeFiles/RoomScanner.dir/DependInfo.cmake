@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/stanly/kinect/DP/gettingPC/openni_grabber.cpp" "/home/stanly/kinect/DP/gettingPC/build/CMakeFiles/openni_grabber.dir/openni_grabber.cpp.o"
+  "/home/stanly/kinect/DP/RoomScanner/src/RoomScanner.cpp" "/home/stanly/kinect/DP/RoomScanner/src/build/CMakeFiles/RoomScanner.dir/RoomScanner.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

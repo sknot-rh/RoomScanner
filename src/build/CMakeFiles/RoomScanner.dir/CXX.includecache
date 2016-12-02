@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/stanly/kinect/DP/gettingPC/openni_grabber.cpp
+/home/stanly/kinect/DP/RoomScanner/src/RoomScanner.cpp
 pcl/io/openni_grabber.h
 -
 pcl/visualization/cloud_viewer.h
