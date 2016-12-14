@@ -2,7 +2,8 @@ cmake_minimum_required (VERSION 2.6 FATAL_ERROR)
 
 project      (pcl-visualizer)
 find_package (Qt5 REQUIRED COMPONENTS Widgets Core)
-find_package (VTK REQUIRED)
+find_package (VTK 6.3.0 REQUIRED)
+#find_package (VTK 7.1.0 REQUIRED)
 find_package (PCL 1.8 REQUIRED)
 
 include_directories (${PCL_INCLUDE_DIRS})
@@ -12,6 +13,7 @@ add_definitions     (${PCL_DEFINITIONS})
 set  (project_SOURCES main.cpp pclviewer.cpp)
 set  (project_HEADERS pclviewer.h)
 set  (project_FORMS   pclviewer.ui)
+set  (CMAKE_CXX_FLAGS -g)
 
 QT5_WRAP_CPP (project_HEADERS_MOC   ${project_HEADERS})
 QT5_WRAP_UI  (project_FORMS_HEADERS ${project_FORMS})

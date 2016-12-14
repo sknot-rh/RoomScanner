@@ -4246,6 +4246,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: ui_pclviewer.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.cpp
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/QObject
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/QTimer
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/QVariant
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qabstractitemmodel.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qalgorithms.h
@@ -4255,6 +4256,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qatomic_cxx11.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qatomic_msvc.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qbasicatomic.h
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qbasictimer.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qbytearray.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qbytearraylist.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qchar.h
@@ -4314,6 +4316,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qsysinfo.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qsystemdetection.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qtextstream.h
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qtimer.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qtypeinfo.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qtypetraits.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtCore/qurl.h
@@ -4353,9 +4356,12 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtGui/
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QAction
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QApplication
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QButtonGroup
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QFormLayout
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QGridLayout
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QHeaderView
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QLCDNumber
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QLabel
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QLayout
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QMainWindow
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QPushButton
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/QSlider
@@ -4369,11 +4375,16 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidg
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qaction.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qactiongroup.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qapplication.h
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qboxlayout.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qbuttongroup.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qformlayout.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qframe.h
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qgridlayout.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qheaderview.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qlabel.h
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qlayout.h
+CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qlayoutitem.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qlcdnumber.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qmainwindow.h
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /opt/Qt/5.7/gcc_64/include/QtWidgets/qpushbutton.h
