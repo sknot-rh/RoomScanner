@@ -29,29 +29,16 @@ class PCLViewer : public QMainWindow
 public:
   PCLViewer (QWidget *parent = 0);
   ~PCLViewer ();
-  void cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &ncloud);
+  void cloud_cb_ (const PointCloudT::ConstPtr &ncloud);
 
 public slots:
-  void
-  randomButtonPressed ();
+  void resetButtonPressed(void);
 
-  void
-  RGBsliderReleased ();
+  void pSliderValueChanged(int value);
 
-  void
-  pSliderValueChanged (int value);
+  void closing(void);
 
-  void
-  redSliderValueChanged (int value);
-
-  void
-  greenSliderValueChanged (int value);
-
-  void
-  blueSliderValueChanged (int value);
-
-  void
-  closing(void);
+  void drawFrame(void);
 
 protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
@@ -61,7 +48,13 @@ protected:
   unsigned int green;
   unsigned int blue;
   pcl::Grabber* interface;
-  bool first = true;
+  bool stream;
+  bool copying;
+  bool stop;
+  int cloudWidth;
+  int cloudHeight;
+  std::vector<float> cloudX, cloudY, cloudZ;
+  std::vector<unsigned long> cloudRGB;
 
 private:
   Ui::PCLViewer *ui;

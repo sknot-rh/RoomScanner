@@ -4247,6 +4247,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.cpp
  /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.h
  /opt/Qt/5.7/gcc_64/include/QtCore/QObject
+ /opt/Qt/5.7/gcc_64/include/QtCore/QTimer
  /opt/Qt/5.7/gcc_64/include/QtCore/QVariant
  /opt/Qt/5.7/gcc_64/include/QtCore/qabstractitemmodel.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qalgorithms.h
@@ -4256,6 +4257,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtCore/qatomic_cxx11.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qatomic_msvc.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qbasicatomic.h
+ /opt/Qt/5.7/gcc_64/include/QtCore/qbasictimer.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qbytearray.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qbytearraylist.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qchar.h
@@ -4315,6 +4317,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtCore/qsysinfo.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qsystemdetection.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qtextstream.h
+ /opt/Qt/5.7/gcc_64/include/QtCore/qtimer.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qtypeinfo.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qtypetraits.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qurl.h
@@ -4354,9 +4357,12 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QAction
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QApplication
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QButtonGroup
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/QFormLayout
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/QGridLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QHeaderView
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QLCDNumber
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QLabel
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/QLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QMainWindow
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QPushButton
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QSlider
@@ -4370,11 +4376,16 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qaction.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qactiongroup.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qapplication.h
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/qboxlayout.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qbuttongroup.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/qformlayout.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qframe.h
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/qgridlayout.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qheaderview.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qlabel.h
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/qlayout.h
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/qlayoutitem.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qlcdnumber.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qmainwindow.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qpushbutton.h

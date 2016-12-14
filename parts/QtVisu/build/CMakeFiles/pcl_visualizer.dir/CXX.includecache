@@ -23,6 +23,10 @@ QtWidgets/QApplication
 -
 QtWidgets/QButtonGroup
 -
+QtWidgets/QFormLayout
+-
+QtWidgets/QGridLayout
+-
 QtWidgets/QHeaderView
 -
 QtWidgets/QLCDNumber
@@ -63,6 +67,8 @@ pcl/common/common_headers.h
 -
 pcl/features/normal_3d.h
 -
+QTimer
+-
 
 /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.h
 iostream
@@ -83,6 +89,10 @@ vtkRenderWindow.h
 /opt/Qt/5.7/gcc_64/include/QtCore/QObject
 qobject.h
 /opt/Qt/5.7/gcc_64/include/QtCore/qobject.h
+
+/opt/Qt/5.7/gcc_64/include/QtCore/QTimer
+qtimer.h
+/opt/Qt/5.7/gcc_64/include/QtCore/qtimer.h
 
 /opt/Qt/5.7/gcc_64/include/QtCore/QVariant
 qvariant.h
@@ -138,6 +148,12 @@ QtCore/qatomic_bootstrap.h
 QtCore/qatomic_cxx11.h
 -
 QtCore/qatomic_msvc.h
+-
+
+/opt/Qt/5.7/gcc_64/include/QtCore/qbasictimer.h
+QtCore/qglobal.h
+-
+QtCore/qnamespace.h
 -
 
 /opt/Qt/5.7/gcc_64/include/QtCore/qbytearray.h
@@ -692,6 +708,14 @@ QtCore/qscopedpointer.h
 stdio.h
 -
 
+/opt/Qt/5.7/gcc_64/include/QtCore/qtimer.h
+QtCore/qglobal.h
+-
+QtCore/qbasictimer.h
+-
+QtCore/qobject.h
+-
+
 /opt/Qt/5.7/gcc_64/include/QtCore/qtypeinfo.h
 QtCore/qtypetraits.h
 -
@@ -1106,6 +1130,14 @@ qapplication.h
 qbuttongroup.h
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qbuttongroup.h
 
+/opt/Qt/5.7/gcc_64/include/QtWidgets/QFormLayout
+qformlayout.h
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qformlayout.h
+
+/opt/Qt/5.7/gcc_64/include/QtWidgets/QGridLayout
+qgridlayout.h
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qgridlayout.h
+
 /opt/Qt/5.7/gcc_64/include/QtWidgets/QHeaderView
 qheaderview.h
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qheaderview.h
@@ -1117,6 +1149,10 @@ qlcdnumber.h
 /opt/Qt/5.7/gcc_64/include/QtWidgets/QLabel
 qlabel.h
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qlabel.h
+
+/opt/Qt/5.7/gcc_64/include/QtWidgets/QLayout
+qlayout.h
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qlayout.h
 
 /opt/Qt/5.7/gcc_64/include/QtWidgets/QMainWindow
 qmainwindow.h
@@ -1206,6 +1242,14 @@ QtWidgets/qdesktopwidget.h
 QtGui/qguiapplication.h
 -
 
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qboxlayout.h
+QtWidgets/qlayout.h
+-
+QtWidgets/qwidget.h
+-
+limits.h
+-
+
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qbuttongroup.h
 QtCore/qobject.h
 -
@@ -1214,8 +1258,20 @@ QtCore/qobject.h
 QtWidgets/qwidget.h
 -
 
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qformlayout.h
+QtWidgets/QLayout
+-
+
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qframe.h
 QtWidgets/qwidget.h
+-
+
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qgridlayout.h
+QtWidgets/qlayout.h
+-
+QtWidgets/qwidget.h
+-
+limits.h
 -
 
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qheaderview.h
@@ -1224,6 +1280,32 @@ QtWidgets/qabstractitemview.h
 
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qlabel.h
 QtWidgets/qframe.h
+-
+
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qlayout.h
+QtCore/qobject.h
+-
+QtWidgets/qlayoutitem.h
+-
+QtWidgets/qsizepolicy.h
+-
+QtCore/qrect.h
+-
+QtCore/qmargins.h
+-
+limits.h
+-
+QtWidgets/qboxlayout.h
+-
+QtWidgets/qgridlayout.h
+-
+
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qlayoutitem.h
+QtWidgets/qsizepolicy.h
+-
+QtCore/qrect.h
+-
+limits.h
 -
 
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qlcdnumber.h
