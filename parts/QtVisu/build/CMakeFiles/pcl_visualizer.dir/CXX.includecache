@@ -69,6 +69,8 @@ pcl/features/normal_3d.h
 -
 QTimer
 -
+pcl/common/transforms.h
+-
 
 /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.h
 iostream
@@ -24968,6 +24970,8 @@ pcl/console/print.h
 pcl/cloud_iterator.h
 -
 
+/usr/local/include/pcl-1.8/pcl/common/impl/transforms.hpp
+
 /usr/local/include/pcl-1.8/pcl/common/io.h
 string
 -
@@ -25010,6 +25014,20 @@ queue
 string
 -
 boost/date_time/posix_time/posix_time.hpp
+-
+
+/usr/local/include/pcl-1.8/pcl/common/transforms.h
+pcl/point_cloud.h
+-
+pcl/point_types.h
+-
+pcl/common/centroid.h
+-
+pcl/common/eigen.h
+-
+pcl/PointIndices.h
+-
+pcl/common/impl/transforms.hpp
 -
 
 /usr/local/include/pcl-1.8/pcl/console/print.h
