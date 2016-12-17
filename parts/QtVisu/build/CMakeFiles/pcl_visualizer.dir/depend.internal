@@ -6545,12 +6545,14 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/common/impl/io.hpp
  /usr/local/include/pcl-1.8/pcl/common/impl/norms.hpp
  /usr/local/include/pcl-1.8/pcl/common/impl/projection_matrix.hpp
+ /usr/local/include/pcl-1.8/pcl/common/impl/transforms.hpp
  /usr/local/include/pcl-1.8/pcl/common/io.h
  /usr/local/include/pcl-1.8/pcl/common/norms.h
  /usr/local/include/pcl-1.8/pcl/common/point_tests.h
  /usr/local/include/pcl-1.8/pcl/common/projection_matrix.h
  /usr/local/include/pcl-1.8/pcl/common/synchronizer.h
  /usr/local/include/pcl-1.8/pcl/common/time.h
+ /usr/local/include/pcl-1.8/pcl/common/transforms.h
  /usr/local/include/pcl-1.8/pcl/console/print.h
  /usr/local/include/pcl-1.8/pcl/conversions.h
  /usr/local/include/pcl-1.8/pcl/correspondence.h

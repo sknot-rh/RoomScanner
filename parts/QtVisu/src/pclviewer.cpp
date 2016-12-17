@@ -6,6 +6,7 @@
 #include <pcl/common/common_headers.h>
 #include <pcl/features/normal_3d.h>
 #include <QTimer>
+#include <pcl/common/transforms.h>
 
 
 PCLViewer::PCLViewer (QWidget *parent) :
@@ -20,6 +21,14 @@ PCLViewer::PCLViewer (QWidget *parent) :
 
     //Create empty cloud
     cloud.reset(new PointCloudT);
+
+
+    //Tell to sensor in which position is expected input
+    Eigen::Quaternionf m;
+    m = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitX())
+      * Eigen::AngleAxisf(M_PI,  Eigen::Vector3f::UnitY())
+      * Eigen::AngleAxisf(0.0f, Eigen::Vector3f::UnitZ());
+    cloud->sensor_orientation_ = m;
 
     copying = stream = false;
 
@@ -65,12 +74,17 @@ void PCLViewer::drawFrame() {
         float *pY = &cloudY[0];
         float *pZ = &cloudZ[0];
         unsigned long *pRGB = &cloudRGB[0];
-        for(int i=0;i<cloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
+        for(int i = 0; i < cloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
             cloud->points[i].x = (*pX);
             cloud->points[i].y = (*pY);
             cloud->points[i].z = (*pZ);
             cloud->points[i].rgba = (*pRGB);
         }
+
+        /*Eigen::Affine3f transform = Eigen::Affine3f::Identity();
+        transform.rotate (Eigen::AngleAxisf (M_PI , Eigen::Vector3f::UnitZ ()));
+        transform.rotate (Eigen::AngleAxisf (M_PI , Eigen::Vector3f::UnitY ()));
+        pcl::transformPointCloud (*cloud, *cloud, transform);*/
         viewer->updatePointCloud(cloud,"cloud");
         ui->qvtkWidget->update ();
     }
