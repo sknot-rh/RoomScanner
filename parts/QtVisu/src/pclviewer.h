@@ -40,9 +40,12 @@ public slots:
 
   void drawFrame(void);
 
+  void toggled(bool value);
+
 protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
   PointCloudT::Ptr cloud;
+  PointCloudT::Ptr key_cloud;
 
   unsigned int red;
   unsigned int green;
@@ -55,6 +58,12 @@ protected:
   int cloudHeight;
   std::vector<float> cloudX, cloudY, cloudZ;
   std::vector<unsigned long> cloudRGB;
+
+  // Parameters for sift computation
+  const float min_scale = 0.1f;
+  const int n_octaves = 6;
+  const int n_scales_per_octave = 10;
+  const float min_contrast = 0.5f;
 
 private:
   Ui::PCLViewer *ui;

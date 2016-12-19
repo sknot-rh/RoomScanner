@@ -7,7 +7,9 @@
 #include <pcl/features/normal_3d.h>
 #include <QTimer>
 #include <pcl/common/transforms.h>
-
+#include <pcl/keypoints/sift_keypoint.h>
+#include <pcl/keypoints/impl/sift_keypoint.hpp>
+#include <pcl/features/normal_3d.h>
 
 PCLViewer::PCLViewer (QWidget *parent) :
   QMainWindow (parent),
@@ -19,8 +21,9 @@ PCLViewer::PCLViewer (QWidget *parent) :
     QTimer *tmrTimer = new QTimer(this);
     connect(tmrTimer,SIGNAL(timeout()),this,SLOT(drawFrame()));
 
-    //Create empty cloud
+    //Create empty clouds
     cloud.reset(new PointCloudT);
+    key_cloud.reset(new PointCloudT);
 
 
     //Tell to sensor in which position is expected input
@@ -29,6 +32,7 @@ PCLViewer::PCLViewer (QWidget *parent) :
       * Eigen::AngleAxisf(0.0f,  Eigen::Vector3f::UnitY())
       * Eigen::AngleAxisf(0.0f, Eigen::Vector3f::UnitZ());
     cloud->sensor_orientation_ = m;
+    key_cloud->sensor_orientation_ = m;
 
     copying = stream = false;
 
@@ -51,13 +55,20 @@ PCLViewer::PCLViewer (QWidget *parent) :
 
 
     //Connect reset button
-    connect (ui->pushButton_reset, SIGNAL (clicked ()), this, SLOT (resetButtonPressed ()));
+    connect(ui->pushButton_reset, SIGNAL (clicked ()), this, SLOT (resetButtonPressed ()));
 
     // Connect point size slider
-    connect (ui->horizontalSlider_p, SIGNAL (valueChanged (int)), this, SLOT (pSliderValueChanged (int)));
+    connect(ui->horizontalSlider_p, SIGNAL (valueChanged (int)), this, SLOT (pSliderValueChanged (int)));
+
+    //Connect checkbox
+    connect(ui->checkBox, SIGNAL(clicked(bool)), this, SLOT(toggled(bool)));
 
     //Add empty pointcloud
     viewer->addPointCloud(cloud, "cloud");
+    viewer->addPointCloud(key_cloud, "keypoints");
+
+
+    viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 10, "keypoints");
     pSliderValueChanged (2);
 }
 
@@ -80,7 +91,30 @@ void PCLViewer::drawFrame() {
             cloud->points[i].z = (*pZ);
             cloud->points[i].rgba = (*pRGB);
         }
-        viewer->updatePointCloud(cloud,"cloud");
+
+
+        // Estimate the sift interest points using Intensity values from RGB values
+        pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift;
+        pcl::PointCloud<pcl::PointWithScale> result;
+        pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT> ());
+        sift.setSearchMethod(tree);
+        sift.setScales(min_scale, n_octaves, n_scales_per_octave);
+        sift.setMinimumContrast(min_contrast);
+        sift.setInputCloud(cloud);
+        sift.compute(result);
+
+        copyPointCloud(result, *key_cloud);
+
+        for (int var = 0; var < key_cloud->size(); ++var) {
+            key_cloud->points[var].r = 0;
+            key_cloud->points[var].g = 255;
+            key_cloud->points[var].b = 0;
+
+        }
+
+
+        viewer->updatePointCloud(key_cloud ,"keypoints");
+        viewer->updatePointCloud(cloud ,"cloud");
         ui->qvtkWidget->update ();
     }
 
@@ -127,6 +161,15 @@ void PCLViewer::cloud_cb_ (const PointCloudT::ConstPtr &ncloud) {
     }
 }
 
+void PCLViewer::toggled(bool value) {
+    if (value) {
+        viewer->addCoordinateSystem(1, 0, 0, 0, "viewer", 0);
+    }
+    else {
+        viewer->removeCoordinateSystem("viewer", 0);
+    }
+    ui->qvtkWidget->update();
+}
 
 void PCLViewer::resetButtonPressed ()
 {

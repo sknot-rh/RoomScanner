@@ -4357,8 +4357,9 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QAction
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QApplication
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QButtonGroup
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/QCheckBox
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QFormLayout
- /opt/Qt/5.7/gcc_64/include/QtWidgets/QGridLayout
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/QHBoxLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QHeaderView
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QLCDNumber
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QLabel
@@ -4366,6 +4367,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QMainWindow
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QPushButton
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QSlider
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/QVBoxLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QWidget
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qabstractbutton.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h
@@ -4378,6 +4380,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qapplication.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qboxlayout.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qbuttongroup.h
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/qcheckbox.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qformlayout.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qframe.h
@@ -4963,6 +4966,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/boost/detail/bitmask.hpp
  /usr/local/include/boost/detail/call_traits.hpp
  /usr/local/include/boost/detail/container_fwd.hpp
+ /usr/local/include/boost/detail/dynamic_bitset.hpp
  /usr/local/include/boost/detail/endian.hpp
  /usr/local/include/boost/detail/fenv.hpp
  /usr/local/include/boost/detail/indirect_traits.hpp
@@ -4986,6 +4990,10 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/boost/detail/winapi/time.hpp
  /usr/local/include/boost/detail/winapi/timers.hpp
  /usr/local/include/boost/detail/workaround.hpp
+ /usr/local/include/boost/dynamic_bitset.hpp
+ /usr/local/include/boost/dynamic_bitset/config.hpp
+ /usr/local/include/boost/dynamic_bitset/dynamic_bitset.hpp
+ /usr/local/include/boost/dynamic_bitset_fwd.hpp
  /usr/local/include/boost/enable_shared_from_this.hpp
  /usr/local/include/boost/exception/current_exception_cast.hpp
  /usr/local/include/boost/exception/detail/clone_current_exception.hpp
@@ -5234,6 +5242,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/boost/fusion/mpl/push_front.hpp
  /usr/local/include/boost/fusion/mpl/size.hpp
  /usr/local/include/boost/fusion/sequence/convert.hpp
+ /usr/local/include/boost/fusion/sequence/intrinsic/at_key.hpp
  /usr/local/include/boost/fusion/sequence/intrinsic/begin.hpp
  /usr/local/include/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp
  /usr/local/include/boost/fusion/sequence/intrinsic/detail/segmented_begin_impl.hpp
@@ -5306,6 +5315,8 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/boost/get_pointer.hpp
  /usr/local/include/boost/integer.hpp
  /usr/local/include/boost/integer/common_factor_rt.hpp
+ /usr/local/include/boost/integer/integer_log2.hpp
+ /usr/local/include/boost/integer/integer_mask.hpp
  /usr/local/include/boost/integer/static_log2.hpp
  /usr/local/include/boost/integer_fwd.hpp
  /usr/local/include/boost/integer_traits.hpp
@@ -5408,6 +5419,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/boost/lexical_cast/detail/widest_char.hpp
  /usr/local/include/boost/lexical_cast/try_lexical_convert.hpp
  /usr/local/include/boost/limits.hpp
+ /usr/local/include/boost/make_shared.hpp
  /usr/local/include/boost/math/common_factor_ct.hpp
  /usr/local/include/boost/math/policies/policy.hpp
  /usr/local/include/boost/math/special_functions/detail/fp_traits.hpp
@@ -5798,6 +5810,8 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/boost/parameter/parameters.hpp
  /usr/local/include/boost/parameter/preprocessor.hpp
  /usr/local/include/boost/parameter/value_type.hpp
+ /usr/local/include/boost/pending/integer_log2.hpp
+ /usr/local/include/boost/pending/lowest_bit.hpp
  /usr/local/include/boost/pointer_to_other.hpp
  /usr/local/include/boost/predef.h
  /usr/local/include/boost/predef/architecture.h
@@ -6057,6 +6071,72 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/boost/preprocessor/tuple/to_list.hpp
  /usr/local/include/boost/preprocessor/variadic/elem.hpp
  /usr/local/include/boost/preprocessor/variadic/size.hpp
+ /usr/local/include/boost/random.hpp
+ /usr/local/include/boost/random/additive_combine.hpp
+ /usr/local/include/boost/random/bernoulli_distribution.hpp
+ /usr/local/include/boost/random/beta_distribution.hpp
+ /usr/local/include/boost/random/binomial_distribution.hpp
+ /usr/local/include/boost/random/cauchy_distribution.hpp
+ /usr/local/include/boost/random/chi_squared_distribution.hpp
+ /usr/local/include/boost/random/detail/config.hpp
+ /usr/local/include/boost/random/detail/const_mod.hpp
+ /usr/local/include/boost/random/detail/disable_warnings.hpp
+ /usr/local/include/boost/random/detail/enable_warnings.hpp
+ /usr/local/include/boost/random/detail/generator_bits.hpp
+ /usr/local/include/boost/random/detail/generator_seed_seq.hpp
+ /usr/local/include/boost/random/detail/integer_log2.hpp
+ /usr/local/include/boost/random/detail/large_arithmetic.hpp
+ /usr/local/include/boost/random/detail/operators.hpp
+ /usr/local/include/boost/random/detail/polynomial.hpp
+ /usr/local/include/boost/random/detail/ptr_helper.hpp
+ /usr/local/include/boost/random/detail/seed.hpp
+ /usr/local/include/boost/random/detail/seed_impl.hpp
+ /usr/local/include/boost/random/detail/signed_unsigned_tools.hpp
+ /usr/local/include/boost/random/detail/uniform_int_float.hpp
+ /usr/local/include/boost/random/detail/vector_io.hpp
+ /usr/local/include/boost/random/discard_block.hpp
+ /usr/local/include/boost/random/discrete_distribution.hpp
+ /usr/local/include/boost/random/exponential_distribution.hpp
+ /usr/local/include/boost/random/extreme_value_distribution.hpp
+ /usr/local/include/boost/random/fisher_f_distribution.hpp
+ /usr/local/include/boost/random/gamma_distribution.hpp
+ /usr/local/include/boost/random/generate_canonical.hpp
+ /usr/local/include/boost/random/geometric_distribution.hpp
+ /usr/local/include/boost/random/hyperexponential_distribution.hpp
+ /usr/local/include/boost/random/independent_bits.hpp
+ /usr/local/include/boost/random/inversive_congruential.hpp
+ /usr/local/include/boost/random/lagged_fibonacci.hpp
+ /usr/local/include/boost/random/laplace_distribution.hpp
+ /usr/local/include/boost/random/linear_congruential.hpp
+ /usr/local/include/boost/random/linear_feedback_shift.hpp
+ /usr/local/include/boost/random/lognormal_distribution.hpp
+ /usr/local/include/boost/random/mersenne_twister.hpp
+ /usr/local/include/boost/random/negative_binomial_distribution.hpp
+ /usr/local/include/boost/random/non_central_chi_squared_distribution.hpp
+ /usr/local/include/boost/random/normal_distribution.hpp
+ /usr/local/include/boost/random/piecewise_constant_distribution.hpp
+ /usr/local/include/boost/random/piecewise_linear_distribution.hpp
+ /usr/local/include/boost/random/poisson_distribution.hpp
+ /usr/local/include/boost/random/random_number_generator.hpp
+ /usr/local/include/boost/random/ranlux.hpp
+ /usr/local/include/boost/random/seed_seq.hpp
+ /usr/local/include/boost/random/shuffle_order.hpp
+ /usr/local/include/boost/random/shuffle_output.hpp
+ /usr/local/include/boost/random/student_t_distribution.hpp
+ /usr/local/include/boost/random/subtract_with_carry.hpp
+ /usr/local/include/boost/random/taus88.hpp
+ /usr/local/include/boost/random/traits.hpp
+ /usr/local/include/boost/random/triangle_distribution.hpp
+ /usr/local/include/boost/random/uniform_01.hpp
+ /usr/local/include/boost/random/uniform_int.hpp
+ /usr/local/include/boost/random/uniform_int_distribution.hpp
+ /usr/local/include/boost/random/uniform_on_sphere.hpp
+ /usr/local/include/boost/random/uniform_real.hpp
+ /usr/local/include/boost/random/uniform_real_distribution.hpp
+ /usr/local/include/boost/random/uniform_smallint.hpp
+ /usr/local/include/boost/random/variate_generator.hpp
+ /usr/local/include/boost/random/weibull_distribution.hpp
+ /usr/local/include/boost/random/xor_combine.hpp
  /usr/local/include/boost/range/algorithm/equal.hpp
  /usr/local/include/boost/range/as_literal.hpp
  /usr/local/include/boost/range/begin.hpp
@@ -6561,6 +6641,11 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/features/impl/feature.hpp
  /usr/local/include/pcl-1.8/pcl/features/impl/normal_3d.hpp
  /usr/local/include/pcl-1.8/pcl/features/normal_3d.h
+ /usr/local/include/pcl-1.8/pcl/filters/boost.h
+ /usr/local/include/pcl-1.8/pcl/filters/filter.h
+ /usr/local/include/pcl-1.8/pcl/filters/impl/filter.hpp
+ /usr/local/include/pcl-1.8/pcl/filters/impl/voxel_grid.hpp
+ /usr/local/include/pcl-1.8/pcl/filters/voxel_grid.h
  /usr/local/include/pcl-1.8/pcl/for_each_type.h
  /usr/local/include/pcl-1.8/pcl/geometry/planar_polygon.h
  /usr/local/include/pcl-1.8/pcl/impl/cloud_iterator.hpp
@@ -6583,6 +6668,10 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/kdtree/impl/kdtree_flann.hpp
  /usr/local/include/pcl-1.8/pcl/kdtree/kdtree.h
  /usr/local/include/pcl-1.8/pcl/kdtree/kdtree_flann.h
+ /usr/local/include/pcl-1.8/pcl/keypoints/impl/keypoint.hpp
+ /usr/local/include/pcl-1.8/pcl/keypoints/impl/sift_keypoint.hpp
+ /usr/local/include/pcl-1.8/pcl/keypoints/keypoint.h
+ /usr/local/include/pcl-1.8/pcl/keypoints/sift_keypoint.h
  /usr/local/include/pcl-1.8/pcl/octree/impl/octree_pointcloud.hpp
  /usr/local/include/pcl-1.8/pcl/octree/impl/octree_search.hpp
  /usr/local/include/pcl-1.8/pcl/octree/octree_base.h
