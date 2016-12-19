@@ -26,7 +26,7 @@ PCLViewer::PCLViewer (QWidget *parent) :
     //Tell to sensor in which position is expected input
     Eigen::Quaternionf m;
     m = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitX())
-      * Eigen::AngleAxisf(M_PI,  Eigen::Vector3f::UnitY())
+      * Eigen::AngleAxisf(0.0f,  Eigen::Vector3f::UnitY())
       * Eigen::AngleAxisf(0.0f, Eigen::Vector3f::UnitZ());
     cloud->sensor_orientation_ = m;
 
@@ -80,11 +80,6 @@ void PCLViewer::drawFrame() {
             cloud->points[i].z = (*pZ);
             cloud->points[i].rgba = (*pRGB);
         }
-
-        /*Eigen::Affine3f transform = Eigen::Affine3f::Identity();
-        transform.rotate (Eigen::AngleAxisf (M_PI , Eigen::Vector3f::UnitZ ()));
-        transform.rotate (Eigen::AngleAxisf (M_PI , Eigen::Vector3f::UnitY ()));
-        pcl::transformPointCloud (*cloud, *cloud, transform);*/
         viewer->updatePointCloud(cloud,"cloud");
         ui->qvtkWidget->update ();
     }
