@@ -2,6 +2,8 @@
 #include "../build/ui_pclviewer.h"
 #include <pcl/visualization/cloud_viewer.h>
 #include <cstddef>
+#include <iterator>
+#include <list>
 #include <boost/thread/thread.hpp>
 #include <pcl/common/common_headers.h>
 #include <pcl/features/normal_3d.h>
@@ -57,6 +59,9 @@ PCLViewer::PCLViewer (QWidget *parent) :
     //Connect reset button
     connect(ui->pushButton_reset, SIGNAL (clicked ()), this, SLOT (resetButtonPressed ()));
 
+    //Connect save button
+    connect(ui->pushButton_save, SIGNAL (clicked ()), this, SLOT (saveButtonPressed ()));
+
     // Connect point size slider
     connect(ui->horizontalSlider_p, SIGNAL (valueChanged (int)), this, SLOT (pSliderValueChanged (int)));
 
@@ -90,6 +95,7 @@ void PCLViewer::drawFrame() {
             cloud->points[i].y = (*pY);
             cloud->points[i].z = (*pZ);
             cloud->points[i].rgba = (*pRGB);
+            //cloud->points[i].a = 128; //for better stitching?
         }
 
 
@@ -171,12 +177,22 @@ void PCLViewer::toggled(bool value) {
     ui->qvtkWidget->update();
 }
 
-void PCLViewer::resetButtonPressed ()
-{
+void PCLViewer::resetButtonPressed() {
     viewer->resetCamera();
     ui->qvtkWidget->update();
 }
 
+void PCLViewer::saveButtonPressed() {
+    clouds.push_back(cloud);
+    viewer->removePointCloud("keypoints" + std::to_string(clouds.size()-1));
+    for (size_t i = 0; i < clouds.back()->points.size(); i ++) {
+        clouds.back()->points[i].a = 50;
+    }
+    viewer->addPointCloud(clouds.back(), "keypoints" + std::to_string(clouds.size()));
+    //TODO move camera regarding to position in real world, if is it possible
+    ui->qvtkWidget->update ();
+
+}
 
 void PCLViewer::pSliderValueChanged (int value)
 {
@@ -194,5 +210,6 @@ PCLViewer::~PCLViewer ()
     printf("Exiting...\n");
     interface->stop();
     delete ui;
+    clouds.clear();
     //delete &cloud;
 }

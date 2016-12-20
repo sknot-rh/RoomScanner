@@ -65,6 +65,10 @@ pcl/visualization/cloud_viewer.h
 -
 cstddef
 -
+iterator
+-
+list
+-
 boost/thread/thread.hpp
 -
 pcl/common/common_headers.h
