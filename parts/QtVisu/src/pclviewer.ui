@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>782</width>
-    <height>650</height>
+    <height>698</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -157,9 +157,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="pushButton_save">
         <property name="text">
-         <string>PushButton</string>
+         <string>Save Frame</string>
         </property>
        </widget>
       </item>

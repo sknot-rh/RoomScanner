@@ -34,6 +34,8 @@ public:
 public slots:
   void resetButtonPressed(void);
 
+  void saveButtonPressed(void);
+
   void pSliderValueChanged(int value);
 
   void closing(void);
@@ -58,6 +60,7 @@ protected:
   int cloudHeight;
   std::vector<float> cloudX, cloudY, cloudZ;
   std::vector<unsigned long> cloudRGB;
+  std::list<PointCloudT::Ptr> clouds;
 
   // Parameters for sift computation
   const float min_scale = 0.1f;
