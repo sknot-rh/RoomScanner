@@ -4269,10 +4269,12 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtCore/qcoreevent.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qdatastream.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qdebug.h
+ /opt/Qt/5.7/gcc_64/include/QtCore/qdir.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qeventloop.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qfeatures.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qfile.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qfiledevice.h
+ /opt/Qt/5.7/gcc_64/include/QtCore/qfileinfo.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qflags.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qgenericatomic.h
  /opt/Qt/5.7/gcc_64/include/QtCore/qglobal.h
@@ -4358,6 +4360,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QApplication
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QButtonGroup
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QCheckBox
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/QFileDialog
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QFormLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QHBoxLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QHeaderView
@@ -4365,6 +4368,8 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QLabel
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QMainWindow
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/QMenu
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/QMenuBar
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QPushButton
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QSlider
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QVBoxLayout
@@ -4382,6 +4387,8 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qbuttongroup.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qcheckbox.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/qdialog.h
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/qfiledialog.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qformlayout.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qframe.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qgridlayout.h
@@ -4391,6 +4398,8 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qlayoutitem.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qlcdnumber.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qmainwindow.h
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/qmenu.h
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/qmenubar.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qpushbutton.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qrubberband.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qsizepolicy.h
@@ -6653,7 +6662,10 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/impl/point_types.hpp
  /usr/local/include/pcl-1.8/pcl/io/boost.h
  /usr/local/include/pcl-1.8/pcl/io/eigen.h
+ /usr/local/include/pcl-1.8/pcl/io/file_io.h
  /usr/local/include/pcl-1.8/pcl/io/grabber.h
+ /usr/local/include/pcl-1.8/pcl/io/impl/pcd_io.hpp
+ /usr/local/include/pcl-1.8/pcl/io/lzf.h
  /usr/local/include/pcl-1.8/pcl/io/openni_camera/openni.h
  /usr/local/include/pcl-1.8/pcl/io/openni_camera/openni_depth_image.h
  /usr/local/include/pcl-1.8/pcl/io/openni_camera/openni_device.h
@@ -6664,6 +6676,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/io/openni_camera/openni_image_bayer_grbg.h
  /usr/local/include/pcl-1.8/pcl/io/openni_camera/openni_ir_image.h
  /usr/local/include/pcl-1.8/pcl/io/openni_grabber.h
+ /usr/local/include/pcl-1.8/pcl/io/pcd_io.h
  /usr/local/include/pcl-1.8/pcl/kdtree/flann.h
  /usr/local/include/pcl-1.8/pcl/kdtree/impl/kdtree_flann.hpp
  /usr/local/include/pcl-1.8/pcl/kdtree/kdtree.h

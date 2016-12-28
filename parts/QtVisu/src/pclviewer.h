@@ -44,6 +44,8 @@ public slots:
 
   void toggled(bool value);
 
+  void loadActionPressed(void);
+
 protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
   PointCloudT::Ptr cloud;
