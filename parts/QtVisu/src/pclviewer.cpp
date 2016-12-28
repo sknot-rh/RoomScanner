@@ -37,9 +37,17 @@ PCLViewer::PCLViewer (QWidget *parent) :
     key_cloud->sensor_orientation_ = m;
 
     copying = stream = false;
+    bool sensorConnected = false;
 
-    //OpenNIGrabber
-    interface = new pcl::OpenNIGrabber();
+    try {
+        //OpenNIGrabber
+        interface = new pcl::OpenNIGrabber();
+        sensorConnected = true;
+    }
+    catch (pcl::IOException e) {
+        std::cout << "No sensor connected!" << '\n';
+        sensorConnected = false;
+    }
 
     //Setting up UI
     viewer.reset (new pcl::visualization::PCLVisualizer ("viewer", false));
@@ -48,9 +56,11 @@ PCLViewer::PCLViewer (QWidget *parent) :
     ui->qvtkWidget->update ();
 
     //Create callback for openni grabber
-    boost::function<void (const PointCloudT::ConstPtr&)> f = boost::bind (&PCLViewer::cloud_cb_, this, _1);
-    interface->registerCallback(f);
-    interface->start ();
+    if (sensorConnected) {
+        boost::function<void (const PointCloudT::ConstPtr&)> f = boost::bind (&PCLViewer::cloud_cb_, this, _1);
+        interface->registerCallback(f);
+        interface->start ();
+    }
     tmrTimer->start(20); // msec
     stream = true;
     stop = false;

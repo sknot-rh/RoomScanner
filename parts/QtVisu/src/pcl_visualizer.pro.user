@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.1.0, 2016-12-19T13:46:35. -->
+<!-- Written by QtCreator 4.1.0, 2016-12-28T12:57:40. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -119,7 +119,7 @@
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges">
-     <value type="QString">LD_LIBRARY_PATH=/usr/local/</value>
+     <value type="QString">LD_LIBRARY_PATH=/home/stanly/QtCreator/5.5/gcc_64/lib/</value>
     </valuelist>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Ladění</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
