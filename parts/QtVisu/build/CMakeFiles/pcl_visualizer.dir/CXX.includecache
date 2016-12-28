@@ -37,6 +37,10 @@ QtWidgets/QLabel
 -
 QtWidgets/QMainWindow
 -
+QtWidgets/QMenu
+-
+QtWidgets/QMenuBar
+-
 QtWidgets/QPushButton
 -
 QtWidgets/QSlider
@@ -84,6 +88,10 @@ pcl/keypoints/sift_keypoint.h
 pcl/keypoints/impl/sift_keypoint.hpp
 -
 pcl/features/normal_3d.h
+-
+QFileDialog
+-
+pcl/io/pcd_io.h
 -
 
 /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.h
@@ -284,6 +292,16 @@ map
 utility
 -
 
+/opt/Qt/5.7/gcc_64/include/QtCore/qdir.h
+QtCore/qstring.h
+-
+QtCore/qfileinfo.h
+-
+QtCore/qstringlist.h
+-
+QtCore/qshareddata.h
+-
+
 /opt/Qt/5.7/gcc_64/include/QtCore/qeventloop.h
 QtCore/qobject.h
 -
@@ -302,6 +320,16 @@ stdio.h
 QtCore/qiodevice.h
 -
 QtCore/qstring.h
+-
+
+/opt/Qt/5.7/gcc_64/include/QtCore/qfileinfo.h
+QtCore/qfile.h
+-
+QtCore/qlist.h
+-
+QtCore/qshareddata.h
+-
+QtCore/qmetatype.h
 -
 
 /opt/Qt/5.7/gcc_64/include/QtCore/qflags.h
@@ -1150,6 +1178,10 @@ qbuttongroup.h
 qcheckbox.h
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qcheckbox.h
 
+/opt/Qt/5.7/gcc_64/include/QtWidgets/QFileDialog
+qfiledialog.h
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qfiledialog.h
+
 /opt/Qt/5.7/gcc_64/include/QtWidgets/QFormLayout
 qformlayout.h
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qformlayout.h
@@ -1177,6 +1209,14 @@ qlayout.h
 /opt/Qt/5.7/gcc_64/include/QtWidgets/QMainWindow
 qmainwindow.h
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qmainwindow.h
+
+/opt/Qt/5.7/gcc_64/include/QtWidgets/QMenu
+qmenu.h
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qmenu.h
+
+/opt/Qt/5.7/gcc_64/include/QtWidgets/QMenuBar
+qmenubar.h
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qmenubar.h
 
 /opt/Qt/5.7/gcc_64/include/QtWidgets/QPushButton
 qpushbutton.h
@@ -1286,6 +1326,20 @@ QtWidgets/qabstractbutton.h
 QtWidgets/qwidget.h
 -
 
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qdialog.h
+QtWidgets/qwidget.h
+-
+
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qfiledialog.h
+QtCore/qdir.h
+-
+QtCore/qstring.h
+-
+QtCore/qurl.h
+-
+QtWidgets/qdialog.h
+-
+
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qformlayout.h
 QtWidgets/QLayout
 -
@@ -1344,6 +1398,22 @@ QtWidgets/qframe.h
 QtWidgets/qwidget.h
 -
 QtWidgets/qtabwidget.h
+-
+
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qmenu.h
+QtWidgets/qwidget.h
+-
+QtCore/qstring.h
+-
+QtGui/qicon.h
+-
+QtWidgets/qaction.h
+-
+windef.h
+-
+
+/opt/Qt/5.7/gcc_64/include/QtWidgets/qmenubar.h
+QtWidgets/qmenu.h
 -
 
 /opt/Qt/5.7/gcc_64/include/QtWidgets/qpushbutton.h
@@ -26666,6 +26736,22 @@ boost/signals2/slot.hpp
 Eigen/Core
 -
 
+/usr/local/include/pcl-1.8/pcl/io/file_io.h
+pcl/pcl_macros.h
+-
+pcl/common/io.h
+-
+pcl/io/boost.h
+-
+cmath
+-
+sstream
+-
+pcl/PolygonMesh.h
+-
+pcl/TextureMesh.h
+-
+
 /usr/local/include/pcl-1.8/pcl/io/grabber.h
 pcl/pcl_config.h
 -
@@ -26686,6 +26772,34 @@ pcl/pcl_macros.h
 pcl/io/boost.h
 -
 pcl/exceptions.h
+-
+
+/usr/local/include/pcl-1.8/pcl/io/impl/pcd_io.hpp
+fstream
+-
+fcntl.h
+-
+string
+-
+stdlib.h
+-
+pcl/io/boost.h
+-
+pcl/console/print.h
+-
+pcl/io/pcd_io.h
+-
+io.h
+-
+windows.h
+-
+sys/mman.h
+-
+pcl/io/lzf.h
+-
+
+/usr/local/include/pcl-1.8/pcl/io/lzf.h
+pcl/pcl_macros.h
 -
 
 /usr/local/include/pcl-1.8/pcl/io/openni_camera/openni.h
@@ -26824,6 +26938,14 @@ string
 deque
 -
 pcl/common/synchronizer.h
+-
+
+/usr/local/include/pcl-1.8/pcl/io/pcd_io.h
+pcl/point_cloud.h
+-
+pcl/io/file_io.h
+-
+pcl/io/impl/pcd_io.hpp
 -
 
 /usr/local/include/pcl-1.8/pcl/kdtree/flann.h

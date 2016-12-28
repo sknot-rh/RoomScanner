@@ -12,6 +12,8 @@
 #include <pcl/keypoints/sift_keypoint.h>
 #include <pcl/keypoints/impl/sift_keypoint.hpp>
 #include <pcl/features/normal_3d.h>
+#include <QFileDialog>
+#include <pcl/io/pcd_io.h>
 
 PCLViewer::PCLViewer (QWidget *parent) :
   QMainWindow (parent),
@@ -78,8 +80,12 @@ PCLViewer::PCLViewer (QWidget *parent) :
     //Connect checkbox
     connect(ui->checkBox, SIGNAL(clicked(bool)), this, SLOT(toggled(bool)));
 
-    //Add empty pointcloud
+    //Connect load action
+    connect(ui->actionLoad_Point_Cloud, SIGNAL (triggered()), this, SLOT (loadActionPressed ()));
+
+    //Add empty pointclouds
     viewer->addPointCloud(cloud, "cloud");
+
     viewer->addPointCloud(key_cloud, "keypoints");
 
 
@@ -127,7 +133,6 @@ void PCLViewer::drawFrame() {
             key_cloud->points[var].b = 0;
 
         }
-
 
         viewer->updatePointCloud(key_cloud ,"keypoints");
         viewer->updatePointCloud(cloud ,"cloud");
@@ -208,6 +213,27 @@ void PCLViewer::pSliderValueChanged (int value)
 {
   viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloud");
   ui->qvtkWidget->update ();
+}
+
+void PCLViewer::loadActionPressed() {
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Choose Point Cloud"), "/home", tr("Point Cloud Files (*.pcd)"));
+    std::string utf8_fileName = fileName.toUtf8().constData();
+    PointCloudT::Ptr cloud2 (new PointCloudT);
+    if (pcl::io::loadPCDFile<PointT> (utf8_fileName, *cloud2) == -1) //* load the file
+    {
+        PCL_ERROR ("Couldn't read pcd file!\n");
+    }
+    for (size_t i = 0; i < cloud2->size(); i++)
+      {
+        cloud2->points[i].a = 255;
+      }
+
+    std::cout << "PC Loaded ";
+    viewer->removePointCloud("cloud2");
+    viewer->addPointCloud(cloud2, "cloud2");
+    viewer->updatePointCloud(cloud2 ,"cloud2");
+    ui->qvtkWidget->update();
 }
 
 void PCLViewer::closing() {
