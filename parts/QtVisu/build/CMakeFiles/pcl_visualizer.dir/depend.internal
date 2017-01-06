@@ -4361,17 +4361,16 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QButtonGroup
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QCheckBox
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QFileDialog
- /opt/Qt/5.7/gcc_64/include/QtWidgets/QFormLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QHBoxLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QHeaderView
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QLCDNumber
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QLabel
- /opt/Qt/5.7/gcc_64/include/QtWidgets/QLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QMainWindow
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QMenu
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QMenuBar
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QPushButton
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QSlider
+ /opt/Qt/5.7/gcc_64/include/QtWidgets/QTabWidget
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QVBoxLayout
  /opt/Qt/5.7/gcc_64/include/QtWidgets/QWidget
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qabstractbutton.h
@@ -4389,7 +4388,6 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qdialog.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qfiledialog.h
- /opt/Qt/5.7/gcc_64/include/QtWidgets/qformlayout.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qframe.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qgridlayout.h
  /opt/Qt/5.7/gcc_64/include/QtWidgets/qheaderview.h
@@ -6666,6 +6664,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/io/grabber.h
  /usr/local/include/pcl-1.8/pcl/io/impl/pcd_io.hpp
  /usr/local/include/pcl-1.8/pcl/io/lzf.h
+ /usr/local/include/pcl-1.8/pcl/io/obj_io.h
  /usr/local/include/pcl-1.8/pcl/io/openni_camera/openni.h
  /usr/local/include/pcl-1.8/pcl/io/openni_camera/openni_depth_image.h
  /usr/local/include/pcl-1.8/pcl/io/openni_camera/openni_device.h
@@ -6677,6 +6676,12 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/io/openni_camera/openni_ir_image.h
  /usr/local/include/pcl-1.8/pcl/io/openni_grabber.h
  /usr/local/include/pcl-1.8/pcl/io/pcd_io.h
+ /usr/local/include/pcl-1.8/pcl/io/ply/byte_order.h
+ /usr/local/include/pcl-1.8/pcl/io/ply/io_operators.h
+ /usr/local/include/pcl-1.8/pcl/io/ply/ply.h
+ /usr/local/include/pcl-1.8/pcl/io/ply/ply_parser.h
+ /usr/local/include/pcl-1.8/pcl/io/ply_io.h
+ /usr/local/include/pcl-1.8/pcl/io/vtk_io.h
  /usr/local/include/pcl-1.8/pcl/kdtree/flann.h
  /usr/local/include/pcl-1.8/pcl/kdtree/impl/kdtree_flann.hpp
  /usr/local/include/pcl-1.8/pcl/kdtree/kdtree.h
@@ -6711,6 +6716,11 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/search/organized.h
  /usr/local/include/pcl-1.8/pcl/search/pcl_search.h
  /usr/local/include/pcl-1.8/pcl/search/search.h
+ /usr/local/include/pcl-1.8/pcl/surface/boost.h
+ /usr/local/include/pcl-1.8/pcl/surface/gp3.h
+ /usr/local/include/pcl-1.8/pcl/surface/impl/gp3.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/impl/reconstruction.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/reconstruction.h
  /usr/local/include/pcl-1.8/pcl/visualization/area_picking_event.h
  /usr/local/include/pcl-1.8/pcl/visualization/boost.h
  /usr/local/include/pcl-1.8/pcl/visualization/cloud_viewer.h
