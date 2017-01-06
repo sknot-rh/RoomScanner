@@ -36,6 +36,8 @@ public slots:
 
   void saveButtonPressed(void);
 
+  void polyButtonPressed(void);
+
   void pSliderValueChanged(int value);
 
   void closing(void);
@@ -46,8 +48,11 @@ public slots:
 
   void loadActionPressed(void);
 
+  void lastFrameToggled(void);
+
 protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
+  boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;
   PointCloudT::Ptr cloud;
   PointCloudT::Ptr key_cloud;
 

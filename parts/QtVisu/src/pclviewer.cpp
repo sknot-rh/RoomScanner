@@ -11,9 +11,13 @@
 #include <pcl/common/transforms.h>
 #include <pcl/keypoints/sift_keypoint.h>
 #include <pcl/keypoints/impl/sift_keypoint.hpp>
-#include <pcl/features/normal_3d.h>
 #include <QFileDialog>
 #include <pcl/io/pcd_io.h>
+#include <pcl/kdtree/kdtree_flann.h>
+#include <pcl/surface/gp3.h>
+#include <pcl/io/vtk_io.h>
+#include <pcl/io/ply_io.h>
+#include <pcl/io/obj_io.h>
 
 PCLViewer::PCLViewer (QWidget *parent) :
   QMainWindow (parent),
@@ -57,6 +61,11 @@ PCLViewer::PCLViewer (QWidget *parent) :
     viewer->setupInteractor (ui->qvtkWidget->GetInteractor (), ui->qvtkWidget->GetRenderWindow ());
     ui->qvtkWidget->update ();
 
+    meshViewer.reset (new pcl::visualization::PCLVisualizer ("meshViewer", false));
+    ui->qvtkWidget_2->SetRenderWindow (meshViewer->getRenderWindow ());
+    meshViewer->setupInteractor (ui->qvtkWidget_2->GetInteractor (), ui->qvtkWidget_2->GetRenderWindow ());
+    ui->qvtkWidget_2->update ();
+
     //Create callback for openni grabber
     if (sensorConnected) {
         boost::function<void (const PointCloudT::ConstPtr&)> f = boost::bind (&PCLViewer::cloud_cb_, this, _1);
@@ -74,11 +83,17 @@ PCLViewer::PCLViewer (QWidget *parent) :
     //Connect save button
     connect(ui->pushButton_save, SIGNAL (clicked ()), this, SLOT (saveButtonPressed ()));
 
+    //Connect save button
+    connect(ui->pushButton_poly, SIGNAL (clicked ()), this, SLOT (polyButtonPressed ()));
+
     // Connect point size slider
     connect(ui->horizontalSlider_p, SIGNAL (valueChanged (int)), this, SLOT (pSliderValueChanged (int)));
 
     //Connect checkbox
     connect(ui->checkBox, SIGNAL(clicked(bool)), this, SLOT(toggled(bool)));
+
+    //Connect menu checkboc - show last frame
+    connect(ui->actionShow_captured_frames, SIGNAL(triggered()), this, SLOT(lastFrameToggled()));
 
     //Connect load action
     connect(ui->actionLoad_Point_Cloud, SIGNAL (triggered()), this, SLOT (loadActionPressed ()));
@@ -114,27 +129,29 @@ void PCLViewer::drawFrame() {
             //cloud->points[i].a = 128; //for better stitching?
         }
 
+        if (ui->actionShow_keypoints->isChecked() == true) {
+            // Estimate the sift interest points using Intensity values from RGB values
+            pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift;
+            pcl::PointCloud<pcl::PointWithScale> result;
+            pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT> ());
+            sift.setSearchMethod(tree);
+            sift.setScales(min_scale, n_octaves, n_scales_per_octave);
+            sift.setMinimumContrast(min_contrast);
+            sift.setInputCloud(cloud);
+            sift.compute(result);
 
-        // Estimate the sift interest points using Intensity values from RGB values
-        pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift;
-        pcl::PointCloud<pcl::PointWithScale> result;
-        pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT> ());
-        sift.setSearchMethod(tree);
-        sift.setScales(min_scale, n_octaves, n_scales_per_octave);
-        sift.setMinimumContrast(min_contrast);
-        sift.setInputCloud(cloud);
-        sift.compute(result);
+            copyPointCloud(result, *key_cloud);
 
-        copyPointCloud(result, *key_cloud);
+            for (int var = 0; var < key_cloud->size(); ++var) {
+                key_cloud->points[var].r = 0;
+                key_cloud->points[var].g = 255;
+                key_cloud->points[var].b = 0;
 
-        for (int var = 0; var < key_cloud->size(); ++var) {
-            key_cloud->points[var].r = 0;
-            key_cloud->points[var].g = 255;
-            key_cloud->points[var].b = 0;
+            }
+
+            viewer->updatePointCloud(key_cloud ,"keypoints");
 
         }
-
-        viewer->updatePointCloud(key_cloud ,"keypoints");
         viewer->updatePointCloud(cloud ,"cloud");
         ui->qvtkWidget->update ();
     }
@@ -199,19 +216,13 @@ void PCLViewer::resetButtonPressed() {
 
 void PCLViewer::saveButtonPressed() {
     clouds.push_back(cloud);
-    viewer->removePointCloud("keypoints" + std::to_string(clouds.size()-1));
-    for (size_t i = 0; i < clouds.back()->points.size(); i ++) {
-        clouds.back()->points[i].a = 50;
-    }
-    viewer->addPointCloud(clouds.back(), "keypoints" + std::to_string(clouds.size()));
-    //TODO move camera regarding to position in real world, if is it possible
-    ui->qvtkWidget->update ();
-
+    lastFrameToggled();
 }
 
 void PCLViewer::pSliderValueChanged (int value)
 {
   viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloud");
+  ui->lcdNumber_p->display(value);
   ui->qvtkWidget->update ();
 }
 
@@ -223,17 +234,96 @@ void PCLViewer::loadActionPressed() {
     if (pcl::io::loadPCDFile<PointT> (utf8_fileName, *cloud2) == -1) //* load the file
     {
         PCL_ERROR ("Couldn't read pcd file!\n");
+        return;
     }
     for (size_t i = 0; i < cloud2->size(); i++)
-      {
+    {
         cloud2->points[i].a = 255;
-      }
+    }
 
+    ui->tabWidget->setCurrentIndex(0);
     std::cout << "PC Loaded ";
     viewer->removePointCloud("cloud2");
     viewer->addPointCloud(cloud2, "cloud2");
     viewer->updatePointCloud(cloud2 ,"cloud2");
     ui->qvtkWidget->update();
+}
+
+void PCLViewer::polyButtonPressed() {
+    // Load input file into a PointCloud<T> with an appropriate type
+     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloudtmp (new pcl::PointCloud<pcl::PointXYZRGB>);
+     cloudtmp->clear();
+     cloudtmp->width = cloudWidth;
+     cloudtmp->height = cloudHeight;
+     cloudtmp->points.resize(cloudHeight*cloudWidth);
+     cloudtmp->is_dense = false;
+     // Fill cloud
+     float *pX = &cloudX[0];
+     float *pY = &cloudY[0];
+     float *pZ = &cloudZ[0];
+     unsigned long *pRGB = &cloudRGB[0];
+     for(int i = 0; i < cloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
+         cloudtmp->points[i].x = (*pX);
+         cloudtmp->points[i].y = (*pY);
+         cloudtmp->points[i].z = (*pZ);
+         cloudtmp->points[i].rgba = (*pRGB);
+     }
+
+
+     //Normal Estimation
+     pcl::NormalEstimation<pcl::PointXYZRGB, pcl::Normal> normEstim;
+     pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
+     pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB>);
+     tree->setInputCloud(cloudtmp);
+     normEstim.setInputCloud(cloudtmp);
+     normEstim.setSearchMethod(tree);
+     normEstim.setKSearch(20);
+     normEstim.compute(*normals);
+
+     //Concatenate the cloud with the normal fields
+     pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+     pcl::concatenateFields(*cloudtmp,*normals,*cloud_normals);
+
+     //Create  search tree to include cloud with normals
+     pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree_normal (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
+     tree_normal->setInputCloud(cloud_normals);
+
+     //Initialize objects for triangulation
+     pcl::GreedyProjectionTriangulation<pcl::PointXYZRGBNormal> gp;
+     pcl::PolygonMesh triangles;
+
+     //Max distance between connecting edge points
+     gp.setSearchRadius(0.05);
+     gp.setMu(2.5);
+     gp.setMaximumNearestNeighbors (100);
+     gp.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
+     gp.setMinimumAngle(M_PI/18); // 10 degrees
+     gp.setMaximumAngle(2*M_PI/3); // 120 degrees
+     gp.setNormalConsistency(false);
+
+     // Get result
+     gp.setInputCloud (cloud_normals);
+     gp.setSearchMethod (tree_normal);
+     gp.reconstruct (triangles);
+     meshViewer->removePolygonMesh();
+     meshViewer->addPolygonMesh(triangles);
+     ui->tabWidget->setCurrentIndex(1);
+}
+
+void PCLViewer::lastFrameToggled() {
+    if (ui->actionShow_captured_frames->isChecked()) {
+        viewer->removePointCloud("frame" + std::to_string(clouds.size()-1));
+        for (size_t i = 0; i < clouds.back()->points.size(); i ++) {
+            clouds.back()->points[i].a = 50;
+        }
+        viewer->addPointCloud(clouds.back(), "frame" + std::to_string(clouds.size()));
+        //TODO move camera regarding to position in real world, if is it possible
+        ui->qvtkWidget->update ();
+    }
+    else {
+        viewer->removePointCloud("frame" + std::to_string(clouds.size()));
+        ui->qvtkWidget->update ();
+    }
 }
 
 void PCLViewer::closing() {
