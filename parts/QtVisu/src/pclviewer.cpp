@@ -110,24 +110,28 @@ PCLViewer::PCLViewer (QWidget *parent) :
 
 
 void PCLViewer::drawFrame() {
-    if (!copying && !stop) {
-        cloud->clear();
-        cloud->width = cloudWidth;
-        cloud->height = cloudHeight;
-        cloud->points.resize(cloudHeight*cloudWidth);
-        cloud->is_dense = false;
-        // Fill cloud
-        float *pX = &cloudX[0];
-        float *pY = &cloudY[0];
-        float *pZ = &cloudZ[0];
-        unsigned long *pRGB = &cloudRGB[0];
-        for(int i = 0; i < cloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
-            cloud->points[i].x = (*pX);
-            cloud->points[i].y = (*pY);
-            cloud->points[i].z = (*pZ);
-            cloud->points[i].rgba = (*pRGB);
-            //cloud->points[i].a = 128; //for better stitching?
+    if (!stop) {
+        if (mtx_.try_lock()) {
+            cloud->clear();
+            cloud->width = cloudWidth;
+            cloud->height = cloudHeight;
+            cloud->points.resize(cloudHeight*cloudWidth);
+            cloud->is_dense = false;
+            // Fill cloud
+            float *pX = &cloudX[0];
+            float *pY = &cloudY[0];
+            float *pZ = &cloudZ[0];
+            unsigned long *pRGB = &cloudRGB[0];
+            for(int i = 0; i < cloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
+                cloud->points[i].x = (*pX);
+                cloud->points[i].y = (*pY);
+                cloud->points[i].z = (*pZ);
+                cloud->points[i].rgba = (*pRGB);
+                //cloud->points[i].a = 128; //for better stitching?
+            }
+            mtx_.unlock();
         }
+
 
         if (ui->actionShow_keypoints->isChecked() == true) {
             // Estimate the sift interest points using Intensity values from RGB values
@@ -161,41 +165,44 @@ void PCLViewer::drawFrame() {
 void PCLViewer::cloud_cb_ (const PointCloudT::ConstPtr &ncloud) {
 
     if (stream) {
-        while(copying) {
+        /*while(copying) {
             usleep(1);
-        }
-        copying = true;
+        }*/
+        if (mtx_.try_lock()) {
+            //copying = true;
 
-        // Size of cloud
-        cloudWidth = ncloud->width;
-        cloudHeight = ncloud->height;
+            // Size of cloud
+            cloudWidth = ncloud->width;
+            cloudHeight = ncloud->height;
 
-        // Resize the XYZ and RGB point vector
-        size_t newSize = ncloud->height*ncloud->width;
-        cloudX.resize(newSize);
-        cloudY.resize(newSize);
-        cloudZ.resize(newSize);
-        cloudRGB.resize(newSize);
+            // Resize the XYZ and RGB point vector
+            size_t newSize = ncloud->height*ncloud->width;
+            cloudX.resize(newSize);
+            cloudY.resize(newSize);
+            cloudZ.resize(newSize);
+            cloudRGB.resize(newSize);
 
-        // Assign pointers to copy data
-        float *pX = &cloudX[0];
-        float *pY = &cloudY[0];
-        float *pZ = &cloudZ[0];
-        unsigned long *pRGB = &cloudRGB[0];
+            // Assign pointers to copy data
+            float *pX = &cloudX[0];
+            float *pY = &cloudY[0];
+            float *pZ = &cloudZ[0];
+            unsigned long *pRGB = &cloudRGB[0];
 
-        // Copy data (using pcl::copyPointCloud, the color stream jitters!!! Why?)
-        //pcl::copyPointCloud(*ncloud, *cloud);
-        for (int j = 0;j<ncloud->height;j++){
-            for (int i = 0;i<ncloud->width;i++,pX++,pY++,pZ++,pRGB++) {
-                PointT P = ncloud->at(i,j);
-                (*pX) = P.x;
-                (*pY) = P.y;
-                (*pZ) = P.z;
-                (*pRGB) = P.rgba;
+            // Copy data (using pcl::copyPointCloud, the color stream jitters!!! Why?)
+            //pcl::copyPointCloud(*ncloud, *cloud);
+            for (int j = 0;j<ncloud->height;j++){
+                for (int i = 0;i<ncloud->width;i++,pX++,pY++,pZ++,pRGB++) {
+                    PointT P = ncloud->at(i,j);
+                    (*pX) = P.x;
+                    (*pY) = P.y;
+                    (*pZ) = P.z;
+                    (*pRGB) = P.rgba;
+                }
             }
+            // Data copied
+            //copying = false;
+            mtx_.unlock();
         }
-        // Data copied
-        copying = false;
     }
 }
 

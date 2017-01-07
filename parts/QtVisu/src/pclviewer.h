@@ -55,6 +55,7 @@ protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;
   PointCloudT::Ptr cloud;
   PointCloudT::Ptr key_cloud;
+  std::list<PointCloudT::Ptr> clouds;
 
   unsigned int red;
   unsigned int green;
@@ -67,7 +68,7 @@ protected:
   int cloudHeight;
   std::vector<float> cloudX, cloudY, cloudZ;
   std::vector<unsigned long> cloudRGB;
-  std::list<PointCloudT::Ptr> clouds;
+  boost::mutex mtx_;
 
   // Parameters for sift computation
   const float min_scale = 0.1f;
