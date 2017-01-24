@@ -34,6 +34,12 @@
 #include <pcl/features/normal_3d_omp.h>
 #include <pcl/surface/marching_cubes_rbf.h>
 #include <pcl/surface/marching_cubes.h>
+#include <fstream>
+#include <cstdio>
+#include "boost/property_tree/ptree.hpp"
+#include "boost/property_tree/json_parser.hpp"
+
+
 
 PCLViewer::PCLViewer (QWidget *parent) :
   QMainWindow (parent),
@@ -341,14 +347,16 @@ void PCLViewer::polyButtonPressed() {
     PCLViewer::cloudSmooth(holder, output);
     pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
     PCLViewer::polygonateCloud(holder, triangles);
+
+
     //pcl::PolygonMesh::Ptr trianglesPtr(&triangles);
     //triangles = PCLViewer::smoothMesh(trianglesPtr);
 
 
 
 
-    meshViewer->removePolygonMesh();
-    meshViewer->addPointCloud(output,"smoothed");
+    meshViewer->removePolygonMesh("mesh");
+    //meshViewer->addPointCloud(output,"smoothed");
     meshViewer->addPolygonMesh(*triangles, "mesh");
     printf("Mesh done\n");
     meshViewer->setShapeRenderingProperties ( pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG , "mesh" );
@@ -421,6 +429,33 @@ void PCLViewer::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::Polyg
 
 void PCLViewer::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
     std::cout<<"Greedy polygonation\n";
+
+
+    std::ifstream config_file("config.json");
+
+    if (!config_file.fail()) {
+        std::cout << "Config file loaded\n";
+        using boost::property_tree::ptree;
+        ptree pt;
+        read_json(config_file, pt);
+
+        for (auto & array_element: pt) {
+            if (array_element.first == "greedyProjection")
+                std::cout << "greedyProjection" << "\n";
+            for (auto & property: array_element.second) {
+                if (array_element.first == "greedyProjection")
+                    std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
+            }
+        }
+
+        GPsearchRadius = pt.get<float>("greedyProjection.searchRadius");
+        GPmu = pt.get<float>("greedyProjection.mu");
+        GPmaximumNearestNeighbors = pt.get<int>("greedyProjection.maximumNearestNeighbors");
+    }
+
+
+
+
     // Get Greedy result
     //Normal Estimation
     pcl::NormalEstimation<PointT, pcl::Normal> normEstim;
@@ -450,9 +485,9 @@ void PCLViewer::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::Polygon
     //pcl::PolygonMesh triangles;
 
     //Max distance between connecting edge points
-    gp.setSearchRadius(0.06);
-    gp.setMu(2.5);
-    gp.setMaximumNearestNeighbors (100);
+    gp.setSearchRadius(GPsearchRadius);
+    gp.setMu(GPmu);
+    gp.setMaximumNearestNeighbors (GPmaximumNearestNeighbors);
     gp.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
     gp.setMinimumAngle(M_PI/18); // 10 degrees
     gp.setMaximumAngle(2*M_PI/3); // 120 degrees
@@ -462,47 +497,97 @@ void PCLViewer::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::Polygon
     gp.setInputCloud (cloud_normals);
     gp.setSearchMethod (tree_normal);
     gp.reconstruct (*triangles);
+    std::cout << "Polygons created: " << triangles->polygons.size() << "\n";
     //return triangles;
 }
 
 void PCLViewer::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered) {
     std::cout<<"downsampling filter\n";
+
+    std::ifstream config_file("config.json");
+
+    if (!config_file.fail()) {
+        std::cout << "Config file loaded\n";
+        using boost::property_tree::ptree;
+        ptree pt;
+        read_json(config_file, pt);
+
+        for (auto & array_element: pt) {
+            if (array_element.first == "gridFilter")
+                std::cout << "gridFilter" << "\n";
+            for (auto & property: array_element.second) {
+                if (array_element.first == "gridFilter")
+                    std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
+            }
+        }
+
+        VGFleafSize = pt.get<float>("gridFilter.leafSize");
+    }
+
     pcl::VoxelGrid<PointT> ds;  //create downsampling filter
     ds.setInputCloud (cloudToFilter);
-    ds.setLeafSize (0.02, 0.02, 0.02);
+    ds.setLeafSize (VGFleafSize, VGFleafSize, VGFleafSize);
     ds.filter (*filtered);
     std::cout<<"Filtered points: " << filtered->points.size() << "\n";
 }
 
 void PCLViewer::cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
-     std::cout<<"smoothing "<< cloudToSmooth->points.size() <<" points\n";
+    std::cout<<"smoothing "<< cloudToSmooth->points.size() <<" points\n";
+    // final version will load from json while startup and changes will be done in GUI
 
-     int polynomial_order = 2;
-     bool use_polynomial_fit = true;
-     double search_radius = 0.05,
-     sqr_gauss_param = 0.0025;
+
+    std::ifstream config_file("config.json");
+
+
+    if (!config_file.fail()) {
+        std::cout << "Config file loaded\n";
+        using boost::property_tree::ptree;
+        ptree pt;
+        read_json(config_file, pt);
+
+        for (auto & array_element: pt) {
+            if (array_element.first == "mls")
+                std::cout << "mls" << "\n";
+            for (auto & property: array_element.second) {
+                if (array_element.first == "mls")
+                    std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
+            }
+        }
+
+        MLSpolynomialOrder = pt.get<int>("mls.polynomialOrder");
+        MLSusePolynomialFit = pt.get<bool>("mls.usePolynomialFit");
+        MLSsearchRadius = pt.get<double>("mls.searchRadius");
+        MLSsqrGaussParam = pt.get<double>("mls.sqrGaussParam");
+        MLSupsamplingRadius = pt.get<double>("mls.upsamplingRadius");
+        MLSupsamplingStepSize = pt.get<double>("mls.upsamplingStepSize");
+        MLSdilationIterations = pt.get<int>("mls.dilationIterations");
+        MLSdilationVoxelSize = pt.get<double>("mls.dilationVoxelSize");
+        MLScomputeNormals = pt.get<bool>("mls.computeNormals");
+    }
+
+
 
      pcl::MovingLeastSquares<PointT, PointT> mls;
      mls.setInputCloud (cloudToSmooth);
-     mls.setSearchRadius (search_radius);
-     mls.setSqrGaussParam (sqr_gauss_param);
-     mls.setPolynomialFit (use_polynomial_fit);
-     mls.setPolynomialOrder (polynomial_order);
+     mls.setSearchRadius (MLSsearchRadius);
+     mls.setSqrGaussParam (MLSsqrGaussParam);
+     mls.setPolynomialFit (MLSusePolynomialFit);
+     mls.setPolynomialOrder (MLSpolynomialOrder);
 
      //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::SAMPLE_LOCAL_PLANE);
      //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::RANDOM_UNIFORM_DENSITY);
      mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
      //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointXYZRGB>::NONE);
-     mls.setPointDensity ( int (60000 * search_radius)); // 300 points in a 5 cm radius
-     mls.setUpsamplingRadius (0.025);
-     mls.setUpsamplingStepSize (0.015);
-     mls.setDilationIterations (2);
-     mls.setDilationVoxelSize (0.01f);
+     mls.setPointDensity ( int (60000 * MLSsearchRadius)); // 300 points in a 5 cm radius
+     mls.setUpsamplingRadius (MLSupsamplingRadius);
+     mls.setUpsamplingStepSize (MLSupsamplingStepSize);
+     mls.setDilationIterations (MLSdilationIterations);
+     mls.setDilationVoxelSize (MLSdilationVoxelSize);
 
      pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
      //pcl::search::OrganizedNeighbor<PointT> tree (new pcl::search::OrganizedNeighbor<PointT> ());
      mls.setSearchMethod (tree);
-     mls.setComputeNormals (true);
+     mls.setComputeNormals (MLScomputeNormals);
      mls.process (*output);
      std::cout<<"now we have "<< output->points.size() <<" points\n";
 
