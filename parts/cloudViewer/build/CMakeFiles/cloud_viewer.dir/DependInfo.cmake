@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/stanly/kinect/DP/cloudViewer/cloud_viewer.cpp" "/home/stanly/kinect/DP/cloudViewer/build/CMakeFiles/cloud_viewer.dir/cloud_viewer.cpp.o"
+  "/home/stanly/kinect/DP/RoomScanner/parts/cloudViewer/cloud_viewer.cpp" "/home/stanly/kinect/DP/RoomScanner/parts/cloudViewer/build/CMakeFiles/cloud_viewer.dir/cloud_viewer.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -38,11 +38,11 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/local/include"
   "/usr/include/ni"
   "/usr/include/openni2"
-  "/home/stanly/Qt/5.7/gcc_64/include"
-  "/home/stanly/Qt/5.7/gcc_64/include/QtWidgets"
-  "/home/stanly/Qt/5.7/gcc_64/include/QtGui"
-  "/home/stanly/Qt/5.7/gcc_64/include/QtCore"
-  "/home/stanly/Qt/5.7/gcc_64/./mkspecs/linux-g++"
+  "/opt/Qt/5.7/gcc_64/include"
+  "/opt/Qt/5.7/gcc_64/include/QtWidgets"
+  "/opt/Qt/5.7/gcc_64/include/QtGui"
+  "/opt/Qt/5.7/gcc_64/include/QtCore"
+  "/opt/Qt/5.7/gcc_64/./mkspecs/linux-g++"
   )
 
 # Targets to which this target links.

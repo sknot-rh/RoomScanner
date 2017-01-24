@@ -268,18 +268,6 @@ FLANN_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libflann_cpp_s.a
 FLANN_LIBRARY_DEBUG:FILEPATH=/usr/lib/x86_64-linux-gnu/libflann_cpp_s.a
 
 //Path to a file.
-GLUT_INCLUDE_DIR:PATH=/usr/include
-
-//Path to a library.
-GLUT_Xi_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libXi.so
-
-//Path to a library.
-GLUT_Xmu_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libXmu.so
-
-//Path to a library.
-GLUT_glut_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libglut.so
-
-//Path to a file.
 LIBUSB_1_INCLUDE_DIR:PATH=/usr/include
 
 //Path to a library.
@@ -498,12 +486,6 @@ Qt5Gui_DIR:PATH=/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Gui
 //The directory containing a CMake configuration file for Qt5Network.
 Qt5Network_DIR:PATH=/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Network
 
-//The directory containing a CMake configuration file for Qt5OpenGL.
-Qt5OpenGL_DIR:PATH=/opt/Qt/5.7/gcc_64/lib/cmake/Qt5OpenGL
-
-//The directory containing a CMake configuration file for Qt5Sql.
-Qt5Sql_DIR:PATH=/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Sql
-
 //The directory containing a CMake configuration file for Qt5WebKit.
 Qt5WebKit_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5WebKit
 
@@ -721,8 +703,6 @@ DSSDK_LIBRARY_DepthSensePlugins-ADVANCED:INTERNAL=1
 DSSDK_LIBRARY_turbojpeg-ADVANCED:INTERNAL=1
 //Details about finding Flann
 FIND_PACKAGE_MESSAGE_DETAILS_Flann:INTERNAL=[/usr/lib/x86_64-linux-gnu/libflann_cpp_s.a][/usr/include][v()]
-//Details about finding GLUT
-FIND_PACKAGE_MESSAGE_DETAILS_GLUT:INTERNAL=[/usr/lib/x86_64-linux-gnu/libglut.so][/usr/include][v()]
 //Details about finding OpenNI2
 FIND_PACKAGE_MESSAGE_DETAILS_OpenNI2:INTERNAL=[/usr/lib/libOpenNI2.so][/usr/include/openni2][v()]
 //Details about finding PCL
@@ -779,14 +759,6 @@ FIND_PACKAGE_MESSAGE_DETAILS_libusb-1.0:INTERNAL=[/usr/include][v()]
 FIND_PACKAGE_MESSAGE_DETAILS_openni:INTERNAL=[/usr/lib/libOpenNI.so][/usr/include/ni][v()]
 //Details about finding qhull
 FIND_PACKAGE_MESSAGE_DETAILS_qhull:INTERNAL=[/usr/lib/x86_64-linux-gnu/libqhull.so][/usr/include][v()]
-//ADVANCED property for variable: GLUT_INCLUDE_DIR
-GLUT_INCLUDE_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: GLUT_Xi_LIBRARY
-GLUT_Xi_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: GLUT_Xmu_LIBRARY
-GLUT_Xmu_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: GLUT_glut_LIBRARY
-GLUT_glut_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PCL_COMMON_LIBRARY
 PCL_COMMON_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PCL_COMMON_LIBRARY_DEBUG
