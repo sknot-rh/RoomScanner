@@ -14,7 +14,9 @@
 // Visualization Toolkit (VTK)
 #include <vtkRenderWindow.h>
 
-typedef pcl::PointXYZRGBA PointT;
+typedef pcl::PointXYZRGBA PointAT;
+typedef pcl::PointXYZRGB PointT;
+typedef pcl::PointCloud<PointAT> PointCloudAT;
 typedef pcl::PointCloud<PointT> PointCloudT;
 
 namespace Ui
@@ -29,7 +31,12 @@ class PCLViewer : public QMainWindow
 public:
   PCLViewer (QWidget *parent = 0);
   ~PCLViewer ();
-  void cloud_cb_ (const PointCloudT::ConstPtr &ncloud);
+  void cloud_cb_ (const PointCloudAT::ConstPtr &ncloud);
+  void cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output);
+  void voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered);
+  void polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
+  pcl::PolygonMesh smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth);
+  void polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
 
 public slots:
   void resetButtonPressed(void);
@@ -53,9 +60,9 @@ public slots:
 protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
   boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;
-  PointCloudT::Ptr cloud;
-  PointCloudT::Ptr key_cloud;
-  std::list<PointCloudT::Ptr> clouds;
+  PointCloudAT::Ptr cloud;
+  PointCloudAT::Ptr key_cloud;
+  std::list<PointCloudAT::Ptr> clouds;
 
   unsigned int red;
   unsigned int green;
@@ -69,6 +76,7 @@ protected:
   std::vector<float> cloudX, cloudY, cloudZ;
   std::vector<unsigned long> cloudRGB;
   boost::mutex mtx_;
+  bool sensorConnected;
 
   // Parameters for sift computation
   const float min_scale = 0.1f;

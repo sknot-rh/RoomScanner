@@ -18,6 +18,22 @@
 #include <pcl/io/vtk_io.h>
 #include <pcl/io/ply_io.h>
 #include <pcl/io/obj_io.h>
+#include <pcl/surface/mls.h>
+#include <pcl/surface/impl/mls.hpp>
+#include <pcl/surface/simplification_remove_unused_vertices.h>
+#include <pcl/surface/poisson.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl/features/normal_3d_omp.h>
+#include <pcl/filters/fast_bilateral.h>
+#include <pcl/filters/bilateral.h>
+#include <pcl/surface/bilateral_upsampling.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/surface/vtk_smoothing/vtk_mesh_smoothing_laplacian.h>
+#include <pcl/search/organized.h>
+#include <pcl/surface/marching_cubes_hoppe.h>
+#include <pcl/features/normal_3d_omp.h>
+#include <pcl/surface/marching_cubes_rbf.h>
+#include <pcl/surface/marching_cubes.h>
 
 PCLViewer::PCLViewer (QWidget *parent) :
   QMainWindow (parent),
@@ -30,8 +46,8 @@ PCLViewer::PCLViewer (QWidget *parent) :
     connect(tmrTimer,SIGNAL(timeout()),this,SLOT(drawFrame()));
 
     //Create empty clouds
-    cloud.reset(new PointCloudT);
-    key_cloud.reset(new PointCloudT);
+    cloud.reset(new PointCloudAT);
+    key_cloud.reset(new PointCloudAT);
 
 
     //Tell to sensor in which position is expected input
@@ -43,7 +59,7 @@ PCLViewer::PCLViewer (QWidget *parent) :
     key_cloud->sensor_orientation_ = m;
 
     copying = stream = false;
-    bool sensorConnected = false;
+    sensorConnected = false;
 
     try {
         //OpenNIGrabber
@@ -62,17 +78,19 @@ PCLViewer::PCLViewer (QWidget *parent) :
     ui->qvtkWidget->update ();
 
     meshViewer.reset (new pcl::visualization::PCLVisualizer ("meshViewer", false));
+
     ui->qvtkWidget_2->SetRenderWindow (meshViewer->getRenderWindow ());
     meshViewer->setupInteractor (ui->qvtkWidget_2->GetInteractor (), ui->qvtkWidget_2->GetRenderWindow ());
     ui->qvtkWidget_2->update ();
 
     //Create callback for openni grabber
     if (sensorConnected) {
-        boost::function<void (const PointCloudT::ConstPtr&)> f = boost::bind (&PCLViewer::cloud_cb_, this, _1);
+        boost::function<void (const PointCloudAT::ConstPtr&)> f = boost::bind (&PCLViewer::cloud_cb_, this, _1);
         interface->registerCallback(f);
         interface->start ();
+        tmrTimer->start(20); // msec
     }
-    tmrTimer->start(20); // msec
+
     stream = true;
     stop = false;
 
@@ -106,6 +124,8 @@ PCLViewer::PCLViewer (QWidget *parent) :
 
     viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 10, "keypoints");
     pSliderValueChanged (2);
+    ui->tabWidget->setCurrentIndex(0);
+
 }
 
 
@@ -135,9 +155,9 @@ void PCLViewer::drawFrame() {
 
         if (ui->actionShow_keypoints->isChecked() == true) {
             // Estimate the sift interest points using Intensity values from RGB values
-            pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift;
+            pcl::SIFTKeypoint<PointAT, pcl::PointWithScale> sift;
             pcl::PointCloud<pcl::PointWithScale> result;
-            pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT> ());
+            pcl::search::KdTree<PointAT>::Ptr tree(new pcl::search::KdTree<PointAT> ());
             sift.setSearchMethod(tree);
             sift.setScales(min_scale, n_octaves, n_scales_per_octave);
             sift.setMinimumContrast(min_contrast);
@@ -162,14 +182,10 @@ void PCLViewer::drawFrame() {
 
 }
 
-void PCLViewer::cloud_cb_ (const PointCloudT::ConstPtr &ncloud) {
+void PCLViewer::cloud_cb_ (const PointCloudAT::ConstPtr &ncloud) {
 
     if (stream) {
-        /*while(copying) {
-            usleep(1);
-        }*/
         if (mtx_.try_lock()) {
-            //copying = true;
 
             // Size of cloud
             cloudWidth = ncloud->width;
@@ -192,7 +208,7 @@ void PCLViewer::cloud_cb_ (const PointCloudT::ConstPtr &ncloud) {
             //pcl::copyPointCloud(*ncloud, *cloud);
             for (int j = 0;j<ncloud->height;j++){
                 for (int i = 0;i<ncloud->width;i++,pX++,pY++,pZ++,pRGB++) {
-                    PointT P = ncloud->at(i,j);
+                    PointAT P = ncloud->at(i,j);
                     (*pX) = P.x;
                     (*pY) = P.y;
                     (*pZ) = P.z;
@@ -200,7 +216,6 @@ void PCLViewer::cloud_cb_ (const PointCloudT::ConstPtr &ncloud) {
                 }
             }
             // Data copied
-            //copying = false;
             mtx_.unlock();
         }
     }
@@ -237,8 +252,8 @@ void PCLViewer::loadActionPressed() {
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Choose Point Cloud"), "/home", tr("Point Cloud Files (*.pcd)"));
     std::string utf8_fileName = fileName.toUtf8().constData();
-    PointCloudT::Ptr cloud2 (new PointCloudT);
-    if (pcl::io::loadPCDFile<PointT> (utf8_fileName, *cloud2) == -1) //* load the file
+    PointCloudAT::Ptr cloud2 (new PointCloudAT);
+    if (pcl::io::loadPCDFile<PointAT> (utf8_fileName, *cloud2) == -1) //* load the file
     {
         PCL_ERROR ("Couldn't read pcd file!\n");
         return;
@@ -257,64 +272,87 @@ void PCLViewer::loadActionPressed() {
 }
 
 void PCLViewer::polyButtonPressed() {
-    // Load input file into a PointCloud<T> with an appropriate type
-     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloudtmp (new pcl::PointCloud<pcl::PointXYZRGB>);
-     cloudtmp->clear();
-     cloudtmp->width = cloudWidth;
-     cloudtmp->height = cloudHeight;
-     cloudtmp->points.resize(cloudHeight*cloudWidth);
-     cloudtmp->is_dense = false;
-     // Fill cloud
-     float *pX = &cloudX[0];
-     float *pY = &cloudY[0];
-     float *pZ = &cloudZ[0];
-     unsigned long *pRGB = &cloudRGB[0];
-     for(int i = 0; i < cloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
-         cloudtmp->points[i].x = (*pX);
-         cloudtmp->points[i].y = (*pY);
-         cloudtmp->points[i].z = (*pZ);
-         cloudtmp->points[i].rgba = (*pRGB);
-     }
+    PointCloudT::Ptr cloudtmp (new PointCloudT);
+    PointCloudT::Ptr output (new PointCloudT);
+    cloudtmp->clear();
+    //keep point cloud organized
+    cloudtmp->width = cloudWidth;
+    cloudtmp->height = cloudHeight;
+    cloudtmp->points.resize(cloudHeight*cloudWidth);
+    cloudtmp->is_dense = false;
+    // Fill cloud
+    float *pX = &cloudX[0];
+    float *pY = &cloudY[0];
+    float *pZ = &cloudZ[0];
+    unsigned long *pRGB = &cloudRGB[0];
+
+    for(int i = 0; i < cloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
+        cloudtmp->points[i].x = (*pX);
+        cloudtmp->points[i].y = (*pY);
+        cloudtmp->points[i].z = (*pZ);
+        cloudtmp->points[i].rgba = (*pRGB);
+    }
 
 
-     //Normal Estimation
-     pcl::NormalEstimation<pcl::PointXYZRGB, pcl::Normal> normEstim;
-     pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
-     pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB>);
-     tree->setInputCloud(cloudtmp);
-     normEstim.setInputCloud(cloudtmp);
-     normEstim.setSearchMethod(tree);
-     normEstim.setKSearch(20);
-     normEstim.compute(*normals);
 
-     //Concatenate the cloud with the normal fields
-     pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
-     pcl::concatenateFields(*cloudtmp,*normals,*cloud_normals);
+    /*pcl::FastBilateralFilter<PointT> filter;
+    filter.setSigmaS (15.0f);
+    filter.setSigmaR (0.05f);
+    //filter.setEarlyDivision (false);
+    filter.setInputCloud (cloudtmp);
+    filter.filter(*cloud_filtered);*/
 
-     //Create  search tree to include cloud with normals
-     pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree_normal (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
-     tree_normal->setInputCloud(cloud_normals);
 
-     //Initialize objects for triangulation
-     pcl::GreedyProjectionTriangulation<pcl::PointXYZRGBNormal> gp;
-     pcl::PolygonMesh triangles;
 
-     //Max distance between connecting edge points
-     gp.setSearchRadius(0.05);
-     gp.setMu(2.5);
-     gp.setMaximumNearestNeighbors (100);
-     gp.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
-     gp.setMinimumAngle(M_PI/18); // 10 degrees
-     gp.setMaximumAngle(2*M_PI/3); // 120 degrees
-     gp.setNormalConsistency(false);
 
-     // Get result
-     gp.setInputCloud (cloud_normals);
-     gp.setSearchMethod (tree_normal);
-     gp.reconstruct (triangles);
-     meshViewer->removePolygonMesh();
-     meshViewer->addPolygonMesh(triangles);
-     ui->tabWidget->setCurrentIndex(1);
+    // Get Poisson result
+    /*pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
+    pcl::PassThrough<PointT> filter;
+    filter.setInputCloud(cloudtmp);
+    filter.filter(*filtered);
+
+    pcl::NormalEstimationOMP<PointT, pcl::Normal> ne;
+    ne.setNumberOfThreads(8);
+    ne.setInputCloud(filtered);
+    ne.setRadiusSearch(0.01);
+    Eigen::Vector4f centroid;
+    pcl::compute3DCentroid(*filtered, centroid);
+    ne.setViewPoint(centroid[0], centroid[1], centroid[2]);
+
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>());
+    ne.compute(*cloud_normals);
+
+    for(size_t i = 0; i < cloud_normals->size(); ++i){
+        cloud_normals->points[i].normal_x *= -1;
+        cloud_normals->points[i].normal_y *= -1;
+        cloud_normals->points[i].normal_z *= -1;
+    }
+
+    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_smoothed_normals(new pcl::PointCloud<pcl::PointXYZRGBNormal>());
+    pcl::concatenateFields(*filtered, *cloud_normals, *cloud_smoothed_normals);
+
+    pcl::Poisson<pcl::PointXYZRGBNormal> poisson;
+    poisson.setDepth(9);
+    poisson.setInputCloud(cloud_smoothed_normals);
+    poisson.reconstruct(trianglesSimpl);*/
+
+    PointCloudT::Ptr holder (new PointCloudT);
+    PCLViewer::voxelGridFilter(cloudtmp, holder);
+    PCLViewer::cloudSmooth(holder, output);
+    pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
+    PCLViewer::polygonateCloud(holder, triangles);
+    //pcl::PolygonMesh::Ptr trianglesPtr(&triangles);
+    //triangles = PCLViewer::smoothMesh(trianglesPtr);
+
+
+
+
+    meshViewer->removePolygonMesh();
+    meshViewer->addPointCloud(output,"smoothed");
+    meshViewer->addPolygonMesh(*triangles, "mesh");
+    printf("Mesh done\n");
+    meshViewer->setShapeRenderingProperties ( pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG , "mesh" );
+    ui->tabWidget->setCurrentIndex(1);
 }
 
 void PCLViewer::lastFrameToggled() {
@@ -333,6 +371,143 @@ void PCLViewer::lastFrameToggled() {
     }
 }
 
+pcl::PolygonMesh PCLViewer::smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth) {
+    //!!! getting double free or corruption (out)
+    std::cout<<"Smoothing mesh\n";
+    pcl::PolygonMesh output;
+    pcl::MeshSmoothingLaplacianVTK vtk;
+    vtk.setInputMesh(meshToSmooth);
+    vtk.setNumIter(20000);
+    vtk.setConvergence(0.0001);
+    vtk.setRelaxationFactor(0.0001);
+    vtk.setFeatureEdgeSmoothing(true);
+    vtk.setFeatureAngle(M_PI/5);
+    vtk.setBoundarySmoothing(true);
+    vtk.process(output);
+    return output;
+}
+
+void PCLViewer::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
+    printf("Marching cubes\n");
+    pcl::NormalEstimationOMP<PointT, pcl::Normal> ne;
+    pcl::search::KdTree<PointT>::Ptr tree1 (new pcl::search::KdTree<PointT>);
+    tree1->setInputCloud (cloudToPolygonate);
+    ne.setInputCloud (cloudToPolygonate);
+    ne.setSearchMethod (tree1);
+    ne.setKSearch (20);
+    pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
+    ne.compute (*normals);
+
+    // Concatenate the XYZ and normal fields*
+    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+    concatenateFields(*cloudToPolygonate, *normals, *cloud_with_normals);
+
+    // Create search tree*
+    pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
+    tree->setInputCloud (cloud_with_normals);
+
+    cout << "begin marching cubes reconstruction" << endl;
+
+    pcl::MarchingCubesHoppe<pcl::PointXYZRGBNormal> mc;
+    //pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
+    mc.setInputCloud (cloud_with_normals);
+    mc.setSearchMethod (tree);
+    mc.reconstruct (*triangles);
+
+    cout << triangles->polygons.size() << " triangles created" << endl;
+    //return triangles;
+}
+
+
+void PCLViewer::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
+    std::cout<<"Greedy polygonation\n";
+    // Get Greedy result
+    //Normal Estimation
+    pcl::NormalEstimation<PointT, pcl::Normal> normEstim;
+    pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
+    pcl::search::KdTree<PointT>::Ptr tree2 (new pcl::search::KdTree<PointT>);
+    //pcl::search::OrganizedNeighbor<PointT>::Ptr tree2 (new pcl::search::OrganizedNeighbor<PointT>); //only for organized cloud
+    tree2->setInputCloud(cloudToPolygonate);//cloud_filtered
+    normEstim.setInputCloud(cloudToPolygonate);//cloud_filtered
+    normEstim.setSearchMethod(tree2);
+    normEstim.setKSearch(20);
+    //normEstim.setNumberOfThreads(4);
+    normEstim.compute(*normals);
+
+    //Concatenate the cloud with the normal fields
+    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+    pcl::concatenateFields(*cloudToPolygonate,*normals,*cloud_normals);
+
+    //Create  search tree to include cloud with normals
+    pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree_normal (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
+    //pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>::Ptr tree_normal (new pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>); //only for organized cloud
+    tree_normal->setInputCloud(cloud_normals);
+
+
+    //Initialize objects for triangulation
+    pcl::GreedyProjectionTriangulation<pcl::PointXYZRGBNormal> gp;
+    //boost::shared_ptr<pcl::PolygonMesh> triangles(new pcl::PolygonMesh);
+    //pcl::PolygonMesh triangles;
+
+    //Max distance between connecting edge points
+    gp.setSearchRadius(0.06);
+    gp.setMu(2.5);
+    gp.setMaximumNearestNeighbors (100);
+    gp.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
+    gp.setMinimumAngle(M_PI/18); // 10 degrees
+    gp.setMaximumAngle(2*M_PI/3); // 120 degrees
+    gp.setNormalConsistency(false);
+
+
+    gp.setInputCloud (cloud_normals);
+    gp.setSearchMethod (tree_normal);
+    gp.reconstruct (*triangles);
+    //return triangles;
+}
+
+void PCLViewer::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered) {
+    std::cout<<"downsampling filter\n";
+    pcl::VoxelGrid<PointT> ds;  //create downsampling filter
+    ds.setInputCloud (cloudToFilter);
+    ds.setLeafSize (0.02, 0.02, 0.02);
+    ds.filter (*filtered);
+    std::cout<<"Filtered points: " << filtered->points.size() << "\n";
+}
+
+void PCLViewer::cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
+     std::cout<<"smoothing "<< cloudToSmooth->points.size() <<" points\n";
+
+     int polynomial_order = 2;
+     bool use_polynomial_fit = true;
+     double search_radius = 0.05,
+     sqr_gauss_param = 0.0025;
+
+     pcl::MovingLeastSquares<PointT, PointT> mls;
+     mls.setInputCloud (cloudToSmooth);
+     mls.setSearchRadius (search_radius);
+     mls.setSqrGaussParam (sqr_gauss_param);
+     mls.setPolynomialFit (use_polynomial_fit);
+     mls.setPolynomialOrder (polynomial_order);
+
+     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::SAMPLE_LOCAL_PLANE);
+     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::RANDOM_UNIFORM_DENSITY);
+     mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
+     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointXYZRGB>::NONE);
+     mls.setPointDensity ( int (60000 * search_radius)); // 300 points in a 5 cm radius
+     mls.setUpsamplingRadius (0.025);
+     mls.setUpsamplingStepSize (0.015);
+     mls.setDilationIterations (2);
+     mls.setDilationVoxelSize (0.01f);
+
+     pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
+     //pcl::search::OrganizedNeighbor<PointT> tree (new pcl::search::OrganizedNeighbor<PointT> ());
+     mls.setSearchMethod (tree);
+     mls.setComputeNormals (true);
+     mls.process (*output);
+     std::cout<<"now we have "<< output->points.size() <<" points\n";
+
+}
+
 void PCLViewer::closing() {
     //printf("Exiting...\n");
     //interface->stop();
@@ -341,7 +516,9 @@ void PCLViewer::closing() {
 PCLViewer::~PCLViewer ()
 {
     printf("Exiting...\n");
-    interface->stop();
+    if (sensorConnected) {
+        interface->stop();
+    }
     delete ui;
     clouds.clear();
     //delete &cloud;

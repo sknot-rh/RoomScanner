@@ -39,7 +39,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -195,18 +195,8 @@
          </layout>
         </item>
        </layout>
-       <zorder>layoutWidget</zorder>
-       <zorder>layoutWidget_2</zorder>
        <zorder>qvtkWidget</zorder>
-       <zorder>label_4</zorder>
-       <zorder>pushButton_reset</zorder>
-       <zorder>pushButton_poly</zorder>
        <zorder></zorder>
-       <zorder>lcdNumber_p</zorder>
-       <zorder>pushButton_save</zorder>
-       <zorder>pushButton_poly</zorder>
-       <zorder>pushButton_reset</zorder>
-       <zorder>pushButton_save</zorder>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">

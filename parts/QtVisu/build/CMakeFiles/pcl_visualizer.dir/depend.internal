@@ -6622,6 +6622,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/common/copy_point.h
  /usr/local/include/pcl-1.8/pcl/common/eigen.h
  /usr/local/include/pcl-1.8/pcl/common/file_io.h
+ /usr/local/include/pcl-1.8/pcl/common/geometry.h
  /usr/local/include/pcl-1.8/pcl/common/impl/accumulators.hpp
  /usr/local/include/pcl-1.8/pcl/common/impl/angles.hpp
  /usr/local/include/pcl-1.8/pcl/common/impl/centroid.hpp
@@ -6633,6 +6634,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/common/impl/norms.hpp
  /usr/local/include/pcl-1.8/pcl/common/impl/projection_matrix.hpp
  /usr/local/include/pcl-1.8/pcl/common/impl/transforms.hpp
+ /usr/local/include/pcl-1.8/pcl/common/impl/vector_average.hpp
  /usr/local/include/pcl-1.8/pcl/common/io.h
  /usr/local/include/pcl-1.8/pcl/common/norms.h
  /usr/local/include/pcl-1.8/pcl/common/point_tests.h
@@ -6640,6 +6642,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/common/synchronizer.h
  /usr/local/include/pcl-1.8/pcl/common/time.h
  /usr/local/include/pcl-1.8/pcl/common/transforms.h
+ /usr/local/include/pcl-1.8/pcl/common/vector_average.h
  /usr/local/include/pcl-1.8/pcl/console/print.h
  /usr/local/include/pcl-1.8/pcl/conversions.h
  /usr/local/include/pcl-1.8/pcl/correspondence.h
@@ -6647,11 +6650,21 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/features/feature.h
  /usr/local/include/pcl-1.8/pcl/features/impl/feature.hpp
  /usr/local/include/pcl-1.8/pcl/features/impl/normal_3d.hpp
+ /usr/local/include/pcl-1.8/pcl/features/impl/normal_3d_omp.hpp
  /usr/local/include/pcl-1.8/pcl/features/normal_3d.h
+ /usr/local/include/pcl-1.8/pcl/features/normal_3d_omp.h
+ /usr/local/include/pcl-1.8/pcl/filters/bilateral.h
  /usr/local/include/pcl-1.8/pcl/filters/boost.h
+ /usr/local/include/pcl-1.8/pcl/filters/fast_bilateral.h
  /usr/local/include/pcl-1.8/pcl/filters/filter.h
+ /usr/local/include/pcl-1.8/pcl/filters/filter_indices.h
+ /usr/local/include/pcl-1.8/pcl/filters/impl/bilateral.hpp
+ /usr/local/include/pcl-1.8/pcl/filters/impl/fast_bilateral.hpp
  /usr/local/include/pcl-1.8/pcl/filters/impl/filter.hpp
+ /usr/local/include/pcl-1.8/pcl/filters/impl/filter_indices.hpp
+ /usr/local/include/pcl-1.8/pcl/filters/impl/passthrough.hpp
  /usr/local/include/pcl-1.8/pcl/filters/impl/voxel_grid.hpp
+ /usr/local/include/pcl-1.8/pcl/filters/passthrough.h
  /usr/local/include/pcl-1.8/pcl/filters/voxel_grid.h
  /usr/local/include/pcl-1.8/pcl/for_each_type.h
  /usr/local/include/pcl-1.8/pcl/geometry/planar_polygon.h
@@ -6716,11 +6729,53 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
  /usr/local/include/pcl-1.8/pcl/search/organized.h
  /usr/local/include/pcl-1.8/pcl/search/pcl_search.h
  /usr/local/include/pcl-1.8/pcl/search/search.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/allocator.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/binary_node.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/bspline_data.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/bspline_data.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/factor.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/function_data.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/function_data.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/geometry.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/geometry.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/hash.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/marching_cubes_poisson.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/mat.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/mat.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/multi_grid_octree_data.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/multi_grid_octree_data.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/octree_poisson.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/octree_poisson.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/polynomial.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/polynomial.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/ppolynomial.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/ppolynomial.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/sparse_matrix.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/sparse_matrix.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/vector.h
+ /usr/local/include/pcl-1.8/pcl/surface/3rdparty/poisson4/vector.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/bilateral_upsampling.h
  /usr/local/include/pcl-1.8/pcl/surface/boost.h
+ /usr/local/include/pcl-1.8/pcl/surface/eigen.h
  /usr/local/include/pcl-1.8/pcl/surface/gp3.h
  /usr/local/include/pcl-1.8/pcl/surface/impl/gp3.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/impl/marching_cubes.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/impl/marching_cubes_hoppe.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/impl/marching_cubes_rbf.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/impl/mls.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/impl/poisson.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/impl/processing.hpp
  /usr/local/include/pcl-1.8/pcl/surface/impl/reconstruction.hpp
+ /usr/local/include/pcl-1.8/pcl/surface/marching_cubes.h
+ /usr/local/include/pcl-1.8/pcl/surface/marching_cubes_hoppe.h
+ /usr/local/include/pcl-1.8/pcl/surface/marching_cubes_rbf.h
+ /usr/local/include/pcl-1.8/pcl/surface/mls.h
+ /usr/local/include/pcl-1.8/pcl/surface/poisson.h
+ /usr/local/include/pcl-1.8/pcl/surface/processing.h
  /usr/local/include/pcl-1.8/pcl/surface/reconstruction.h
+ /usr/local/include/pcl-1.8/pcl/surface/simplification_remove_unused_vertices.h
+ /usr/local/include/pcl-1.8/pcl/surface/vtk_smoothing/vtk.h
+ /usr/local/include/pcl-1.8/pcl/surface/vtk_smoothing/vtk_mesh_smoothing_laplacian.h
  /usr/local/include/pcl-1.8/pcl/visualization/area_picking_event.h
  /usr/local/include/pcl-1.8/pcl/visualization/boost.h
  /usr/local/include/pcl-1.8/pcl/visualization/cloud_viewer.h

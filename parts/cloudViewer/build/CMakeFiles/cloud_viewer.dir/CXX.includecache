@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/stanly/kinect/DP/cloudViewer/cloud_viewer.cpp
+/home/stanly/kinect/DP/RoomScanner/parts/cloudViewer/cloud_viewer.cpp
 pcl/visualization/cloud_viewer.h
 -
 iostream
