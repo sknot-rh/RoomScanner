@@ -57,17 +57,25 @@ include CMakeFiles/pcl_visualizer.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/pcl_visualizer.dir/flags.make
 
+qrc_Resources.cpp: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/Resources/images/loader.gif
+qrc_Resources.cpp: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/Resources/images/loader2.gif
+qrc_Resources.cpp: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/Resources/images/box.gif
+qrc_Resources.cpp: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/Resources/images/Terminator.jpg
+qrc_Resources.cpp: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/Resources/Resources.qrc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating qrc_Resources.cpp"
+	/opt/Qt/5.7/gcc_64/bin/rcc --name Resources --output /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/qrc_Resources.cpp /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/Resources/Resources.qrc
+
 ui_pclviewer.h: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.ui
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating ui_pclviewer.h"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating ui_pclviewer.h"
 	/opt/Qt/5.7/gcc_64/bin/uic -o /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/ui_pclviewer.h /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.ui
 
 moc_pclviewer.cpp: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.h
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating moc_pclviewer.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating moc_pclviewer.cpp"
 	/opt/Qt/5.7/gcc_64/bin/moc @/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/moc_pclviewer.cpp_parameters
 
 CMakeFiles/pcl_visualizer.dir/main.cpp.o: CMakeFiles/pcl_visualizer.dir/flags.make
 CMakeFiles/pcl_visualizer.dir/main.cpp.o: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/pcl_visualizer.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/pcl_visualizer.dir/main.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/main.cpp.o -c /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/main.cpp
 
 CMakeFiles/pcl_visualizer.dir/main.cpp.i: cmake_force
@@ -91,7 +99,7 @@ CMakeFiles/pcl_visualizer.dir/main.cpp.o.provides.build: CMakeFiles/pcl_visualiz
 
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: CMakeFiles/pcl_visualizer.dir/flags.make
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o: /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o -c /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.cpp
 
 CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.i: cmake_force
@@ -115,7 +123,7 @@ CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o.provides.build: CMakeFiles/pcl_vis
 
 CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o: CMakeFiles/pcl_visualizer.dir/flags.make
 CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o: moc_pclviewer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o -c /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/moc_pclviewer.cpp
 
 CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.i: cmake_force
@@ -137,11 +145,36 @@ CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o.provides: CMakeFiles/pcl_visua
 CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o.provides.build: CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o
 
 
+CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o: CMakeFiles/pcl_visualizer.dir/flags.make
+CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o: CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o -c /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp
+
+CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp > CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i
+
+CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp -o CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s
+
+CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o.requires:
+
+.PHONY : CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o.requires
+
+CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o.provides: CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o.requires
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o.provides.build
+.PHONY : CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o.provides
+
+CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o.provides.build: CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o
+
+
 # Object files for target pcl_visualizer
 pcl_visualizer_OBJECTS = \
 "CMakeFiles/pcl_visualizer.dir/main.cpp.o" \
 "CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o" \
-"CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o"
+"CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o" \
+"CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o"
 
 # External object files for target pcl_visualizer
 pcl_visualizer_EXTERNAL_OBJECTS =
@@ -149,6 +182,7 @@ pcl_visualizer_EXTERNAL_OBJECTS =
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/main.cpp.o
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o
+pcl_visualizer: CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/build.make
 pcl_visualizer: /usr/local/lib/libboost_system.so
 pcl_visualizer: /usr/local/lib/libboost_filesystem.so
@@ -344,7 +378,7 @@ pcl_visualizer: /usr/local/lib/libvtkCommonCore-6.3.so.1
 pcl_visualizer: /usr/local/lib/libvtkzlib-6.3.so.1
 pcl_visualizer: /usr/local/lib/libvtkexpat-6.3.so.1
 pcl_visualizer: CMakeFiles/pcl_visualizer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable pcl_visualizer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable pcl_visualizer"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/pcl_visualizer.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -355,6 +389,7 @@ CMakeFiles/pcl_visualizer.dir/build: pcl_visualizer
 CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/main.cpp.o.requires
 CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o.requires
 CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o.requires
+CMakeFiles/pcl_visualizer.dir/requires: CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o.requires
 
 .PHONY : CMakeFiles/pcl_visualizer.dir/requires
 
@@ -362,6 +397,7 @@ CMakeFiles/pcl_visualizer.dir/clean:
 	$(CMAKE_COMMAND) -P CMakeFiles/pcl_visualizer.dir/cmake_clean.cmake
 .PHONY : CMakeFiles/pcl_visualizer.dir/clean
 
+CMakeFiles/pcl_visualizer.dir/depend: qrc_Resources.cpp
 CMakeFiles/pcl_visualizer.dir/depend: ui_pclviewer.h
 CMakeFiles/pcl_visualizer.dir/depend: moc_pclviewer.cpp
 	cd /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build /home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer.dir/DependInfo.cmake --color=$(COLOR)

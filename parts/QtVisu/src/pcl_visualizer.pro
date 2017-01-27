@@ -18,3 +18,8 @@ SOURCES += main.cpp\
 HEADERS  += pclviewer.h
 
 FORMS    += pclviewer.ui
+
+DISTFILES +=
+
+RESOURCES += \
+    Resources/Resources.qrc

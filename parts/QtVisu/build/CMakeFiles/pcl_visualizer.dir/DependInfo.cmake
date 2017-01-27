@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp" "/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o"
   "/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/main.cpp" "/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer.dir/main.cpp.o"
   "/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/moc_pclviewer.cpp" "/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o"
   "/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/pclviewer.cpp" "/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o"

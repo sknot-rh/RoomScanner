@@ -486,6 +486,8 @@ Qt5Gui_DIR:PATH=/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Gui
 //The directory containing a CMake configuration file for Qt5Network.
 Qt5Network_DIR:PATH=/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Network
 
+Qt5Sql_DIR:PATH=/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Sql
+
 //The directory containing a CMake configuration file for Qt5WebKit.
 Qt5WebKit_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5WebKit
 
