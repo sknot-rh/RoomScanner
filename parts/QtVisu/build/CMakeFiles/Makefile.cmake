@@ -11,6 +11,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.5.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.5.1/CMakeSystem.cmake"
   "/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/CMakeLists.txt"
+  "/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/src/Resources/Resources.qrc"
   "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5/Qt5Config.cmake"
   "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5/Qt5ConfigVersion.cmake"
   "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Core/Qt5CoreConfig.cmake"
@@ -54,12 +55,15 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Network/Qt5Network_QNetworkManagerEnginePlugin.cmake"
   "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5OpenGL/Qt5OpenGLConfig.cmake"
   "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5OpenGL/Qt5OpenGLConfigVersion.cmake"
+  "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Sql/Qt5SqlConfig.cmake"
+  "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Sql/Qt5SqlConfigVersion.cmake"
+  "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Sql/Qt5Sql_QMYSQLDriverPlugin.cmake"
+  "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Sql/Qt5Sql_QPSQLDriverPlugin.cmake"
+  "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Sql/Qt5Sql_QSQLiteDriverPlugin.cmake"
   "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake"
   "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake"
   "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake"
   "/opt/Qt/5.7/gcc_64/lib/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake"
-  "/usr/lib/x86_64-linux-gnu/cmake/Qt5Sql/Qt5SqlConfig.cmake"
-  "/usr/lib/x86_64-linux-gnu/cmake/Qt5Sql/Qt5SqlConfigVersion.cmake"
   "/usr/lib/x86_64-linux-gnu/cmake/Qt5WebKit/Qt5WebKitConfig.cmake"
   "/usr/lib/x86_64-linux-gnu/cmake/Qt5WebKit/Qt5WebKitConfigVersion.cmake"
   "/usr/lib/x86_64-linux-gnu/cmake/Qt5WebKitWidgets/Qt5WebKitWidgetsConfig.cmake"
@@ -191,6 +195,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/lib/cmake/vtk-6.3/vtkModuleAPI.cmake"
   "/usr/local/share/pcl-1.8/PCLConfig.cmake"
   "/usr/local/share/pcl-1.8/PCLConfigVersion.cmake"
+  "/usr/share/cmake-3.5/Modules/AutogenInfo.cmake.in"
   "/usr/share/cmake-3.5/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.5/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.5/Modules/CMakeCommonLanguageInclude.cmake"
@@ -227,10 +232,13 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
+  "Resources/Resources.qrc.depends"
+  "CMakeFiles/pcl_visualizer_automoc.dir/AutogenInfo.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/pcl_visualizer.dir/DependInfo.cmake"
+  "CMakeFiles/pcl_visualizer_automoc.dir/DependInfo.cmake"
   )

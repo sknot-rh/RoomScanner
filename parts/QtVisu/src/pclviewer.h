@@ -5,6 +5,9 @@
 
 // Qt
 #include <QMainWindow>
+#include <QThread>
+#include <QLabel>
+
 // Point Cloud Library
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
@@ -27,6 +30,7 @@ namespace Ui
 class PCLViewer : public QMainWindow
 {
   Q_OBJECT
+  QThread thread;
 
 public:
   PCLViewer (QWidget *parent = 0);
@@ -37,6 +41,8 @@ public:
   void polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
   pcl::PolygonMesh smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth);
   void polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
+  void polyButtonPressedFunc();
+  void loading();
 
 public slots:
   void resetButtonPressed(void);
@@ -57,12 +63,15 @@ public slots:
 
   void lastFrameToggled(void);
 
+  void actionClearTriggered(void);
+
 protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
   boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;
-  PointCloudAT::Ptr cloud;
+  PointCloudT::Ptr kinectCloud;
   PointCloudAT::Ptr key_cloud;
-  std::list<PointCloudAT::Ptr> clouds;
+  std::list<PointCloudT::Ptr> clouds;
+  QTimer *tmrTimer;
 
   unsigned int red;
   unsigned int green;
@@ -106,6 +115,7 @@ protected:
 
 private:
   Ui::PCLViewer *ui;
+  QLabel *lbl;
 
 };
 

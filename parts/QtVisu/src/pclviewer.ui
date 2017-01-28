@@ -247,6 +247,7 @@
     <addaction name="actionLoad_Point_Cloud"/>
     <addaction name="actionShow_keypoints"/>
     <addaction name="actionShow_captured_frames"/>
+    <addaction name="actionClear"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
@@ -272,6 +273,11 @@
    </property>
    <property name="text">
     <string>Show last captured frame</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="text">
+    <string>Clear</string>
    </property>
   </action>
  </widget>

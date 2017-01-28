@@ -123,6 +123,46 @@ pcl_visualizer/fast:
 	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/build
 .PHONY : pcl_visualizer/fast
 
+#=============================================================================
+# Target rules for targets named pcl_visualizer_automoc
+
+# Build rule for target.
+pcl_visualizer_automoc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 pcl_visualizer_automoc
+.PHONY : pcl_visualizer_automoc
+
+# fast build rule for target.
+pcl_visualizer_automoc/fast:
+	$(MAKE) -f CMakeFiles/pcl_visualizer_automoc.dir/build.make CMakeFiles/pcl_visualizer_automoc.dir/build
+.PHONY : pcl_visualizer_automoc/fast
+
+CMakeFiles/pcl_visualizer.dir/qrc_Resources.o: CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o
+
+.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.o
+
+# target to build an object file
+CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o
+.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o
+
+CMakeFiles/pcl_visualizer.dir/qrc_Resources.i: CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i
+
+.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.i
+
+# target to preprocess a source file
+CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i
+.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i
+
+CMakeFiles/pcl_visualizer.dir/qrc_Resources.s: CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s
+
+.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.s
+
+# target to generate assembly for a file
+CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s:
+	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s
+.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -213,6 +253,10 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... pcl_visualizer"
+	@echo "... pcl_visualizer_automoc"
+	@echo "... CMakeFiles/pcl_visualizer.dir/qrc_Resources.o"
+	@echo "... CMakeFiles/pcl_visualizer.dir/qrc_Resources.i"
+	@echo "... CMakeFiles/pcl_visualizer.dir/qrc_Resources.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

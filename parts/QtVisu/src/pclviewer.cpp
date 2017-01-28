@@ -35,9 +35,12 @@
 #include <pcl/surface/marching_cubes_rbf.h>
 #include <pcl/surface/marching_cubes.h>
 #include <fstream>
+#include <iostream>
 #include <cstdio>
 #include "boost/property_tree/ptree.hpp"
 #include "boost/property_tree/json_parser.hpp"
+#include <QMessageBox>
+#include <QMovie>
 
 
 
@@ -46,13 +49,14 @@ PCLViewer::PCLViewer (QWidget *parent) :
   ui (new Ui::PCLViewer) {
     ui->setupUi (this);
     this->setWindowTitle ("RoomScanner");
+    this->setWindowIcon(QIcon(":/images/Terminator.jpg"));
 
     // Timer for cloud & UI update
-    QTimer *tmrTimer = new QTimer(this);
+    tmrTimer = new QTimer(this);
     connect(tmrTimer,SIGNAL(timeout()),this,SLOT(drawFrame()));
 
     //Create empty clouds
-    cloud.reset(new PointCloudAT);
+    kinectCloud.reset(new PointCloudT);
     key_cloud.reset(new PointCloudAT);
 
 
@@ -61,7 +65,7 @@ PCLViewer::PCLViewer (QWidget *parent) :
     m = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitX())
       * Eigen::AngleAxisf(0.0f,  Eigen::Vector3f::UnitY())
       * Eigen::AngleAxisf(0.0f, Eigen::Vector3f::UnitZ());
-    cloud->sensor_orientation_ = m;
+    kinectCloud->sensor_orientation_ = m;
     key_cloud->sensor_orientation_ = m;
 
     copying = stream = false;
@@ -100,14 +104,13 @@ PCLViewer::PCLViewer (QWidget *parent) :
     stream = true;
     stop = false;
 
-
     //Connect reset button
     connect(ui->pushButton_reset, SIGNAL (clicked ()), this, SLOT (resetButtonPressed ()));
 
     //Connect save button
     connect(ui->pushButton_save, SIGNAL (clicked ()), this, SLOT (saveButtonPressed ()));
 
-    //Connect save button
+    //Connect poly button
     connect(ui->pushButton_poly, SIGNAL (clicked ()), this, SLOT (polyButtonPressed ()));
 
     // Connect point size slider
@@ -116,16 +119,21 @@ PCLViewer::PCLViewer (QWidget *parent) :
     //Connect checkbox
     connect(ui->checkBox, SIGNAL(clicked(bool)), this, SLOT(toggled(bool)));
 
-    //Connect menu checkboc - show last frame
+    //Connect menu checkbox - show last frame
     connect(ui->actionShow_captured_frames, SIGNAL(triggered()), this, SLOT(lastFrameToggled()));
 
     //Connect load action
     connect(ui->actionLoad_Point_Cloud, SIGNAL (triggered()), this, SLOT (loadActionPressed ()));
 
+    //Connect clear action
+    connect(ui->actionClear, SIGNAL (triggered()), this, SLOT (actionClearTriggered ()));
+
     //Add empty pointclouds
-    viewer->addPointCloud(cloud, "cloud");
+    viewer->addPointCloud(kinectCloud, "kinectCloud");
 
     viewer->addPointCloud(key_cloud, "keypoints");
+
+    //viewer->setBackgroundColor(0.5f, 0.5f, 0.5f);
 
 
     viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 10, "keypoints");
@@ -138,21 +146,21 @@ PCLViewer::PCLViewer (QWidget *parent) :
 void PCLViewer::drawFrame() {
     if (!stop) {
         if (mtx_.try_lock()) {
-            cloud->clear();
-            cloud->width = cloudWidth;
-            cloud->height = cloudHeight;
-            cloud->points.resize(cloudHeight*cloudWidth);
-            cloud->is_dense = false;
+            kinectCloud->clear();
+            kinectCloud->width = cloudWidth;
+            kinectCloud->height = cloudHeight;
+            kinectCloud->points.resize(cloudHeight*cloudWidth);
+            kinectCloud->is_dense = false;
             // Fill cloud
             float *pX = &cloudX[0];
             float *pY = &cloudY[0];
             float *pZ = &cloudZ[0];
             unsigned long *pRGB = &cloudRGB[0];
-            for(int i = 0; i < cloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
-                cloud->points[i].x = (*pX);
-                cloud->points[i].y = (*pY);
-                cloud->points[i].z = (*pZ);
-                cloud->points[i].rgba = (*pRGB);
+            for(int i = 0; i < kinectCloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
+                kinectCloud->points[i].x = (*pX);
+                kinectCloud->points[i].y = (*pY);
+                kinectCloud->points[i].z = (*pZ);
+                kinectCloud->points[i].rgba = (*pRGB);
                 //cloud->points[i].a = 128; //for better stitching?
             }
             mtx_.unlock();
@@ -161,13 +169,13 @@ void PCLViewer::drawFrame() {
 
         if (ui->actionShow_keypoints->isChecked() == true) {
             // Estimate the sift interest points using Intensity values from RGB values
-            pcl::SIFTKeypoint<PointAT, pcl::PointWithScale> sift;
+            pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift;
             pcl::PointCloud<pcl::PointWithScale> result;
-            pcl::search::KdTree<PointAT>::Ptr tree(new pcl::search::KdTree<PointAT> ());
+            pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT> ());
             sift.setSearchMethod(tree);
             sift.setScales(min_scale, n_octaves, n_scales_per_octave);
             sift.setMinimumContrast(min_contrast);
-            sift.setInputCloud(cloud);
+            sift.setInputCloud(kinectCloud);
             sift.compute(result);
 
             copyPointCloud(result, *key_cloud);
@@ -182,7 +190,7 @@ void PCLViewer::drawFrame() {
             viewer->updatePointCloud(key_cloud ,"keypoints");
 
         }
-        viewer->updatePointCloud(cloud ,"cloud");
+        viewer->updatePointCloud(kinectCloud ,"kinectCloud");
         ui->qvtkWidget->update ();
     }
 
@@ -243,13 +251,27 @@ void PCLViewer::resetButtonPressed() {
 }
 
 void PCLViewer::saveButtonPressed() {
-    clouds.push_back(cloud);
+    PointCloudT::Ptr cloud_out (new PointCloudT);
+    stream = false; // "safe" copy
+    // Allocate enough space and copy the basics
+     cloud_out->header   = kinectCloud->header;
+     cloud_out->width    = kinectCloud->width;
+     cloud_out->height   = kinectCloud->height;
+     cloud_out->is_dense = kinectCloud->is_dense;
+     cloud_out->sensor_orientation_ = kinectCloud->sensor_orientation_;
+     cloud_out->sensor_origin_ = kinectCloud->sensor_origin_;
+     cloud_out->points.resize (kinectCloud->points.size ());
+
+    memcpy (&cloud_out->points[0], &kinectCloud->points[0], kinectCloud->points.size () * sizeof (PointT));
+    stream = true;
+    clouds.push_back(cloud_out);
+    std::cout << "Saving frame n"<<clouds.size()<<"\n";
     lastFrameToggled();
 }
 
 void PCLViewer::pSliderValueChanged (int value)
 {
-  viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloud");
+  viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "kinectCloud");
   ui->lcdNumber_p->display(value);
   ui->qvtkWidget->update ();
 }
@@ -258,57 +280,114 @@ void PCLViewer::loadActionPressed() {
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Choose Point Cloud"), "/home", tr("Point Cloud Files (*.pcd)"));
     std::string utf8_fileName = fileName.toUtf8().constData();
-    PointCloudAT::Ptr cloud2 (new PointCloudAT);
-    if (pcl::io::loadPCDFile<PointAT> (utf8_fileName, *cloud2) == -1) //* load the file
+    PointCloudT::Ptr cloudFromFile (new PointCloudT);
+    if (pcl::io::loadPCDFile<PointT> (utf8_fileName, *cloudFromFile) == -1) // load the file
     {
         PCL_ERROR ("Couldn't read pcd file!\n");
         return;
     }
-    for (size_t i = 0; i < cloud2->size(); i++)
+    for (size_t i = 0; i < cloudFromFile->size(); i++)
     {
-        cloud2->points[i].a = 255;
+        cloudFromFile->points[i].a = 255;
     }
 
     ui->tabWidget->setCurrentIndex(0);
-    std::cout << "PC Loaded ";
-    viewer->removePointCloud("cloud2");
-    viewer->addPointCloud(cloud2, "cloud2");
-    viewer->updatePointCloud(cloud2 ,"cloud2");
+    std::cout << "PC Loaded from file " << utf8_fileName << "\n";
+    viewer->removePointCloud("cloudFromFile");
+    if (!viewer->addPointCloud(cloudFromFile, "cloudFromFile"))
+        viewer->updatePointCloud(cloudFromFile ,"cloudFromFile");
+    clouds.push_back(cloudFromFile);
     ui->qvtkWidget->update();
 }
 
 void PCLViewer::polyButtonPressed() {
+
+    //boost::thread* thr = new boost::thread(boost::bind(&PCLViewer::loading, this));
+    boost::thread* thr2 = new boost::thread(boost::bind(&PCLViewer::polyButtonPressedFunc, this));
+    //polyButtonPressedFunc();
+    loading();
+    //polyButtonPressedFunc();
+}
+
+void PCLViewer::loading() {
+    lbl = new QLabel;
+    QMovie *movie = new QMovie(":/images/box.gif");
+    if (!movie->isValid()) {
+        std::cerr<<"Invalid loading image " << movie->fileName().toStdString() << "\n";
+        return;
+    }
+    lbl->setMovie(movie);
+    lbl->setFixedWidth(200);
+    lbl->setFixedHeight(200);
+    lbl->setFrameStyle(QFrame::NoFrame);
+    //lbl->adjustSize();
+    lbl->setAttribute(Qt::WA_TranslucentBackground);
+    lbl->setWindowModality(Qt::ApplicationModal);
+    lbl->setContentsMargins(0,0,0,0);
+    lbl->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    lbl->show();
+    movie->start();
+}
+
+void PCLViewer::polyButtonPressedFunc() {
     PointCloudT::Ptr cloudtmp (new PointCloudT);
     PointCloudT::Ptr output (new PointCloudT);
-    cloudtmp->clear();
-    //keep point cloud organized
-    cloudtmp->width = cloudWidth;
-    cloudtmp->height = cloudHeight;
-    cloudtmp->points.resize(cloudHeight*cloudWidth);
-    cloudtmp->is_dense = false;
-    // Fill cloud
-    float *pX = &cloudX[0];
-    float *pY = &cloudY[0];
-    float *pZ = &cloudZ[0];
-    unsigned long *pRGB = &cloudRGB[0];
+    PointCloudT::Ptr holder (new PointCloudT);
+    pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
+    stream = false;
+    //stop stream to avoid changes of polygonated kinect point cloud
 
-    for(int i = 0; i < cloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
-        cloudtmp->points[i].x = (*pX);
-        cloudtmp->points[i].y = (*pY);
-        cloudtmp->points[i].z = (*pZ);
-        cloudtmp->points[i].rgba = (*pRGB);
+    //                                                     /+++ polygonate kinect frame
+    //                               /+++ sensor connected?
+    // polygonation --- empty clouds?                      \--- error
+    //                               \--- non empty clouds --- polygonate clouds
+    //
+    std::cout << "hoolaloop " << clouds.size() << "\n";
+
+    if (clouds.empty()) {
+        if (sensorConnected) {
+
+            //if (mtx_.try_lock()) {
+                cloudtmp->clear();
+                //keep point cloud organized
+                cloudtmp->width = cloudWidth;
+                cloudtmp->height = cloudHeight;
+                cloudtmp->points.resize(cloudHeight*cloudWidth);
+                cloudtmp->is_dense = false;
+                // Fill cloud
+                float *pX = &cloudX[0];
+                float *pY = &cloudY[0];
+                float *pZ = &cloudZ[0];
+                unsigned long *pRGB = &cloudRGB[0];
+
+                for(int i = 0; i < kinectCloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
+                    cloudtmp->points[i].x = (*pX);
+                    cloudtmp->points[i].y = (*pY);
+                    cloudtmp->points[i].z = (*pZ);
+                    cloudtmp->points[i].rgba = (*pRGB);
+                }
+                //mtx_.unlock();
+
+            //}
+
+            PCLViewer::voxelGridFilter(cloudtmp, output);
+            //PCLViewer::cloudSmooth(holder, output);
+            PCLViewer::polygonateCloud(output, triangles);
+        }
+        else {
+            // empty clouds & no sensor
+            QMessageBox::warning(this, "Error", "No pointcloud to polygonate!");
+            std::cerr << "No cloud to polygonate!\n";
+            return;
+
+        }
     }
-
-
-
-    /*pcl::FastBilateralFilter<PointT> filter;
-    filter.setSigmaS (15.0f);
-    filter.setSigmaR (0.05f);
-    //filter.setEarlyDivision (false);
-    filter.setInputCloud (cloudtmp);
-    filter.filter(*cloud_filtered);*/
-
-
+    else {
+        PCLViewer::voxelGridFilter(clouds.back(), output);
+        //PCLViewer::cloudSmooth(holder, output);
+        PCLViewer::polygonateCloud(output, triangles);
+    }
+    stream = true;
 
 
     // Get Poisson result
@@ -342,19 +421,15 @@ void PCLViewer::polyButtonPressed() {
     poisson.setInputCloud(cloud_smoothed_normals);
     poisson.reconstruct(trianglesSimpl);*/
 
-    PointCloudT::Ptr holder (new PointCloudT);
-    PCLViewer::voxelGridFilter(cloudtmp, holder);
-    PCLViewer::cloudSmooth(holder, output);
-    pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
-    PCLViewer::polygonateCloud(holder, triangles);
+
+
 
 
     //pcl::PolygonMesh::Ptr trianglesPtr(&triangles);
     //triangles = PCLViewer::smoothMesh(trianglesPtr);
 
 
-
-
+    lbl->close();
     meshViewer->removePolygonMesh("mesh");
     //meshViewer->addPointCloud(output,"smoothed");
     meshViewer->addPolygonMesh(*triangles, "mesh");
@@ -364,6 +439,9 @@ void PCLViewer::polyButtonPressed() {
 }
 
 void PCLViewer::lastFrameToggled() {
+    if (clouds.empty()) {
+        return;
+    }
     if (ui->actionShow_captured_frames->isChecked()) {
         viewer->removePointCloud("frame" + std::to_string(clouds.size()-1));
         for (size_t i = 0; i < clouds.back()->points.size(); i ++) {
@@ -429,7 +507,6 @@ void PCLViewer::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::Polyg
 
 void PCLViewer::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
     std::cout<<"Greedy polygonation\n";
-
 
     std::ifstream config_file("config.json");
 
@@ -606,5 +683,19 @@ PCLViewer::~PCLViewer ()
     }
     delete ui;
     clouds.clear();
+    tmrTimer->stop();
     //delete &cloud;
+}
+
+void PCLViewer::actionClearTriggered()
+{
+    clouds.clear();
+    viewer->removeAllPointClouds();
+    meshViewer->removeAllPointClouds();
+    ui->qvtkWidget->update();
+    ui->qvtkWidget_2->update();
+    if (sensorConnected) {
+        viewer->addPointCloud(key_cloud, "keypoints");
+    }
+    viewer->addPointCloud(kinectCloud, "kinectCloud");
 }
