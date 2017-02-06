@@ -373,7 +373,7 @@ void PCLViewer::polyButtonPressed() {
         }
     }
     else {
-        if (!registered) {
+        if (!registered && clouds.size() > 1) {
             QMessageBox::warning(this, "Warning", "Pointclouds ready to registrate!");
             std::cerr << "Pointclouds ready to registrate!\n";
             return;

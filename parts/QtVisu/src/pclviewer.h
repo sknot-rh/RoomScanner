@@ -17,6 +17,8 @@
 // Visualization Toolkit (VTK)
 #include <vtkRenderWindow.h>
 
+#include <boost/atomic.hpp>
+
 typedef pcl::PointXYZRGBA PointAT;
 typedef pcl::PointXYZRGB PointT;
 typedef pcl::PointCloud<PointAT> PointCloudAT;
@@ -117,7 +119,7 @@ protected:
   unsigned int green;
   unsigned int blue;
   pcl::Grabber* interface;
-  bool stream;
+  boost::atomic<bool> stream;
   bool copying;
   bool stop;
   int cloudWidth;
