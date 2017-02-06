@@ -21,6 +21,8 @@ typedef pcl::PointXYZRGBA PointAT;
 typedef pcl::PointXYZRGB PointT;
 typedef pcl::PointCloud<PointAT> PointCloudAT;
 typedef pcl::PointCloud<PointT> PointCloudT;
+typedef pcl::PointNormal PointNormalT;
+typedef pcl::PointCloud<PointNormalT> PointCloudWithNormals;
 
 namespace Ui
 {
@@ -42,7 +44,37 @@ public:
   pcl::PolygonMesh smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth);
   void polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
   void polyButtonPressedFunc();
-  void loading();
+  void loading(QLabel* label);
+  PointCloudT::Ptr registrateNClouds();
+  void pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, bool downsample = false);
+  void estimateKeypoints (const PointCloudT::Ptr &src,
+                     const PointCloudT::Ptr &tgt,
+                     PointCloudT &keypoints_src,
+                     PointCloudT &keypoints_tgt);
+  void estimateNormals (const PointCloudT::Ptr &src,
+                   const PointCloudT::Ptr &tgt,
+                   pcl::PointCloud<pcl::Normal> &normals_src,
+                   pcl::PointCloud<pcl::Normal> &normals_tgt);
+  void estimateFPFH (const PointCloudT::Ptr &src,
+                const PointCloudT::Ptr &tgt,
+                const pcl::PointCloud<pcl::Normal>::Ptr &normals_src,
+                const pcl::PointCloud<pcl::Normal>::Ptr &normals_tgt,
+                const PointCloudT::Ptr &keypoints_src,
+                const PointCloudT::Ptr &keypoints_tgt,
+                pcl::PointCloud<pcl::FPFHSignature33> &fpfhs_src,
+                pcl::PointCloud<pcl::FPFHSignature33> &fpfhs_tgt);
+  void findCorrespondences (const pcl::PointCloud<pcl::FPFHSignature33>::Ptr &fpfhs_src,
+                       const pcl::PointCloud<pcl::FPFHSignature33>::Ptr &fpfhs_tgt,
+                       pcl::Correspondences &all_correspondences);
+  void rejectBadCorrespondences (const pcl::CorrespondencesPtr &all_correspondences,
+                            const PointCloudT::Ptr &keypoints_src,
+                            const PointCloudT::Ptr &keypoints_tgt,
+                            pcl::Correspondences &remaining_correspondences);
+
+  void computeTransformation (const PointCloudT::Ptr &src,
+                         const PointCloudT::Ptr &tgt,
+                         Eigen::Matrix4f &transform);
+  void downsample (const PointCloudT::Ptr &src_origin, const PointCloudT::Ptr &tgt_origin, PointCloudT &src, PointCloudT &tgt);
 
 public slots:
   void resetButtonPressed(void);
@@ -50,6 +82,8 @@ public slots:
   void saveButtonPressed(void);
 
   void polyButtonPressed(void);
+
+  void regButtonPressed(void);
 
   void pSliderValueChanged(int value);
 
@@ -65,13 +99,19 @@ public slots:
 
   void actionClearTriggered(void);
 
+  void tabChangedEvent(int);
+
+  void keypointsToggled(void);
+
 protected:
   boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
   boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;
   PointCloudT::Ptr kinectCloud;
+  PointCloudT::Ptr registratedCloud;
   PointCloudAT::Ptr key_cloud;
-  std::list<PointCloudT::Ptr> clouds;
+  std::vector<PointCloudT::Ptr> clouds;
   QTimer *tmrTimer;
+  QMovie *movie;
 
   unsigned int red;
   unsigned int green;
@@ -86,6 +126,7 @@ protected:
   std::vector<unsigned long> cloudRGB;
   boost::mutex mtx_;
   bool sensorConnected;
+  bool registered = false;
 
   // Parameters for sift computation
   const float min_scale = 0.1f;
@@ -115,7 +156,8 @@ protected:
 
 private:
   Ui::PCLViewer *ui;
-  QLabel *lbl;
+  QLabel* labelRegistrate;
+  QLabel* labelPolygonate;
 
 };
 

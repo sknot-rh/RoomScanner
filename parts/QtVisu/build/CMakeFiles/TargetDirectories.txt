@@ -1,4 +1,0 @@
-/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/edit_cache.dir
-/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/rebuild_cache.dir
-/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer.dir
-/home/stanly/kinect/DP/RoomScanner/parts/QtVisu/build/CMakeFiles/pcl_visualizer_automoc.dir
