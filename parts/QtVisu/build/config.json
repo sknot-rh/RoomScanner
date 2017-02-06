@@ -13,12 +13,15 @@
 		},
 	"gridFilter" :
 		{
-			"leafSize" : 0.02
+			"leafSize" : 0.001,
+			"_leafSize" : 0.02
 		},
 	"greedyProjection" :
 		{
+			"_searchRadius" : 0.06,
+			"_mu" : 2.5,
 			"searchRadius" : 0.06,
 			"mu" : 2.5,
-			"maximumNearestNeighbors" : 100
+			"maximumNearestNeighbors" : 200
 		}
 }

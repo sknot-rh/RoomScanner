@@ -39,7 +39,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -182,6 +182,13 @@
            <widget class="QPushButton" name="pushButton_save">
             <property name="text">
              <string>Save Frame</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_reg">
+            <property name="text">
+             <string>Registrate</string>
             </property>
            </widget>
           </item>

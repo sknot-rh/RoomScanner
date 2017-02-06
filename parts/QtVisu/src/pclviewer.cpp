@@ -18,6 +18,7 @@
 #include <pcl/io/vtk_io.h>
 #include <pcl/io/ply_io.h>
 #include <pcl/io/obj_io.h>
+#include <pcl/io/pcd_io.h>
 #include <pcl/surface/mls.h>
 #include <pcl/surface/impl/mls.hpp>
 #include <pcl/surface/simplification_remove_unused_vertices.h>
@@ -31,7 +32,6 @@
 #include <pcl/surface/vtk_smoothing/vtk_mesh_smoothing_laplacian.h>
 #include <pcl/search/organized.h>
 #include <pcl/surface/marching_cubes_hoppe.h>
-#include <pcl/features/normal_3d_omp.h>
 #include <pcl/surface/marching_cubes_rbf.h>
 #include <pcl/surface/marching_cubes.h>
 #include <fstream>
@@ -41,15 +41,26 @@
 #include "boost/property_tree/json_parser.hpp"
 #include <QMessageBox>
 #include <QMovie>
-
+#include <pcl/conversions.h>
+#include <pcl/filters/uniform_sampling.h>
+#include <pcl/features/fpfh.h>
+#include <pcl/registration/correspondence_estimation.h>
+#include <pcl/registration/correspondence_rejection_distance.h>
+#include <pcl/registration/transformation_estimation_svd.h>
+#include <pcl/registration/icp_nl.h>
+#include <unistd.h>
+#include <pcl/console/parse.h>
+#include <pcl/filters/statistical_outlier_removal.h>
 
 
 PCLViewer::PCLViewer (QWidget *parent) :
   QMainWindow (parent),
   ui (new Ui::PCLViewer) {
     ui->setupUi (this);
+    pcl::console::setVerbosityLevel(pcl::console::L_DEBUG);
     this->setWindowTitle ("RoomScanner");
     this->setWindowIcon(QIcon(":/images/Terminator.jpg"));
+    movie = new QMovie(":/images/box.gif");
 
     // Timer for cloud & UI update
     tmrTimer = new QTimer(this);
@@ -70,6 +81,7 @@ PCLViewer::PCLViewer (QWidget *parent) :
 
     copying = stream = false;
     sensorConnected = false;
+    registered = false;
 
     try {
         //OpenNIGrabber
@@ -102,7 +114,7 @@ PCLViewer::PCLViewer (QWidget *parent) :
     }
 
     stream = true;
-    stop = false;
+    //stop = false;
 
     //Connect reset button
     connect(ui->pushButton_reset, SIGNAL (clicked ()), this, SLOT (resetButtonPressed ()));
@@ -113,7 +125,10 @@ PCLViewer::PCLViewer (QWidget *parent) :
     //Connect poly button
     connect(ui->pushButton_poly, SIGNAL (clicked ()), this, SLOT (polyButtonPressed ()));
 
-    // Connect point size slider
+    //Connect poly button
+    connect(ui->pushButton_reg, SIGNAL (clicked ()), this, SLOT (regButtonPressed ()));
+
+    //Connect point size slider
     connect(ui->horizontalSlider_p, SIGNAL (valueChanged (int)), this, SLOT (pSliderValueChanged (int)));
 
     //Connect checkbox
@@ -128,23 +143,50 @@ PCLViewer::PCLViewer (QWidget *parent) :
     //Connect clear action
     connect(ui->actionClear, SIGNAL (triggered()), this, SLOT (actionClearTriggered ()));
 
+    //Connect tab change action
+    connect(ui->tabWidget, SIGNAL (currentChanged(int)), this, SLOT (tabChangedEvent(int)));
+
+    //Connect keypoint action
+    connect(ui->actionShow_keypoints, SIGNAL(triggered()), this, SLOT(keypointsToggled()));
+
+
     //Add empty pointclouds
     viewer->addPointCloud(kinectCloud, "kinectCloud");
 
-    viewer->addPointCloud(key_cloud, "keypoints");
+    //viewer->addPointCloud(key_cloud, "keypoints");
 
     //viewer->setBackgroundColor(0.5f, 0.5f, 0.5f);
 
-
-    viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 10, "keypoints");
     pSliderValueChanged (2);
     ui->tabWidget->setCurrentIndex(0);
 
 }
 
+// Define a new point representation for < x, y, z, curvature >
+class MyPointRepresentation : public pcl::PointRepresentation <PointNormalT>
+{
+  using pcl::PointRepresentation<PointNormalT>::nr_dimensions_;
+public:
+  MyPointRepresentation ()
+  {
+    // Define the number of dimensions
+    nr_dimensions_ = 4;
+  }
+
+  // Override the copyToFloatArray method to define our feature vector
+  virtual void copyToFloatArray (const PointNormalT &p, float * out) const
+  {
+    // < x, y, z, curvature >
+    out[0] = p.x;
+    out[1] = p.y;
+    out[2] = p.z;
+    out[3] = p.curvature;
+  }
+};
+
 
 void PCLViewer::drawFrame() {
-    if (!stop) {
+    if (stream) {
         if (mtx_.try_lock()) {
             kinectCloud->clear();
             kinectCloud->width = cloudWidth;
@@ -251,6 +293,10 @@ void PCLViewer::resetButtonPressed() {
 }
 
 void PCLViewer::saveButtonPressed() {
+    if (!sensorConnected) {
+        return;
+    }
+
     PointCloudT::Ptr cloud_out (new PointCloudT);
     stream = false; // "safe" copy
     // Allocate enough space and copy the basics
@@ -266,12 +312,22 @@ void PCLViewer::saveButtonPressed() {
     stream = true;
     clouds.push_back(cloud_out);
     std::cout << "Saving frame n"<<clouds.size()<<"\n";
+
+    std::stringstream ss;
+    ss << "bla" << clouds.size()<<  ".pcd";
+    std::string s = ss.str();
+
+
+    pcl::io::savePCDFile (s , *cloud_out);
+    //pcl::io::savePCDFile ("bljjj0.pcd" , cloud_out);
+
     lastFrameToggled();
 }
 
 void PCLViewer::pSliderValueChanged (int value)
 {
   viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "kinectCloud");
+  viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloudFromFile");
   ui->lcdNumber_p->display(value);
   ui->qvtkWidget->update ();
 }
@@ -293,7 +349,7 @@ void PCLViewer::loadActionPressed() {
 
     ui->tabWidget->setCurrentIndex(0);
     std::cout << "PC Loaded from file " << utf8_fileName << "\n";
-    viewer->removePointCloud("cloudFromFile");
+    viewer->removeAllPointClouds();
     if (!viewer->addPointCloud(cloudFromFile, "cloudFromFile"))
         viewer->updatePointCloud(cloudFromFile ,"cloudFromFile");
     clouds.push_back(cloudFromFile);
@@ -302,30 +358,53 @@ void PCLViewer::loadActionPressed() {
 
 void PCLViewer::polyButtonPressed() {
 
-    //boost::thread* thr = new boost::thread(boost::bind(&PCLViewer::loading, this));
-    boost::thread* thr2 = new boost::thread(boost::bind(&PCLViewer::polyButtonPressedFunc, this));
-    //polyButtonPressedFunc();
-    loading();
-    //polyButtonPressedFunc();
+    if (clouds.empty()) {
+        if (sensorConnected) {
+            ui->tabWidget->setCurrentIndex(1);
+            boost::thread* thr2 = new boost::thread(boost::bind(&PCLViewer::polyButtonPressedFunc, this));
+            labelPolygonate = new QLabel;
+            loading(labelPolygonate);
+        }
+        else {
+            // empty clouds & no sensor
+            QMessageBox::warning(this, "Error", "No pointcloud to polygonate!");
+            std::cerr << "No cloud to polygonate!\n";
+            return;
+        }
+    }
+    else {
+        if (!registered) {
+            QMessageBox::warning(this, "Warning", "Pointclouds ready to registrate!");
+            std::cerr << "Pointclouds ready to registrate!\n";
+            return;
+        }
+        else {
+            ui->tabWidget->setCurrentIndex(1);
+            boost::thread* thr2 = new boost::thread(boost::bind(&PCLViewer::polyButtonPressedFunc, this));
+            labelPolygonate = new QLabel;
+            loading(labelPolygonate);
+        }
+
+    }
 }
 
-void PCLViewer::loading() {
-    lbl = new QLabel;
-    QMovie *movie = new QMovie(":/images/box.gif");
+
+void PCLViewer::loading(QLabel* label) {
+
+
     if (!movie->isValid()) {
         std::cerr<<"Invalid loading image " << movie->fileName().toStdString() << "\n";
         return;
     }
-    lbl->setMovie(movie);
-    lbl->setFixedWidth(200);
-    lbl->setFixedHeight(200);
-    lbl->setFrameStyle(QFrame::NoFrame);
-    //lbl->adjustSize();
-    lbl->setAttribute(Qt::WA_TranslucentBackground);
-    lbl->setWindowModality(Qt::ApplicationModal);
-    lbl->setContentsMargins(0,0,0,0);
-    lbl->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    lbl->show();
+    label->setMovie(movie);
+    label->setFixedWidth(200);
+    label->setFixedHeight(200);
+    label->setFrameStyle(QFrame::NoFrame);
+    label->setAttribute(Qt::WA_TranslucentBackground);
+    label->setWindowModality(Qt::ApplicationModal);
+    label->setContentsMargins(0,0,0,0);
+    label->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    label->show();
     movie->start();
 }
 
@@ -334,15 +413,14 @@ void PCLViewer::polyButtonPressedFunc() {
     PointCloudT::Ptr output (new PointCloudT);
     PointCloudT::Ptr holder (new PointCloudT);
     pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
-    stream = false;
     //stop stream to avoid changes of polygonated kinect point cloud
 
     //                                                     /+++ polygonate kinect frame
     //                               /+++ sensor connected?
-    // polygonation --- empty clouds?                      \--- error
-    //                               \--- non empty clouds --- polygonate clouds
+    // polygonation --- empty clouds?                      \--- error           /+++ polygonate cloud
+    //                               \--- non empty clouds --- registered cloud?
+    //                                                                          \--- register & polygonate?
     //
-    std::cout << "hoolaloop " << clouds.size() << "\n";
 
     if (clouds.empty()) {
         if (sensorConnected) {
@@ -383,11 +461,10 @@ void PCLViewer::polyButtonPressedFunc() {
         }
     }
     else {
-        PCLViewer::voxelGridFilter(clouds.back(), output);
-        //PCLViewer::cloudSmooth(holder, output);
-        PCLViewer::polygonateCloud(output, triangles);
+            PCLViewer::voxelGridFilter(clouds.back(), output);
+            //PCLViewer::cloudSmooth(holder, output);
+            PCLViewer::polygonateCloud(output, triangles);
     }
-    stream = true;
 
 
     // Get Poisson result
@@ -429,13 +506,14 @@ void PCLViewer::polyButtonPressedFunc() {
     //triangles = PCLViewer::smoothMesh(trianglesPtr);
 
 
-    lbl->close();
+    labelPolygonate->close();
     meshViewer->removePolygonMesh("mesh");
     //meshViewer->addPointCloud(output,"smoothed");
     meshViewer->addPolygonMesh(*triangles, "mesh");
     printf("Mesh done\n");
     meshViewer->setShapeRenderingProperties ( pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG , "mesh" );
-    ui->tabWidget->setCurrentIndex(1);
+    ui->qvtkWidget_2->update();
+
 }
 
 void PCLViewer::lastFrameToggled() {
@@ -492,7 +570,7 @@ void PCLViewer::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::Polyg
     pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
     tree->setInputCloud (cloud_with_normals);
 
-    cout << "begin marching cubes reconstruction" << endl;
+    std::cout << "begin marching cubes reconstruction" << std::endl;
 
     pcl::MarchingCubesHoppe<pcl::PointXYZRGBNormal> mc;
     //pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
@@ -500,7 +578,7 @@ void PCLViewer::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::Polyg
     mc.setSearchMethod (tree);
     mc.reconstruct (*triangles);
 
-    cout << triangles->polygons.size() << " triangles created" << endl;
+    std::cout << triangles->polygons.size() << " triangles created" << std::endl;
     //return triangles;
 }
 
@@ -602,8 +680,10 @@ void PCLViewer::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr
     }
 
     pcl::VoxelGrid<PointT> ds;  //create downsampling filter
+    //pcl::UniformSampling<PointT> ds;  //create downsampling filter
     ds.setInputCloud (cloudToFilter);
     ds.setLeafSize (VGFleafSize, VGFleafSize, VGFleafSize);
+    //ds.setRadiusSearch(VGFleafSize);
     ds.filter (*filtered);
     std::cout<<"Filtered points: " << filtered->points.size() << "\n";
 }
@@ -695,7 +775,392 @@ void PCLViewer::actionClearTriggered()
     ui->qvtkWidget->update();
     ui->qvtkWidget_2->update();
     if (sensorConnected) {
-        viewer->addPointCloud(key_cloud, "keypoints");
+        viewer->addPointCloud(kinectCloud, "kinectCloud");
     }
-    viewer->addPointCloud(kinectCloud, "kinectCloud");
+    ui->tabWidget->setCurrentIndex(0);
+    stream = true;
+    registered = false;
 }
+
+void PCLViewer::regButtonPressed() {
+    if (clouds.size() < 2) {
+        std::cerr << "To few clouds to registrate!\n";
+    }
+    //stop = true;
+    stream = false;
+    std::cout << "Registrating " << clouds.size() << " point clouds.\n";
+    labelRegistrate = new QLabel;
+    boost::thread* thr = new boost::thread(boost::bind(&PCLViewer::registrateNClouds, this));
+    loading(labelRegistrate);
+}
+
+PointCloudT::Ptr PCLViewer::registrateNClouds() {
+    PointCloudT::Ptr result (new PointCloudT);
+    PointCloudT::Ptr globalResult (new PointCloudT);
+    PointCloudT::Ptr source, target;
+
+    Eigen::Matrix4f GlobalTransform = Eigen::Matrix4f::Identity (), pairTransform;
+
+
+    for (int i = 1; i < clouds.size(); i++) {
+
+        source = clouds[i-1];
+        target = clouds[i];
+
+        /*// Create the filtering object
+        pcl::StatisticalOutlierRemoval<PointT> sor;
+        sor.setInputCloud (clouds[i-1]);
+        sor.setMeanK (50);
+        sor.setStddevMulThresh (1.0);
+        sor.filter (*source);
+
+        // Create the filtering object 2
+        pcl::StatisticalOutlierRemoval<PointT> sor2;
+        sor2.setInputCloud (clouds[i]);
+        sor2.setMeanK (50);
+        sor2.setStddevMulThresh (1.0);
+        sor2.filter (*target);*/
+
+        PointCloudT::Ptr temp (new PointCloudT);
+        PCLViewer::pairAlign (source, target, temp, pairTransform, true);
+
+
+        //PCLViewer::computeTransformation (source, target, pairTransform);
+        /*if (!viewer->addPointCloud(clouds[i-1], "source")) {
+            viewer->updatePointCloud(clouds[i-1], "source");
+        }
+        if (!viewer->addPointCloud(clouds[i], "target")) {
+            viewer->updatePointCloud(clouds[i], "target");
+        }*/
+
+        //transform current pair into the global transform
+        pcl::transformPointCloud (*temp, *result, GlobalTransform);
+
+
+        //update the global transform
+        GlobalTransform = GlobalTransform * pairTransform;
+
+        //clouds[i] = result;
+        //TODO!!! filtrovat vysledek
+        pcl::UniformSampling<PointT> uniform;
+        uniform.setRadiusSearch (0.01);  // 1cm
+
+        uniform.setInputCloud (result);
+        uniform.filter (*clouds[i]);
+
+    }
+
+
+
+    /*source = clouds[0];
+    target = clouds[1];
+
+    Eigen::Matrix4f transform;
+      PCLViewer::computeTransformation (source, target, transform);
+
+      std::cerr << transform << std::endl;
+      // Transform the data and write it to disk
+      pcl::PointCloud<PointT> output;
+      pcl::transformPointCloud (*source, output, transform);
+      pcl::io::savePCDFileBinary ("kokos.pcd", output);*/
+
+    //result = clouds[clouds.size()-1];
+    viewer->removeAllPointClouds();
+    viewer->addPointCloud(clouds[clouds.size()-1], "registrated");
+
+
+
+    std::cout << "Registrated Point Cloud has " << result->points.size() << " points.\n";
+    labelRegistrate->close();
+    registered = true;
+    return result;
+}
+
+
+
+void PCLViewer::tabChangedEvent(int tabIndex) {
+    if (tabIndex == 0) {
+        stream = true;
+        //stop = false;
+    }
+    else {
+        std::cout<<"Stopping stream...\n";
+        stream = false;
+        //stop = true;
+    }
+}
+
+void PCLViewer::keypointsToggled() {
+    if (!ui->actionShow_keypoints->isChecked()) {
+        viewer->removePointCloud("keypoints");
+        ui->qvtkWidget->update();
+    }
+    else {
+        viewer->addPointCloud(key_cloud, "keypoints");
+        viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 10, "keypoints");
+        ui->qvtkWidget->update();
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/** \brief Align a pair of PointCloud datasets and return the result
+  * \param cloud_src the source PointCloud
+  * \param cloud_tgt the target PointCloud
+  * \param output the resultant aligned source PointCloud
+  * \param final_transform the resultant transform between source and target
+  */
+void PCLViewer::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, bool downsample)
+{
+  //
+  // Downsample for consistency and speed
+  // \note enable this for large datasets
+  PointCloudT::Ptr src (new PointCloudT);
+  PointCloudT::Ptr tgt (new PointCloudT);
+  pcl::VoxelGrid<PointT> grid;
+  if (downsample)
+  {
+    grid.setLeafSize (0.05, 0.05, 0.05);
+    grid.setInputCloud (cloud_src);
+    grid.filter (*src);
+
+    grid.setInputCloud (cloud_tgt);
+    grid.filter (*tgt);
+  }
+  else
+  {
+    src = cloud_src;
+    tgt = cloud_tgt;
+  }
+
+
+  // Compute surface normals and curvature
+  PointCloudWithNormals::Ptr points_with_normals_src (new PointCloudWithNormals);
+  PointCloudWithNormals::Ptr points_with_normals_tgt (new PointCloudWithNormals);
+
+  pcl::NormalEstimation<PointT, PointNormalT> norm_est;
+  pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
+  norm_est.setSearchMethod (tree);
+  norm_est.setKSearch (30);
+
+  norm_est.setInputCloud (src);
+  norm_est.compute (*points_with_normals_src);
+  pcl::copyPointCloud (*src, *points_with_normals_src);
+
+  norm_est.setInputCloud (tgt);
+  norm_est.compute (*points_with_normals_tgt);
+  pcl::copyPointCloud (*tgt, *points_with_normals_tgt);
+
+  //
+  // Instantiate our custom point representation (defined above) ...
+  MyPointRepresentation point_representation;
+  // ... and weight the 'curvature' dimension so that it is balanced against x, y, and z
+  float alpha[4] = {1.0, 1.0, 1.0, 1.0};
+  point_representation.setRescaleValues (alpha);
+
+  //
+  // Align
+  pcl::IterativeClosestPointNonLinear<PointNormalT, PointNormalT> reg;
+  reg.setTransformationEpsilon (1e-6);
+  // Set the maximum distance between two correspondences (src<->tgt) to 10cm
+  // Note: adjust this based on the size of your datasets
+  reg.setMaxCorrespondenceDistance (1.0);
+  // Set the point representation
+  reg.setPointRepresentation (boost::make_shared<const MyPointRepresentation> (point_representation));
+
+  reg.setInputSource (points_with_normals_src);
+  reg.setInputTarget (points_with_normals_tgt);
+
+
+
+  //
+  // Run the same optimization in a loop
+  Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
+  PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
+  reg.setMaximumIterations (2);
+  for (int i = 0; i < 30; ++i)
+  {
+    PCL_INFO ("Iteration Nr. %d.\n", i);
+
+    // save cloud for visualization purpose
+    points_with_normals_src = reg_result;
+
+    // Estimate
+    reg.setInputSource (points_with_normals_src);
+    reg.align (*reg_result);
+
+        //accumulate transformation between each Iteration
+    Ti = reg.getFinalTransformation () * Ti;
+
+        //if the difference between this transformation and the previous one
+        //is smaller than the threshold, refine the process by reducing
+        //the maximal correspondence distance
+    if (fabs ((reg.getLastIncrementalTransformation () - prev).sum ()) < reg.getTransformationEpsilon ())
+      reg.setMaxCorrespondenceDistance (reg.getMaxCorrespondenceDistance () - 0.001);
+
+    prev = reg.getLastIncrementalTransformation ();
+
+  }
+
+    //
+  // Get the transformation from target to source
+  targetToSource = Ti.inverse();
+
+  //
+  // Transform target back in source frame
+  pcl::transformPointCloud (*cloud_tgt, *output, targetToSource);
+
+
+  //add the source to the transformed target
+  *output += *cloud_src;
+
+  final_transform = targetToSource;
+ }
+
+
+void PCLViewer::computeTransformation (const PointCloudT::Ptr &src_origin,
+                       const PointCloudT::Ptr &tgt_origin,
+                       Eigen::Matrix4f &transform)
+{
+    std::cout << "computeTransformation\n";
+  // Get an uniform grid of keypoints
+  PointCloudT::Ptr keypoints_src (new PointCloudT), keypoints_tgt (new PointCloudT);
+
+  PointCloudT::Ptr src (new PointCloudT),
+                   tgt (new PointCloudT);
+
+  PCLViewer::downsample (src_origin, tgt_origin, *src, *tgt);
+
+  PCLViewer::estimateKeypoints (src, tgt, *keypoints_src, *keypoints_tgt);
+  printf ("Found %lu and %lu keypoints for the source and target datasets.\n", keypoints_src->points.size (), keypoints_tgt->points.size ());
+
+  // Compute normals for all points keypoint
+  pcl::PointCloud<pcl::Normal>::Ptr normals_src (new pcl::PointCloud<pcl::Normal>),
+                          normals_tgt (new pcl::PointCloud<pcl::Normal>);
+  PCLViewer::estimateNormals (src, tgt, *normals_src, *normals_tgt);
+  printf ("Estimated %lu and %lu normals for the source and target datasets.\n", normals_src->points.size (), normals_tgt->points.size ());
+
+  // Compute FPFH features at each keypoint
+  pcl::PointCloud<pcl::FPFHSignature33>::Ptr fpfhs_src (new pcl::PointCloud<pcl::FPFHSignature33>),
+                                   fpfhs_tgt (new pcl::PointCloud<pcl::FPFHSignature33>);
+  PCLViewer::estimateFPFH (src, tgt, normals_src, normals_tgt, keypoints_src, keypoints_tgt, *fpfhs_src, *fpfhs_tgt);
+
+  // Find correspondences between keypoints in FPFH space
+  pcl::CorrespondencesPtr all_correspondences (new pcl::Correspondences),
+                     good_correspondences (new pcl::Correspondences);
+  PCLViewer::findCorrespondences (fpfhs_src, fpfhs_tgt, *all_correspondences);
+
+  // Reject correspondences based on their XYZ distance
+  PCLViewer::rejectBadCorrespondences (all_correspondences, keypoints_src, keypoints_tgt, *good_correspondences);
+
+  for (int i = 0; i < good_correspondences->size (); ++i)
+    std::cerr << good_correspondences->at (i) << std::endl;
+  // Obtain the best transformation between the two sets of keypoints given the remaining correspondences
+  pcl::registration::TransformationEstimationSVD<PointT, PointT> trans_est;
+  trans_est.estimateRigidTransformation (*keypoints_src, *keypoints_tgt, *good_correspondences, transform);
+}
+
+
+void PCLViewer::rejectBadCorrespondences (const pcl::CorrespondencesPtr &all_correspondences,
+                          const PointCloudT::Ptr &keypoints_src,
+                          const PointCloudT::Ptr &keypoints_tgt,
+                          pcl::Correspondences &remaining_correspondences)
+{
+    std::cout << "rejectBadCorrespondences\n";
+  pcl::registration::CorrespondenceRejectorDistance rej;
+  rej.setInputCloud<PointT> (keypoints_src);
+  rej.setInputTarget<PointT> (keypoints_tgt);
+  rej.setMaximumDistance (1);    // 1m
+  rej.setInputCorrespondences (all_correspondences);
+  rej.getCorrespondences (remaining_correspondences);
+}
+
+void PCLViewer::findCorrespondences (const pcl::PointCloud<pcl::FPFHSignature33>::Ptr &fpfhs_src,
+                     const pcl::PointCloud<pcl::FPFHSignature33>::Ptr &fpfhs_tgt,
+                     pcl::Correspondences &all_correspondences)
+{
+    std::cout << "findCorrespondences\n";
+  pcl::registration::CorrespondenceEstimation<pcl::FPFHSignature33, pcl::FPFHSignature33> est;
+  est.setInputSource (fpfhs_src);
+  est.setInputTarget (fpfhs_tgt);
+  est.determineReciprocalCorrespondences (all_correspondences);
+}
+
+void PCLViewer::estimateFPFH (const PointCloudT::Ptr &src,
+              const PointCloudT::Ptr &tgt,
+              const pcl::PointCloud<pcl::Normal>::Ptr &normals_src,
+              const pcl::PointCloud<pcl::Normal>::Ptr &normals_tgt,
+              const PointCloudT::Ptr &keypoints_src,
+              const PointCloudT::Ptr &keypoints_tgt,
+              pcl::PointCloud<pcl::FPFHSignature33> &fpfhs_src,
+              pcl::PointCloud<pcl::FPFHSignature33> &fpfhs_tgt)
+{
+    std::cout << "estimateFPFH\n";
+  pcl::FPFHEstimation<PointT, pcl::Normal, pcl::FPFHSignature33> fpfh_est;
+  fpfh_est.setInputCloud (keypoints_src);
+  fpfh_est.setInputNormals (normals_src);
+  fpfh_est.setRadiusSearch (1); // 1m
+  fpfh_est.setSearchSurface (src);
+  fpfh_est.compute (fpfhs_src);
+
+  fpfh_est.setInputCloud (keypoints_tgt);
+  fpfh_est.setInputNormals (normals_tgt);
+  fpfh_est.setSearchSurface (tgt);
+  fpfh_est.compute (fpfhs_tgt);
+}
+
+void PCLViewer::estimateNormals (const PointCloudT::Ptr &src,
+                 const PointCloudT::Ptr &tgt,
+                 pcl::PointCloud<pcl::Normal> &normals_src,
+                 pcl::PointCloud<pcl::Normal> &normals_tgt)
+{
+    std::cout << "estimateNormals\n";
+  pcl::NormalEstimationOMP<PointT, pcl::Normal> normal_est;
+  normal_est.setNumberOfThreads(4);
+  normal_est.setInputCloud (src);
+  std::cout << "normals source " << src->points.size() << "\n";
+  normal_est.setRadiusSearch (0.5);  // 50cm
+  normal_est.compute (normals_src);
+
+  std::cout << "normals target " << tgt->points.size() << "\n";
+  normal_est.setInputCloud (tgt);
+  normal_est.compute (normals_tgt);
+}
+
+void PCLViewer::estimateKeypoints (const PointCloudT::Ptr &src,
+                   const PointCloudT::Ptr &tgt,
+                   PointCloudT &keypoints_src,
+                   PointCloudT &keypoints_tgt)
+{
+    std::cout << "estimateKeypoints\n";
+  // Get an uniform grid of keypoints
+  pcl::UniformSampling<PointT> uniform;
+  uniform.setRadiusSearch (1);  // 1m
+
+  uniform.setInputCloud (src);
+  uniform.filter (keypoints_src);
+
+  uniform.setInputCloud (tgt);
+  uniform.filter (keypoints_tgt);
+}
+
+void PCLViewer::downsample (const PointCloudT::Ptr &src_origin, const PointCloudT::Ptr &tgt_origin, PointCloudT &src, PointCloudT &tgt) {
+
+    std::cout << "downsample\n";
+      // Get an uniform grid of keypoints
+      pcl::UniformSampling<PointT> uniform;
+      uniform.setRadiusSearch (0.05);  // 5cm
+
+      uniform.setInputCloud (src_origin);
+      uniform.filter (src);
+
+      uniform.setInputCloud (tgt_origin);
+      uniform.filter (tgt);
+
+}
+
+
+
+
+
+
+
