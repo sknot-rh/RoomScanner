@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/stanly/kinect/DP/registration
+CMAKE_SOURCE_DIR = /home/stanly/kinect/DP/RoomScanner/parts/registration
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/stanly/kinect/DP/registration/build
+CMAKE_BINARY_DIR = /home/stanly/kinect/DP/RoomScanner/parts/registration/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/registration/build/CMakeFiles /home/stanly/kinect/DP/registration/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/RoomScanner/parts/registration/build/CMakeFiles /home/stanly/kinect/DP/RoomScanner/parts/registration/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/registration/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/RoomScanner/parts/registration/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named registration2
+# Target rules for targets named registration
 
 # Build rule for target.
-registration2: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 registration2
-.PHONY : registration2
+registration: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 registration
+.PHONY : registration
 
 # fast build rule for target.
-registration2/fast:
-	$(MAKE) -f CMakeFiles/registration2.dir/build.make CMakeFiles/registration2.dir/build
-.PHONY : registration2/fast
+registration/fast:
+	$(MAKE) -f CMakeFiles/registration.dir/build.make CMakeFiles/registration.dir/build
+.PHONY : registration/fast
 
-registration2.o: registration2.cpp.o
+registration.o: registration.cpp.o
 
-.PHONY : registration2.o
+.PHONY : registration.o
 
 # target to build an object file
-registration2.cpp.o:
-	$(MAKE) -f CMakeFiles/registration2.dir/build.make CMakeFiles/registration2.dir/registration2.cpp.o
-.PHONY : registration2.cpp.o
+registration.cpp.o:
+	$(MAKE) -f CMakeFiles/registration.dir/build.make CMakeFiles/registration.dir/registration.cpp.o
+.PHONY : registration.cpp.o
 
-registration2.i: registration2.cpp.i
+registration.i: registration.cpp.i
 
-.PHONY : registration2.i
+.PHONY : registration.i
 
 # target to preprocess a source file
-registration2.cpp.i:
-	$(MAKE) -f CMakeFiles/registration2.dir/build.make CMakeFiles/registration2.dir/registration2.cpp.i
-.PHONY : registration2.cpp.i
+registration.cpp.i:
+	$(MAKE) -f CMakeFiles/registration.dir/build.make CMakeFiles/registration.dir/registration.cpp.i
+.PHONY : registration.cpp.i
 
-registration2.s: registration2.cpp.s
+registration.s: registration.cpp.s
 
-.PHONY : registration2.s
+.PHONY : registration.s
 
 # target to generate assembly for a file
-registration2.cpp.s:
-	$(MAKE) -f CMakeFiles/registration2.dir/build.make CMakeFiles/registration2.dir/registration2.cpp.s
-.PHONY : registration2.cpp.s
+registration.cpp.s:
+	$(MAKE) -f CMakeFiles/registration.dir/build.make CMakeFiles/registration.dir/registration.cpp.s
+.PHONY : registration.cpp.s
 
 # Help Target
 help:
@@ -158,10 +158,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... registration2"
-	@echo "... registration2.o"
-	@echo "... registration2.i"
-	@echo "... registration2.s"
+	@echo "... registration"
+	@echo "... registration.o"
+	@echo "... registration.i"
+	@echo "... registration.s"
 .PHONY : help
 
 

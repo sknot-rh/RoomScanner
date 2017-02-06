@@ -54,45 +54,45 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/stanly/kinect/DP/registration
+CMAKE_SOURCE_DIR = /home/stanly/kinect/DP/RoomScanner/parts/registration
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/stanly/kinect/DP/registration/build
+CMAKE_BINARY_DIR = /home/stanly/kinect/DP/RoomScanner/parts/registration/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/registration2.dir
+# Target rules for target CMakeFiles/registration.dir
 
 # All Build rule for target.
-CMakeFiles/registration2.dir/all:
-	$(MAKE) -f CMakeFiles/registration2.dir/build.make CMakeFiles/registration2.dir/depend
-	$(MAKE) -f CMakeFiles/registration2.dir/build.make CMakeFiles/registration2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/stanly/kinect/DP/registration/build/CMakeFiles --progress-num=1,2 "Built target registration2"
-.PHONY : CMakeFiles/registration2.dir/all
+CMakeFiles/registration.dir/all:
+	$(MAKE) -f CMakeFiles/registration.dir/build.make CMakeFiles/registration.dir/depend
+	$(MAKE) -f CMakeFiles/registration.dir/build.make CMakeFiles/registration.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/stanly/kinect/DP/RoomScanner/parts/registration/build/CMakeFiles --progress-num=1,2 "Built target registration"
+.PHONY : CMakeFiles/registration.dir/all
 
 # Include target in all.
-all: CMakeFiles/registration2.dir/all
+all: CMakeFiles/registration.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/registration2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/registration/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/registration2.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/registration/build/CMakeFiles 0
-.PHONY : CMakeFiles/registration2.dir/rule
+CMakeFiles/registration.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/RoomScanner/parts/registration/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/registration.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/RoomScanner/parts/registration/build/CMakeFiles 0
+.PHONY : CMakeFiles/registration.dir/rule
 
 # Convenience name for target.
-registration2: CMakeFiles/registration2.dir/rule
+registration: CMakeFiles/registration.dir/rule
 
-.PHONY : registration2
-
-# clean rule for target.
-CMakeFiles/registration2.dir/clean:
-	$(MAKE) -f CMakeFiles/registration2.dir/build.make CMakeFiles/registration2.dir/clean
-.PHONY : CMakeFiles/registration2.dir/clean
+.PHONY : registration
 
 # clean rule for target.
-clean: CMakeFiles/registration2.dir/clean
+CMakeFiles/registration.dir/clean:
+	$(MAKE) -f CMakeFiles/registration.dir/build.make CMakeFiles/registration.dir/clean
+.PHONY : CMakeFiles/registration.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/registration.dir/clean
 
 .PHONY : clean
 

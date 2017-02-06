@@ -55,6 +55,7 @@
 #include <pcl/registration/transforms.h>
 
 #include <pcl/visualization/pcl_visualizer.h>
+#include <pcl/filters/statistical_outlier_removal.h>
 
 using pcl::visualization::PointCloudColorHandlerGenericField;
 using pcl::visualization::PointCloudColorHandlerCustom;
@@ -185,6 +186,13 @@ void loadData (int argc, char **argv, std::vector<PCD, Eigen::aligned_allocator<
       //remove NAN points from the cloud
       std::vector<int> indices;
       pcl::removeNaNFromPointCloud(*m.cloud,*m.cloud, indices);
+      
+      pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
+        sor.setInputCloud (m.cloud);
+        sor.setMeanK (50);
+        sor.setStddevMulThresh (1.0);
+        sor.filter (*m.cloud);
+
 
       models.push_back (m);
     }
@@ -253,7 +261,7 @@ void pairAlign (const PointCloud::Ptr cloud_src, const PointCloud::Ptr cloud_tgt
   reg.setTransformationEpsilon (1e-6);
   // Set the maximum distance between two correspondences (src<->tgt) to 10cm
   // Note: adjust this based on the size of your datasets
-  reg.setMaxCorrespondenceDistance (0.1);  
+  reg.setMaxCorrespondenceDistance (0.5);  
   // Set the point representation
   reg.setPointRepresentation (boost::make_shared<const MyPointRepresentation> (point_representation));
 
@@ -267,7 +275,7 @@ void pairAlign (const PointCloud::Ptr cloud_src, const PointCloud::Ptr cloud_tgt
   Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
   PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
   reg.setMaximumIterations (2);
-  for (int i = 0; i < 30; ++i)
+  for (int i = 0; i < 100; ++i)
   {
     PCL_INFO ("Iteration Nr. %d.\n", i);
 
@@ -367,6 +375,7 @@ int main (int argc, char** argv)
 		//save aligned pair, transformed into the first cloud's frame
     std::stringstream ss;
     ss << i << ".pcd";
+    std::cout << "saving " << i << ".pcd\n";
     pcl::io::savePCDFile (ss.str (), *result, true);
 
   }

@@ -31,10 +31,10 @@ viewerPsycho (pcl::visualization::PCLVisualizer& viewer)
     user_data++;
 }
     
-int main ()
+int main (int argc, char **argv)
 {
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA>);
-    pcl::io::loadPCDFile ("test_pcd.pcd", *cloud);
+    pcl::io::loadPCDFile (argv[1], *cloud);
     
     pcl::visualization::CloudViewer viewer("Cloud Viewer");
     
