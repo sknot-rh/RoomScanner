@@ -1,3 +1,0 @@
-/home/stanly/kinect/DP/gettingPC/build/CMakeFiles/edit_cache.dir
-/home/stanly/kinect/DP/gettingPC/build/CMakeFiles/rebuild_cache.dir
-/home/stanly/kinect/DP/gettingPC/build/CMakeFiles/openni_grabber.dir

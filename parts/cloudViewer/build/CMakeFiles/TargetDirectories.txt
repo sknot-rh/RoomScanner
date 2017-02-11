@@ -1,3 +1,0 @@
-/home/stanly/kinect/DP/RoomScanner/parts/cloudViewer/build/CMakeFiles/rebuild_cache.dir
-/home/stanly/kinect/DP/RoomScanner/parts/cloudViewer/build/CMakeFiles/edit_cache.dir
-/home/stanly/kinect/DP/RoomScanner/parts/cloudViewer/build/CMakeFiles/cloud_viewer.dir
