@@ -180,7 +180,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=pcl-visualizer
+CMAKE_PROJECT_NAME:STATIC=RoomScanner
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -503,6 +503,12 @@ RSSDK_LIBRARY:FILEPATH=RSSDK_LIBRARY-NOTFOUND
 
 //Path to a library.
 RSSDK_LIBRARY_DEBUG:FILEPATH=RSSDK_LIBRARY_DEBUG-NOTFOUND
+
+//Value Computed by CMake
+RoomScanner_BINARY_DIR:STATIC=/home/stanly/kinect/DP/RoomScanner/build
+
+//Value Computed by CMake
+RoomScanner_SOURCE_DIR:STATIC=/home/stanly/kinect/DP/RoomScanner/src
 
 //The directory containing VTKConfig.cmake
 VTK_DIR:PATH=/usr/local/lib/cmake/vtk-6.3

@@ -60,71 +60,71 @@ CMAKE_SOURCE_DIR = /home/stanly/kinect/DP/RoomScanner/src
 CMAKE_BINARY_DIR = /home/stanly/kinect/DP/RoomScanner/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/pcl_visualizer.dir
+# Target rules for target CMakeFiles/RoomScanner.dir
 
 # All Build rule for target.
-CMakeFiles/pcl_visualizer.dir/all: CMakeFiles/pcl_visualizer_automoc.dir/all
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/depend
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target pcl_visualizer"
-.PHONY : CMakeFiles/pcl_visualizer.dir/all
+CMakeFiles/RoomScanner.dir/all: CMakeFiles/RoomScanner_automoc.dir/all
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/depend
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target RoomScanner"
+.PHONY : CMakeFiles/RoomScanner.dir/all
 
 # Include target in all.
-all: CMakeFiles/pcl_visualizer.dir/all
+all: CMakeFiles/RoomScanner.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/pcl_visualizer.dir/rule: cmake_check_build_system
+CMakeFiles/RoomScanner.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/RoomScanner/build/CMakeFiles 9
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/pcl_visualizer.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/RoomScanner.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/RoomScanner/build/CMakeFiles 0
-.PHONY : CMakeFiles/pcl_visualizer.dir/rule
+.PHONY : CMakeFiles/RoomScanner.dir/rule
 
 # Convenience name for target.
-pcl_visualizer: CMakeFiles/pcl_visualizer.dir/rule
+RoomScanner: CMakeFiles/RoomScanner.dir/rule
 
-.PHONY : pcl_visualizer
-
-# clean rule for target.
-CMakeFiles/pcl_visualizer.dir/clean:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/clean
-.PHONY : CMakeFiles/pcl_visualizer.dir/clean
+.PHONY : RoomScanner
 
 # clean rule for target.
-clean: CMakeFiles/pcl_visualizer.dir/clean
+CMakeFiles/RoomScanner.dir/clean:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/clean
+.PHONY : CMakeFiles/RoomScanner.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/RoomScanner.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/pcl_visualizer_automoc.dir
+# Target rules for target CMakeFiles/RoomScanner_automoc.dir
 
 # All Build rule for target.
-CMakeFiles/pcl_visualizer_automoc.dir/all:
-	$(MAKE) -f CMakeFiles/pcl_visualizer_automoc.dir/build.make CMakeFiles/pcl_visualizer_automoc.dir/depend
-	$(MAKE) -f CMakeFiles/pcl_visualizer_automoc.dir/build.make CMakeFiles/pcl_visualizer_automoc.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=9 "Built target pcl_visualizer_automoc"
-.PHONY : CMakeFiles/pcl_visualizer_automoc.dir/all
+CMakeFiles/RoomScanner_automoc.dir/all:
+	$(MAKE) -f CMakeFiles/RoomScanner_automoc.dir/build.make CMakeFiles/RoomScanner_automoc.dir/depend
+	$(MAKE) -f CMakeFiles/RoomScanner_automoc.dir/build.make CMakeFiles/RoomScanner_automoc.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=9 "Built target RoomScanner_automoc"
+.PHONY : CMakeFiles/RoomScanner_automoc.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/pcl_visualizer_automoc.dir/rule: cmake_check_build_system
+CMakeFiles/RoomScanner_automoc.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/RoomScanner/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/pcl_visualizer_automoc.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/RoomScanner_automoc.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/stanly/kinect/DP/RoomScanner/build/CMakeFiles 0
-.PHONY : CMakeFiles/pcl_visualizer_automoc.dir/rule
+.PHONY : CMakeFiles/RoomScanner_automoc.dir/rule
 
 # Convenience name for target.
-pcl_visualizer_automoc: CMakeFiles/pcl_visualizer_automoc.dir/rule
+RoomScanner_automoc: CMakeFiles/RoomScanner_automoc.dir/rule
 
-.PHONY : pcl_visualizer_automoc
-
-# clean rule for target.
-CMakeFiles/pcl_visualizer_automoc.dir/clean:
-	$(MAKE) -f CMakeFiles/pcl_visualizer_automoc.dir/build.make CMakeFiles/pcl_visualizer_automoc.dir/clean
-.PHONY : CMakeFiles/pcl_visualizer_automoc.dir/clean
+.PHONY : RoomScanner_automoc
 
 # clean rule for target.
-clean: CMakeFiles/pcl_visualizer_automoc.dir/clean
+CMakeFiles/RoomScanner_automoc.dir/clean:
+	$(MAKE) -f CMakeFiles/RoomScanner_automoc.dir/build.make CMakeFiles/RoomScanner_automoc.dir/clean
+.PHONY : CMakeFiles/RoomScanner_automoc.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/RoomScanner_automoc.dir/clean
 
 .PHONY : clean
 

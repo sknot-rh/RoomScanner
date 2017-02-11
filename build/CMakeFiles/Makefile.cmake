@@ -227,12 +227,12 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "Resources/Resources.qrc.depends"
-  "CMakeFiles/pcl_visualizer_automoc.dir/AutogenInfo.cmake"
+  "CMakeFiles/RoomScanner_automoc.dir/AutogenInfo.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/pcl_visualizer.dir/DependInfo.cmake"
-  "CMakeFiles/pcl_visualizer_automoc.dir/DependInfo.cmake"
+  "CMakeFiles/RoomScanner.dir/DependInfo.cmake"
+  "CMakeFiles/RoomScanner_automoc.dir/DependInfo.cmake"
   )

@@ -1,4 +1,4 @@
-#include "pclviewer.h"
+#include "application.h"
 #include <QApplication>
 #include <QMainWindow>
 
