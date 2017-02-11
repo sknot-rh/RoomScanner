@@ -111,57 +111,84 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named pcl_visualizer
+# Target rules for targets named RoomScanner
 
 # Build rule for target.
-pcl_visualizer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 pcl_visualizer
-.PHONY : pcl_visualizer
+RoomScanner: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 RoomScanner
+.PHONY : RoomScanner
 
 # fast build rule for target.
-pcl_visualizer/fast:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/build
-.PHONY : pcl_visualizer/fast
+RoomScanner/fast:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/build
+.PHONY : RoomScanner/fast
 
 #=============================================================================
-# Target rules for targets named pcl_visualizer_automoc
+# Target rules for targets named RoomScanner_automoc
 
 # Build rule for target.
-pcl_visualizer_automoc: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 pcl_visualizer_automoc
-.PHONY : pcl_visualizer_automoc
+RoomScanner_automoc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 RoomScanner_automoc
+.PHONY : RoomScanner_automoc
 
 # fast build rule for target.
-pcl_visualizer_automoc/fast:
-	$(MAKE) -f CMakeFiles/pcl_visualizer_automoc.dir/build.make CMakeFiles/pcl_visualizer_automoc.dir/build
-.PHONY : pcl_visualizer_automoc/fast
+RoomScanner_automoc/fast:
+	$(MAKE) -f CMakeFiles/RoomScanner_automoc.dir/build.make CMakeFiles/RoomScanner_automoc.dir/build
+.PHONY : RoomScanner_automoc/fast
 
-CMakeFiles/pcl_visualizer.dir/qrc_Resources.o: CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o
+CMakeFiles/RoomScanner.dir/qrc_Resources.o: CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o
 
-.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.o
+.PHONY : CMakeFiles/RoomScanner.dir/qrc_Resources.o
 
 # target to build an object file
-CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o
-.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.o
+CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o
+.PHONY : CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o
 
-CMakeFiles/pcl_visualizer.dir/qrc_Resources.i: CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i
+CMakeFiles/RoomScanner.dir/qrc_Resources.i: CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.i
 
-.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.i
+.PHONY : CMakeFiles/RoomScanner.dir/qrc_Resources.i
 
 # target to preprocess a source file
-CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i
-.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.i
+CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.i
+.PHONY : CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.i
 
-CMakeFiles/pcl_visualizer.dir/qrc_Resources.s: CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s
+CMakeFiles/RoomScanner.dir/qrc_Resources.s: CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.s
 
-.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.s
+.PHONY : CMakeFiles/RoomScanner.dir/qrc_Resources.s
 
 # target to generate assembly for a file
-CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s
-.PHONY : CMakeFiles/pcl_visualizer.dir/qrc_Resources.cpp.s
+CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.s
+.PHONY : CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.s
+
+application.o: application.cpp.o
+
+.PHONY : application.o
+
+# target to build an object file
+application.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/application.cpp.o
+.PHONY : application.cpp.o
+
+application.i: application.cpp.i
+
+.PHONY : application.i
+
+# target to preprocess a source file
+application.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/application.cpp.i
+.PHONY : application.cpp.i
+
+application.s: application.cpp.s
+
+.PHONY : application.s
+
+# target to generate assembly for a file
+application.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/application.cpp.s
+.PHONY : application.cpp.s
 
 main.o: main.cpp.o
 
@@ -169,7 +196,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/main.cpp.o
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -178,7 +205,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/main.cpp.i
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -187,62 +214,35 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/main.cpp.s
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-moc_pclviewer.o: moc_pclviewer.cpp.o
+moc_application.o: moc_application.cpp.o
 
-.PHONY : moc_pclviewer.o
-
-# target to build an object file
-moc_pclviewer.cpp.o:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.o
-.PHONY : moc_pclviewer.cpp.o
-
-moc_pclviewer.i: moc_pclviewer.cpp.i
-
-.PHONY : moc_pclviewer.i
-
-# target to preprocess a source file
-moc_pclviewer.cpp.i:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.i
-.PHONY : moc_pclviewer.cpp.i
-
-moc_pclviewer.s: moc_pclviewer.cpp.s
-
-.PHONY : moc_pclviewer.s
-
-# target to generate assembly for a file
-moc_pclviewer.cpp.s:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/moc_pclviewer.cpp.s
-.PHONY : moc_pclviewer.cpp.s
-
-pclviewer.o: pclviewer.cpp.o
-
-.PHONY : pclviewer.o
+.PHONY : moc_application.o
 
 # target to build an object file
-pclviewer.cpp.o:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.o
-.PHONY : pclviewer.cpp.o
+moc_application.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_application.cpp.o
+.PHONY : moc_application.cpp.o
 
-pclviewer.i: pclviewer.cpp.i
+moc_application.i: moc_application.cpp.i
 
-.PHONY : pclviewer.i
+.PHONY : moc_application.i
 
 # target to preprocess a source file
-pclviewer.cpp.i:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.i
-.PHONY : pclviewer.cpp.i
+moc_application.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_application.cpp.i
+.PHONY : moc_application.cpp.i
 
-pclviewer.s: pclviewer.cpp.s
+moc_application.s: moc_application.cpp.s
 
-.PHONY : pclviewer.s
+.PHONY : moc_application.s
 
 # target to generate assembly for a file
-pclviewer.cpp.s:
-	$(MAKE) -f CMakeFiles/pcl_visualizer.dir/build.make CMakeFiles/pcl_visualizer.dir/pclviewer.cpp.s
-.PHONY : pclviewer.cpp.s
+moc_application.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_application.cpp.s
+.PHONY : moc_application.cpp.s
 
 # Help Target
 help:
@@ -252,20 +252,20 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... pcl_visualizer"
-	@echo "... pcl_visualizer_automoc"
-	@echo "... CMakeFiles/pcl_visualizer.dir/qrc_Resources.o"
-	@echo "... CMakeFiles/pcl_visualizer.dir/qrc_Resources.i"
-	@echo "... CMakeFiles/pcl_visualizer.dir/qrc_Resources.s"
+	@echo "... RoomScanner"
+	@echo "... RoomScanner_automoc"
+	@echo "... CMakeFiles/RoomScanner.dir/qrc_Resources.o"
+	@echo "... CMakeFiles/RoomScanner.dir/qrc_Resources.i"
+	@echo "... CMakeFiles/RoomScanner.dir/qrc_Resources.s"
+	@echo "... application.o"
+	@echo "... application.i"
+	@echo "... application.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... moc_pclviewer.o"
-	@echo "... moc_pclviewer.i"
-	@echo "... moc_pclviewer.s"
-	@echo "... pclviewer.o"
-	@echo "... pclviewer.i"
-	@echo "... pclviewer.s"
+	@echo "... moc_application.o"
+	@echo "... moc_application.i"
+	@echo "... moc_application.s"
 .PHONY : help
 
 
