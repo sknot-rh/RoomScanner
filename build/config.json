@@ -1,0 +1,27 @@
+{	
+	"mls":
+		{
+			"polynomialOrder" : 2,
+			"usePolynomialFit" : true,
+			"searchRadius" : 0.05,
+			"sqrGaussParam" : 0.0025,
+			"upsamplingRadius" : 0.025,
+			"upsamplingStepSize" : 0.015,
+			"dilationIterations" : 2,
+			"dilationVoxelSize" : 0.01,
+			"computeNormals" : false
+		},
+	"gridFilter" :
+		{
+			"leafSize" : 0.001,
+			"_leafSize" : 0.02
+		},
+	"greedyProjection" :
+		{
+			"_searchRadius" : 0.06,
+			"_mu" : 2.5,
+			"searchRadius" : 0.06,
+			"mu" : 2.5,
+			"maximumNearestNeighbors" : 200
+		}
+}

@@ -1,3 +1,0 @@
-/home/stanly/kinect/DP/RoomScanner/parts/registration/build/CMakeFiles/edit_cache.dir
-/home/stanly/kinect/DP/RoomScanner/parts/registration/build/CMakeFiles/rebuild_cache.dir
-/home/stanly/kinect/DP/RoomScanner/parts/registration/build/CMakeFiles/registration.dir
