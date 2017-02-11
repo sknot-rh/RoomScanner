@@ -314,7 +314,7 @@ void PCLViewer::saveButtonPressed() {
     std::cout << "Saving frame n"<<clouds.size()<<"\n";
 
     std::stringstream ss;
-    ss << "bla" << clouds.size()<<  ".pcd";
+    ss << "frame_" << clouds.size()<<  ".pcd";
     std::string s = ss.str();
 
 
@@ -843,7 +843,7 @@ PointCloudT::Ptr PCLViewer::registrateNClouds() {
         //clouds[i] = result;
         //TODO!!! filtrovat vysledek
         pcl::UniformSampling<PointT> uniform;
-        uniform.setRadiusSearch (0.01);  // 1cm
+        uniform.setRadiusSearch (0.001);  // 1cm
 
         uniform.setInputCloud (result);
         uniform.filter (*clouds[i]);
@@ -960,10 +960,10 @@ void PCLViewer::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::
   //
   // Align
   pcl::IterativeClosestPointNonLinear<PointNormalT, PointNormalT> reg;
-  reg.setTransformationEpsilon (1e-6);
+  reg.setTransformationEpsilon (1e-16);
   // Set the maximum distance between two correspondences (src<->tgt) to 10cm
   // Note: adjust this based on the size of your datasets
-  reg.setMaxCorrespondenceDistance (1.0);
+  reg.setMaxCorrespondenceDistance (0.75);
   // Set the point representation
   reg.setPointRepresentation (boost::make_shared<const MyPointRepresentation> (point_representation));
 
@@ -976,8 +976,8 @@ void PCLViewer::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::
   // Run the same optimization in a loop
   Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
   PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
-  reg.setMaximumIterations (2);
-  for (int i = 0; i < 30; ++i)
+  reg.setMaximumIterations (20);
+  for (int i = 0; i < 100; ++i)
   {
     PCL_INFO ("Iteration Nr. %d.\n", i);
 
@@ -995,7 +995,7 @@ void PCLViewer::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::
         //is smaller than the threshold, refine the process by reducing
         //the maximal correspondence distance
     if (fabs ((reg.getLastIncrementalTransformation () - prev).sum ()) < reg.getTransformationEpsilon ())
-      reg.setMaxCorrespondenceDistance (reg.getMaxCorrespondenceDistance () - 0.001);
+      reg.setMaxCorrespondenceDistance (reg.getMaxCorrespondenceDistance () * 0.9);
 
     prev = reg.getLastIncrementalTransformation ();
 
@@ -1155,7 +1155,6 @@ void PCLViewer::downsample (const PointCloudT::Ptr &src_origin, const PointCloud
 
       uniform.setInputCloud (tgt_origin);
       uniform.filter (tgt);
-
 }
 
 

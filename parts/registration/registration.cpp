@@ -258,10 +258,10 @@ void pairAlign (const PointCloud::Ptr cloud_src, const PointCloud::Ptr cloud_tgt
   //
   // Align
   pcl::IterativeClosestPointNonLinear<PointNormalT, PointNormalT> reg;
-  reg.setTransformationEpsilon (1e-6);
+  reg.setTransformationEpsilon (1e-26);
   // Set the maximum distance between two correspondences (src<->tgt) to 10cm
   // Note: adjust this based on the size of your datasets
-  reg.setMaxCorrespondenceDistance (0.5);  
+  reg.setMaxCorrespondenceDistance (4.0);  
   // Set the point representation
   reg.setPointRepresentation (boost::make_shared<const MyPointRepresentation> (point_representation));
 
@@ -274,7 +274,7 @@ void pairAlign (const PointCloud::Ptr cloud_src, const PointCloud::Ptr cloud_tgt
   // Run the same optimization in a loop and visualize the results
   Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
   PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
-  reg.setMaximumIterations (2);
+  reg.setMaximumIterations (20);
   for (int i = 0; i < 100; ++i)
   {
     PCL_INFO ("Iteration Nr. %d.\n", i);
@@ -293,7 +293,7 @@ void pairAlign (const PointCloud::Ptr cloud_src, const PointCloud::Ptr cloud_tgt
 		//is smaller than the threshold, refine the process by reducing
 		//the maximal correspondence distance
     if (fabs ((reg.getLastIncrementalTransformation () - prev).sum ()) < reg.getTransformationEpsilon ())
-      reg.setMaxCorrespondenceDistance (reg.getMaxCorrespondenceDistance () - 0.001);
+      reg.setMaxCorrespondenceDistance (reg.getMaxCorrespondenceDistance () *0.9);
     
     prev = reg.getLastIncrementalTransformation ();
 

@@ -1,0 +1,3 @@
+/home/stanly/kinect/DP/RoomScanner/parts/regExample/build/CMakeFiles/edit_cache.dir
+/home/stanly/kinect/DP/RoomScanner/parts/regExample/build/CMakeFiles/rebuild_cache.dir
+/home/stanly/kinect/DP/RoomScanner/parts/regExample/build/CMakeFiles/regExample.dir
