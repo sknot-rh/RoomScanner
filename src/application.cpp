@@ -1,39 +1,15 @@
 #include "application.h"
 #include "../build/ui_application.h"
 #include <pcl/visualization/cloud_viewer.h>
-#include <cstddef>
-#include <iterator>
-#include <list>
 #include <boost/thread/thread.hpp>
-#include <pcl/common/common_headers.h>
-#include <pcl/features/normal_3d.h>
 #include <QTimer>
-#include <pcl/common/transforms.h>
 #include <pcl/keypoints/sift_keypoint.h>
 #include <pcl/keypoints/impl/sift_keypoint.hpp>
 #include <QFileDialog>
-#include <pcl/io/pcd_io.h>
-#include <pcl/kdtree/kdtree_flann.h>
-#include <pcl/surface/gp3.h>
 #include <pcl/io/vtk_io.h>
 #include <pcl/io/ply_io.h>
 #include <pcl/io/obj_io.h>
 #include <pcl/io/pcd_io.h>
-#include <pcl/surface/mls.h>
-#include <pcl/surface/impl/mls.hpp>
-#include <pcl/surface/simplification_remove_unused_vertices.h>
-#include <pcl/surface/poisson.h>
-#include <pcl/filters/passthrough.h>
-#include <pcl/features/normal_3d_omp.h>
-#include <pcl/filters/fast_bilateral.h>
-#include <pcl/filters/bilateral.h>
-#include <pcl/surface/bilateral_upsampling.h>
-#include <pcl/filters/voxel_grid.h>
-#include <pcl/surface/vtk_smoothing/vtk_mesh_smoothing_laplacian.h>
-#include <pcl/search/organized.h>
-#include <pcl/surface/marching_cubes_hoppe.h>
-#include <pcl/surface/marching_cubes_rbf.h>
-#include <pcl/surface/marching_cubes.h>
 #include <fstream>
 #include <iostream>
 #include <cstdio>
@@ -41,16 +17,8 @@
 #include "boost/property_tree/json_parser.hpp"
 #include <QMessageBox>
 #include <QMovie>
-#include <pcl/conversions.h>
-#include <pcl/filters/uniform_sampling.h>
-#include <pcl/features/fpfh.h>
-#include <pcl/registration/correspondence_estimation.h>
-#include <pcl/registration/correspondence_rejection_distance.h>
-#include <pcl/registration/transformation_estimation_svd.h>
-#include <pcl/registration/icp_nl.h>
 #include <unistd.h>
 #include <pcl/console/parse.h>
-#include <pcl/filters/statistical_outlier_removal.h>
 
 parameters* parameters::instance = 0;
 
