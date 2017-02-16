@@ -1,39 +1,15 @@
 #include "application.h"
 #include "../build/ui_application.h"
 #include <pcl/visualization/cloud_viewer.h>
-#include <cstddef>
-#include <iterator>
-#include <list>
 #include <boost/thread/thread.hpp>
-#include <pcl/common/common_headers.h>
-#include <pcl/features/normal_3d.h>
 #include <QTimer>
-#include <pcl/common/transforms.h>
 #include <pcl/keypoints/sift_keypoint.h>
 #include <pcl/keypoints/impl/sift_keypoint.hpp>
 #include <QFileDialog>
-#include <pcl/io/pcd_io.h>
-#include <pcl/kdtree/kdtree_flann.h>
-#include <pcl/surface/gp3.h>
 #include <pcl/io/vtk_io.h>
 #include <pcl/io/ply_io.h>
 #include <pcl/io/obj_io.h>
 #include <pcl/io/pcd_io.h>
-#include <pcl/surface/mls.h>
-#include <pcl/surface/impl/mls.hpp>
-#include <pcl/surface/simplification_remove_unused_vertices.h>
-#include <pcl/surface/poisson.h>
-#include <pcl/filters/passthrough.h>
-#include <pcl/features/normal_3d_omp.h>
-#include <pcl/filters/fast_bilateral.h>
-#include <pcl/filters/bilateral.h>
-#include <pcl/surface/bilateral_upsampling.h>
-#include <pcl/filters/voxel_grid.h>
-#include <pcl/surface/vtk_smoothing/vtk_mesh_smoothing_laplacian.h>
-#include <pcl/search/organized.h>
-#include <pcl/surface/marching_cubes_hoppe.h>
-#include <pcl/surface/marching_cubes_rbf.h>
-#include <pcl/surface/marching_cubes.h>
 #include <fstream>
 #include <iostream>
 #include <cstdio>
@@ -41,21 +17,14 @@
 #include "boost/property_tree/json_parser.hpp"
 #include <QMessageBox>
 #include <QMovie>
-#include <pcl/conversions.h>
-#include <pcl/filters/uniform_sampling.h>
-#include <pcl/features/fpfh.h>
-#include <pcl/registration/correspondence_estimation.h>
-#include <pcl/registration/correspondence_rejection_distance.h>
-#include <pcl/registration/transformation_estimation_svd.h>
-#include <pcl/registration/icp_nl.h>
 #include <unistd.h>
 #include <pcl/console/parse.h>
-#include <pcl/filters/statistical_outlier_removal.h>
 
+parameters* parameters::instance = 0;
 
-PCLViewer::PCLViewer (QWidget *parent) :
+RoomScanner::RoomScanner (QWidget *parent) :
   QMainWindow (parent),
-  ui (new Ui::PCLViewer) {
+  ui (new Ui::RoomScanner) {
     ui->setupUi (this);
     pcl::console::setVerbosityLevel(pcl::console::L_DEBUG);
     this->setWindowTitle ("RoomScanner");
@@ -107,7 +76,7 @@ PCLViewer::PCLViewer (QWidget *parent) :
 
     //Create callback for openni grabber
     if (sensorConnected) {
-        boost::function<void (const PointCloudAT::ConstPtr&)> f = boost::bind (&PCLViewer::cloud_cb_, this, _1);
+        boost::function<void (const PointCloudAT::ConstPtr&)> f = boost::bind (&RoomScanner::cloud_cb_, this, _1);
         interface->registerCallback(f);
         interface->start ();
         tmrTimer->start(20); // msec
@@ -160,32 +129,13 @@ PCLViewer::PCLViewer (QWidget *parent) :
     pSliderValueChanged (2);
     ui->tabWidget->setCurrentIndex(0);
 
+
+    /*mytemplate test;
+    test.mytemplateMethod(5);*/
+
 }
 
-// Define a new point representation for < x, y, z, curvature >
-class MyPointRepresentation : public pcl::PointRepresentation <PointNormalT>
-{
-  using pcl::PointRepresentation<PointNormalT>::nr_dimensions_;
-public:
-  MyPointRepresentation ()
-  {
-    // Define the number of dimensions
-    nr_dimensions_ = 4;
-  }
-
-  // Override the copyToFloatArray method to define our feature vector
-  virtual void copyToFloatArray (const PointNormalT &p, float * out) const
-  {
-    // < x, y, z, curvature >
-    out[0] = p.x;
-    out[1] = p.y;
-    out[2] = p.z;
-    out[3] = p.curvature;
-  }
-};
-
-
-void PCLViewer::drawFrame() {
+void RoomScanner::drawFrame() {
     if (stream) {
         if (mtx_.try_lock()) {
             kinectCloud->clear();
@@ -208,38 +158,34 @@ void PCLViewer::drawFrame() {
             mtx_.unlock();
         }
 
-
         if (ui->actionShow_keypoints->isChecked() == true) {
+            //TODO!!! voxel grid for input data
+            parameters* params = parameters::GetInstance();
             // Estimate the sift interest points using Intensity values from RGB values
             pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift;
             pcl::PointCloud<pcl::PointWithScale> result;
             pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT> ());
             sift.setSearchMethod(tree);
-            sift.setScales(min_scale, n_octaves, n_scales_per_octave);
-            sift.setMinimumContrast(min_contrast);
+            sift.setScales(params->min_scale, params->n_octaves, params->n_scales_per_octave);
+            sift.setMinimumContrast(params->min_contrast);
             sift.setInputCloud(kinectCloud);
             sift.compute(result);
 
-            copyPointCloud(result, *key_cloud);
+            copyPointCloud(result, *key_cloud); // from PointWithScale to PointCloudAT
 
             for (int var = 0; var < key_cloud->size(); ++var) {
                 key_cloud->points[var].r = 0;
                 key_cloud->points[var].g = 255;
                 key_cloud->points[var].b = 0;
-
             }
-
             viewer->updatePointCloud(key_cloud ,"keypoints");
-
         }
         viewer->updatePointCloud(kinectCloud ,"kinectCloud");
         ui->qvtkWidget->update ();
     }
-
 }
 
-void PCLViewer::cloud_cb_ (const PointCloudAT::ConstPtr &ncloud) {
-
+void RoomScanner::cloud_cb_ (const PointCloudAT::ConstPtr &ncloud) {
     if (stream) {
         if (mtx_.try_lock()) {
 
@@ -277,7 +223,7 @@ void PCLViewer::cloud_cb_ (const PointCloudAT::ConstPtr &ncloud) {
     }
 }
 
-void PCLViewer::toggled(bool value) {
+void RoomScanner::toggled(bool value) {
     if (value) {
         viewer->addCoordinateSystem(1, 0, 0, 0, "viewer", 0);
     }
@@ -287,12 +233,12 @@ void PCLViewer::toggled(bool value) {
     ui->qvtkWidget->update();
 }
 
-void PCLViewer::resetButtonPressed() {
+void RoomScanner::resetButtonPressed() {
     viewer->resetCamera();
     ui->qvtkWidget->update();
 }
 
-void PCLViewer::saveButtonPressed() {
+void RoomScanner::saveButtonPressed() {
     if (!sensorConnected) {
         return;
     }
@@ -300,31 +246,28 @@ void PCLViewer::saveButtonPressed() {
     PointCloudT::Ptr cloud_out (new PointCloudT);
     stream = false; // "safe" copy
     // Allocate enough space and copy the basics
-     cloud_out->header   = kinectCloud->header;
-     cloud_out->width    = kinectCloud->width;
-     cloud_out->height   = kinectCloud->height;
-     cloud_out->is_dense = kinectCloud->is_dense;
-     cloud_out->sensor_orientation_ = kinectCloud->sensor_orientation_;
-     cloud_out->sensor_origin_ = kinectCloud->sensor_origin_;
-     cloud_out->points.resize (kinectCloud->points.size ());
+    cloud_out->header   = kinectCloud->header;
+    cloud_out->width    = kinectCloud->width;
+    cloud_out->height   = kinectCloud->height;
+    cloud_out->is_dense = kinectCloud->is_dense;
+    cloud_out->sensor_orientation_ = kinectCloud->sensor_orientation_;
+    cloud_out->sensor_origin_ = kinectCloud->sensor_origin_;
+    cloud_out->points.resize (kinectCloud->points.size ());
 
     memcpy (&cloud_out->points[0], &kinectCloud->points[0], kinectCloud->points.size () * sizeof (PointT));
     stream = true;
     clouds.push_back(cloud_out);
-    std::cout << "Saving frame n"<<clouds.size()<<"\n";
+    std::cout << "Saving frame #"<<clouds.size()<<"\n";
 
     std::stringstream ss;
     ss << "frame_" << clouds.size()<<  ".pcd";
     std::string s = ss.str();
 
-
     pcl::io::savePCDFile (s , *cloud_out);
-    //pcl::io::savePCDFile ("bljjj0.pcd" , cloud_out);
-
     lastFrameToggled();
 }
 
-void PCLViewer::pSliderValueChanged (int value)
+void RoomScanner::pSliderValueChanged (int value)
 {
   viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "kinectCloud");
   viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloudFromFile");
@@ -332,7 +275,7 @@ void PCLViewer::pSliderValueChanged (int value)
   ui->qvtkWidget->update ();
 }
 
-void PCLViewer::loadActionPressed() {
+void RoomScanner::loadActionPressed() {
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Choose Point Cloud"), "/home", tr("Point Cloud Files (*.pcd)"));
     std::string utf8_fileName = fileName.toUtf8().constData();
@@ -356,12 +299,12 @@ void PCLViewer::loadActionPressed() {
     ui->qvtkWidget->update();
 }
 
-void PCLViewer::polyButtonPressed() {
+void RoomScanner::polyButtonPressed() {
 
     if (clouds.empty()) {
         if (sensorConnected) {
             ui->tabWidget->setCurrentIndex(1);
-            boost::thread* thr2 = new boost::thread(boost::bind(&PCLViewer::polyButtonPressedFunc, this));
+            boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
             labelPolygonate = new QLabel;
             loading(labelPolygonate);
         }
@@ -380,7 +323,7 @@ void PCLViewer::polyButtonPressed() {
         }
         else {
             ui->tabWidget->setCurrentIndex(1);
-            boost::thread* thr2 = new boost::thread(boost::bind(&PCLViewer::polyButtonPressedFunc, this));
+            boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
             labelPolygonate = new QLabel;
             loading(labelPolygonate);
         }
@@ -389,9 +332,7 @@ void PCLViewer::polyButtonPressed() {
 }
 
 
-void PCLViewer::loading(QLabel* label) {
-
-
+void RoomScanner::loading(QLabel* label) {
     if (!movie->isValid()) {
         std::cerr<<"Invalid loading image " << movie->fileName().toStdString() << "\n";
         return;
@@ -408,7 +349,7 @@ void PCLViewer::loading(QLabel* label) {
     movie->start();
 }
 
-void PCLViewer::polyButtonPressedFunc() {
+void RoomScanner::polyButtonPressedFunc() {
     PointCloudT::Ptr cloudtmp (new PointCloudT);
     PointCloudT::Ptr output (new PointCloudT);
     PointCloudT::Ptr holder (new PointCloudT);
@@ -448,9 +389,9 @@ void PCLViewer::polyButtonPressedFunc() {
 
             //}
 
-            PCLViewer::voxelGridFilter(cloudtmp, output);
-            //PCLViewer::cloudSmooth(holder, output);
-            PCLViewer::polygonateCloud(output, triangles);
+            filters::voxelGridFilter(cloudtmp, output);
+            //filters::cloudSmooth(holder, output); TODO!!!
+            mesh::polygonateCloud(output, triangles);
         }
         else {
             // empty clouds & no sensor
@@ -461,9 +402,9 @@ void PCLViewer::polyButtonPressedFunc() {
         }
     }
     else {
-            PCLViewer::voxelGridFilter(clouds.back(), output);
-            //PCLViewer::cloudSmooth(holder, output);
-            PCLViewer::polygonateCloud(output, triangles);
+        filters::voxelGridFilter(clouds.back(), output);
+        //filters::cloudSmooth(holder, output);
+        mesh::polygonateCloud(output, triangles);
     }
 
 
@@ -516,7 +457,7 @@ void PCLViewer::polyButtonPressedFunc() {
 
 }
 
-void PCLViewer::lastFrameToggled() {
+void RoomScanner::lastFrameToggled() {
     if (clouds.empty()) {
         return;
     }
@@ -535,227 +476,12 @@ void PCLViewer::lastFrameToggled() {
     }
 }
 
-pcl::PolygonMesh PCLViewer::smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth) {
-    //!!! getting double free or corruption (out)
-    std::cout<<"Smoothing mesh\n";
-    pcl::PolygonMesh output;
-    pcl::MeshSmoothingLaplacianVTK vtk;
-    vtk.setInputMesh(meshToSmooth);
-    vtk.setNumIter(20000);
-    vtk.setConvergence(0.0001);
-    vtk.setRelaxationFactor(0.0001);
-    vtk.setFeatureEdgeSmoothing(true);
-    vtk.setFeatureAngle(M_PI/5);
-    vtk.setBoundarySmoothing(true);
-    vtk.process(output);
-    return output;
-}
-
-void PCLViewer::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
-    printf("Marching cubes\n");
-    pcl::NormalEstimationOMP<PointT, pcl::Normal> ne;
-    pcl::search::KdTree<PointT>::Ptr tree1 (new pcl::search::KdTree<PointT>);
-    tree1->setInputCloud (cloudToPolygonate);
-    ne.setInputCloud (cloudToPolygonate);
-    ne.setSearchMethod (tree1);
-    ne.setKSearch (20);
-    pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
-    ne.compute (*normals);
-
-    // Concatenate the XYZ and normal fields*
-    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
-    concatenateFields(*cloudToPolygonate, *normals, *cloud_with_normals);
-
-    // Create search tree*
-    pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
-    tree->setInputCloud (cloud_with_normals);
-
-    std::cout << "begin marching cubes reconstruction" << std::endl;
-
-    pcl::MarchingCubesHoppe<pcl::PointXYZRGBNormal> mc;
-    //pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
-    mc.setInputCloud (cloud_with_normals);
-    mc.setSearchMethod (tree);
-    mc.reconstruct (*triangles);
-
-    std::cout << triangles->polygons.size() << " triangles created" << std::endl;
-    //return triangles;
-}
-
-
-void PCLViewer::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
-    std::cout<<"Greedy polygonation\n";
-
-    std::ifstream config_file("config.json");
-
-    if (!config_file.fail()) {
-        std::cout << "Config file loaded\n";
-        using boost::property_tree::ptree;
-        ptree pt;
-        read_json(config_file, pt);
-
-        for (auto & array_element: pt) {
-            if (array_element.first == "greedyProjection")
-                std::cout << "greedyProjection" << "\n";
-            for (auto & property: array_element.second) {
-                if (array_element.first == "greedyProjection")
-                    std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
-            }
-        }
-
-        GPsearchRadius = pt.get<float>("greedyProjection.searchRadius");
-        GPmu = pt.get<float>("greedyProjection.mu");
-        GPmaximumNearestNeighbors = pt.get<int>("greedyProjection.maximumNearestNeighbors");
-    }
-
-
-
-
-    // Get Greedy result
-    //Normal Estimation
-    pcl::NormalEstimation<PointT, pcl::Normal> normEstim;
-    pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
-    pcl::search::KdTree<PointT>::Ptr tree2 (new pcl::search::KdTree<PointT>);
-    //pcl::search::OrganizedNeighbor<PointT>::Ptr tree2 (new pcl::search::OrganizedNeighbor<PointT>); //only for organized cloud
-    tree2->setInputCloud(cloudToPolygonate);//cloud_filtered
-    normEstim.setInputCloud(cloudToPolygonate);//cloud_filtered
-    normEstim.setSearchMethod(tree2);
-    normEstim.setKSearch(20);
-    //normEstim.setNumberOfThreads(4);
-    normEstim.compute(*normals);
-
-    //Concatenate the cloud with the normal fields
-    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
-    pcl::concatenateFields(*cloudToPolygonate,*normals,*cloud_normals);
-
-    //Create  search tree to include cloud with normals
-    pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree_normal (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
-    //pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>::Ptr tree_normal (new pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>); //only for organized cloud
-    tree_normal->setInputCloud(cloud_normals);
-
-
-    //Initialize objects for triangulation
-    pcl::GreedyProjectionTriangulation<pcl::PointXYZRGBNormal> gp;
-    //boost::shared_ptr<pcl::PolygonMesh> triangles(new pcl::PolygonMesh);
-    //pcl::PolygonMesh triangles;
-
-    //Max distance between connecting edge points
-    gp.setSearchRadius(GPsearchRadius);
-    gp.setMu(GPmu);
-    gp.setMaximumNearestNeighbors (GPmaximumNearestNeighbors);
-    gp.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
-    gp.setMinimumAngle(M_PI/18); // 10 degrees
-    gp.setMaximumAngle(2*M_PI/3); // 120 degrees
-    gp.setNormalConsistency(false);
-
-
-    gp.setInputCloud (cloud_normals);
-    gp.setSearchMethod (tree_normal);
-    gp.reconstruct (*triangles);
-    std::cout << "Polygons created: " << triangles->polygons.size() << "\n";
-    //return triangles;
-}
-
-void PCLViewer::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered) {
-    std::cout<<"downsampling filter\n";
-
-    std::ifstream config_file("config.json");
-
-    if (!config_file.fail()) {
-        std::cout << "Config file loaded\n";
-        using boost::property_tree::ptree;
-        ptree pt;
-        read_json(config_file, pt);
-
-        for (auto & array_element: pt) {
-            if (array_element.first == "gridFilter")
-                std::cout << "gridFilter" << "\n";
-            for (auto & property: array_element.second) {
-                if (array_element.first == "gridFilter")
-                    std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
-            }
-        }
-
-        VGFleafSize = pt.get<float>("gridFilter.leafSize");
-    }
-
-    pcl::VoxelGrid<PointT> ds;  //create downsampling filter
-    //pcl::UniformSampling<PointT> ds;  //create downsampling filter
-    ds.setInputCloud (cloudToFilter);
-    ds.setLeafSize (VGFleafSize, VGFleafSize, VGFleafSize);
-    //ds.setRadiusSearch(VGFleafSize);
-    ds.filter (*filtered);
-    std::cout<<"Filtered points: " << filtered->points.size() << "\n";
-}
-
-void PCLViewer::cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
-    std::cout<<"smoothing "<< cloudToSmooth->points.size() <<" points\n";
-    // final version will load from json while startup and changes will be done in GUI
-
-
-    std::ifstream config_file("config.json");
-
-
-    if (!config_file.fail()) {
-        std::cout << "Config file loaded\n";
-        using boost::property_tree::ptree;
-        ptree pt;
-        read_json(config_file, pt);
-
-        for (auto & array_element: pt) {
-            if (array_element.first == "mls")
-                std::cout << "mls" << "\n";
-            for (auto & property: array_element.second) {
-                if (array_element.first == "mls")
-                    std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
-            }
-        }
-
-        MLSpolynomialOrder = pt.get<int>("mls.polynomialOrder");
-        MLSusePolynomialFit = pt.get<bool>("mls.usePolynomialFit");
-        MLSsearchRadius = pt.get<double>("mls.searchRadius");
-        MLSsqrGaussParam = pt.get<double>("mls.sqrGaussParam");
-        MLSupsamplingRadius = pt.get<double>("mls.upsamplingRadius");
-        MLSupsamplingStepSize = pt.get<double>("mls.upsamplingStepSize");
-        MLSdilationIterations = pt.get<int>("mls.dilationIterations");
-        MLSdilationVoxelSize = pt.get<double>("mls.dilationVoxelSize");
-        MLScomputeNormals = pt.get<bool>("mls.computeNormals");
-    }
-
-
-
-     pcl::MovingLeastSquares<PointT, PointT> mls;
-     mls.setInputCloud (cloudToSmooth);
-     mls.setSearchRadius (MLSsearchRadius);
-     mls.setSqrGaussParam (MLSsqrGaussParam);
-     mls.setPolynomialFit (MLSusePolynomialFit);
-     mls.setPolynomialOrder (MLSpolynomialOrder);
-
-     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::SAMPLE_LOCAL_PLANE);
-     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::RANDOM_UNIFORM_DENSITY);
-     mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
-     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointXYZRGB>::NONE);
-     mls.setPointDensity ( int (60000 * MLSsearchRadius)); // 300 points in a 5 cm radius
-     mls.setUpsamplingRadius (MLSupsamplingRadius);
-     mls.setUpsamplingStepSize (MLSupsamplingStepSize);
-     mls.setDilationIterations (MLSdilationIterations);
-     mls.setDilationVoxelSize (MLSdilationVoxelSize);
-
-     pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
-     //pcl::search::OrganizedNeighbor<PointT> tree (new pcl::search::OrganizedNeighbor<PointT> ());
-     mls.setSearchMethod (tree);
-     mls.setComputeNormals (MLScomputeNormals);
-     mls.process (*output);
-     std::cout<<"now we have "<< output->points.size() <<" points\n";
-
-}
-
-void PCLViewer::closing() {
+void RoomScanner::closing() {
     //printf("Exiting...\n");
     //interface->stop();
 }
 
-PCLViewer::~PCLViewer ()
+RoomScanner::~RoomScanner ()
 {
     printf("Exiting...\n");
     if (sensorConnected) {
@@ -767,7 +493,7 @@ PCLViewer::~PCLViewer ()
     //delete &cloud;
 }
 
-void PCLViewer::actionClearTriggered()
+void RoomScanner::actionClearTriggered()
 {
     clouds.clear();
     viewer->removeAllPointClouds();
@@ -782,7 +508,7 @@ void PCLViewer::actionClearTriggered()
     registered = false;
 }
 
-void PCLViewer::regButtonPressed() {
+void RoomScanner::regButtonPressed() {
     if (clouds.size() < 2) {
         std::cerr << "To few clouds to registrate!\n";
     }
@@ -790,11 +516,11 @@ void PCLViewer::regButtonPressed() {
     stream = false;
     std::cout << "Registrating " << clouds.size() << " point clouds.\n";
     labelRegistrate = new QLabel;
-    boost::thread* thr = new boost::thread(boost::bind(&PCLViewer::registrateNClouds, this));
+    boost::thread* thr = new boost::thread(boost::bind(&RoomScanner::registrateNClouds, this));
     loading(labelRegistrate);
 }
 
-PointCloudT::Ptr PCLViewer::registrateNClouds() {
+PointCloudT::Ptr RoomScanner::registrateNClouds() {
     PointCloudT::Ptr result (new PointCloudT);
     PointCloudT::Ptr globalResult (new PointCloudT);
     PointCloudT::Ptr source, target;
@@ -822,7 +548,7 @@ PointCloudT::Ptr PCLViewer::registrateNClouds() {
         sor2.filter (*target);*/
 
         PointCloudT::Ptr temp (new PointCloudT);
-        PCLViewer::pairAlign (source, target, temp, pairTransform, true);
+        registration::pairAlign (source, target, temp, pairTransform, true);
 
 
         //PCLViewer::computeTransformation (source, target, pairTransform);
@@ -878,19 +604,17 @@ PointCloudT::Ptr PCLViewer::registrateNClouds() {
 
 
 
-void PCLViewer::tabChangedEvent(int tabIndex) {
+void RoomScanner::tabChangedEvent(int tabIndex) {
     if (tabIndex == 0) {
         stream = true;
-        //stop = false;
     }
     else {
         std::cout<<"Stopping stream...\n";
         stream = false;
-        //stop = true;
     }
 }
 
-void PCLViewer::keypointsToggled() {
+void RoomScanner::keypointsToggled() {
     if (!ui->actionShow_keypoints->isChecked()) {
         viewer->removePointCloud("keypoints");
         ui->qvtkWidget->update();
@@ -901,262 +625,6 @@ void PCLViewer::keypointsToggled() {
         ui->qvtkWidget->update();
     }
 }
-
-////////////////////////////////////////////////////////////////////////////////
-/** \brief Align a pair of PointCloud datasets and return the result
-  * \param cloud_src the source PointCloud
-  * \param cloud_tgt the target PointCloud
-  * \param output the resultant aligned source PointCloud
-  * \param final_transform the resultant transform between source and target
-  */
-void PCLViewer::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, bool downsample)
-{
-  //
-  // Downsample for consistency and speed
-  // \note enable this for large datasets
-  PointCloudT::Ptr src (new PointCloudT);
-  PointCloudT::Ptr tgt (new PointCloudT);
-  pcl::VoxelGrid<PointT> grid;
-  if (downsample)
-  {
-    grid.setLeafSize (0.05, 0.05, 0.05);
-    grid.setInputCloud (cloud_src);
-    grid.filter (*src);
-
-    grid.setInputCloud (cloud_tgt);
-    grid.filter (*tgt);
-  }
-  else
-  {
-    src = cloud_src;
-    tgt = cloud_tgt;
-  }
-
-
-  // Compute surface normals and curvature
-  PointCloudWithNormals::Ptr points_with_normals_src (new PointCloudWithNormals);
-  PointCloudWithNormals::Ptr points_with_normals_tgt (new PointCloudWithNormals);
-
-  pcl::NormalEstimation<PointT, PointNormalT> norm_est;
-  pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
-  norm_est.setSearchMethod (tree);
-  norm_est.setKSearch (30);
-
-  norm_est.setInputCloud (src);
-  norm_est.compute (*points_with_normals_src);
-  pcl::copyPointCloud (*src, *points_with_normals_src);
-
-  norm_est.setInputCloud (tgt);
-  norm_est.compute (*points_with_normals_tgt);
-  pcl::copyPointCloud (*tgt, *points_with_normals_tgt);
-
-  //
-  // Instantiate our custom point representation (defined above) ...
-  MyPointRepresentation point_representation;
-  // ... and weight the 'curvature' dimension so that it is balanced against x, y, and z
-  float alpha[4] = {1.0, 1.0, 1.0, 1.0};
-  point_representation.setRescaleValues (alpha);
-
-  //
-  // Align
-  pcl::IterativeClosestPointNonLinear<PointNormalT, PointNormalT> reg;
-  reg.setTransformationEpsilon (1e-16);
-  // Set the maximum distance between two correspondences (src<->tgt) to 10cm
-  // Note: adjust this based on the size of your datasets
-  reg.setMaxCorrespondenceDistance (0.75);
-  // Set the point representation
-  reg.setPointRepresentation (boost::make_shared<const MyPointRepresentation> (point_representation));
-
-  reg.setInputSource (points_with_normals_src);
-  reg.setInputTarget (points_with_normals_tgt);
-
-
-
-  //
-  // Run the same optimization in a loop
-  Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
-  PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
-  reg.setMaximumIterations (20);
-  for (int i = 0; i < 100; ++i)
-  {
-    PCL_INFO ("Iteration Nr. %d.\n", i);
-
-    // save cloud for visualization purpose
-    points_with_normals_src = reg_result;
-
-    // Estimate
-    reg.setInputSource (points_with_normals_src);
-    reg.align (*reg_result);
-
-        //accumulate transformation between each Iteration
-    Ti = reg.getFinalTransformation () * Ti;
-
-        //if the difference between this transformation and the previous one
-        //is smaller than the threshold, refine the process by reducing
-        //the maximal correspondence distance
-    if (fabs ((reg.getLastIncrementalTransformation () - prev).sum ()) < reg.getTransformationEpsilon ())
-      reg.setMaxCorrespondenceDistance (reg.getMaxCorrespondenceDistance () * 0.9);
-
-    prev = reg.getLastIncrementalTransformation ();
-
-  }
-
-    //
-  // Get the transformation from target to source
-  targetToSource = Ti.inverse();
-
-  //
-  // Transform target back in source frame
-  pcl::transformPointCloud (*cloud_tgt, *output, targetToSource);
-
-
-  //add the source to the transformed target
-  *output += *cloud_src;
-
-  final_transform = targetToSource;
- }
-
-
-void PCLViewer::computeTransformation (const PointCloudT::Ptr &src_origin,
-                       const PointCloudT::Ptr &tgt_origin,
-                       Eigen::Matrix4f &transform)
-{
-    std::cout << "computeTransformation\n";
-  // Get an uniform grid of keypoints
-  PointCloudT::Ptr keypoints_src (new PointCloudT), keypoints_tgt (new PointCloudT);
-
-  PointCloudT::Ptr src (new PointCloudT),
-                   tgt (new PointCloudT);
-
-  PCLViewer::downsample (src_origin, tgt_origin, *src, *tgt);
-
-  PCLViewer::estimateKeypoints (src, tgt, *keypoints_src, *keypoints_tgt);
-  printf ("Found %lu and %lu keypoints for the source and target datasets.\n", keypoints_src->points.size (), keypoints_tgt->points.size ());
-
-  // Compute normals for all points keypoint
-  pcl::PointCloud<pcl::Normal>::Ptr normals_src (new pcl::PointCloud<pcl::Normal>),
-                          normals_tgt (new pcl::PointCloud<pcl::Normal>);
-  PCLViewer::estimateNormals (src, tgt, *normals_src, *normals_tgt);
-  printf ("Estimated %lu and %lu normals for the source and target datasets.\n", normals_src->points.size (), normals_tgt->points.size ());
-
-  // Compute FPFH features at each keypoint
-  pcl::PointCloud<pcl::FPFHSignature33>::Ptr fpfhs_src (new pcl::PointCloud<pcl::FPFHSignature33>),
-                                   fpfhs_tgt (new pcl::PointCloud<pcl::FPFHSignature33>);
-  PCLViewer::estimateFPFH (src, tgt, normals_src, normals_tgt, keypoints_src, keypoints_tgt, *fpfhs_src, *fpfhs_tgt);
-
-  // Find correspondences between keypoints in FPFH space
-  pcl::CorrespondencesPtr all_correspondences (new pcl::Correspondences),
-                     good_correspondences (new pcl::Correspondences);
-  PCLViewer::findCorrespondences (fpfhs_src, fpfhs_tgt, *all_correspondences);
-
-  // Reject correspondences based on their XYZ distance
-  PCLViewer::rejectBadCorrespondences (all_correspondences, keypoints_src, keypoints_tgt, *good_correspondences);
-
-  for (int i = 0; i < good_correspondences->size (); ++i)
-    std::cerr << good_correspondences->at (i) << std::endl;
-  // Obtain the best transformation between the two sets of keypoints given the remaining correspondences
-  pcl::registration::TransformationEstimationSVD<PointT, PointT> trans_est;
-  trans_est.estimateRigidTransformation (*keypoints_src, *keypoints_tgt, *good_correspondences, transform);
-}
-
-
-void PCLViewer::rejectBadCorrespondences (const pcl::CorrespondencesPtr &all_correspondences,
-                          const PointCloudT::Ptr &keypoints_src,
-                          const PointCloudT::Ptr &keypoints_tgt,
-                          pcl::Correspondences &remaining_correspondences)
-{
-    std::cout << "rejectBadCorrespondences\n";
-  pcl::registration::CorrespondenceRejectorDistance rej;
-  rej.setInputCloud<PointT> (keypoints_src);
-  rej.setInputTarget<PointT> (keypoints_tgt);
-  rej.setMaximumDistance (1);    // 1m
-  rej.setInputCorrespondences (all_correspondences);
-  rej.getCorrespondences (remaining_correspondences);
-}
-
-void PCLViewer::findCorrespondences (const pcl::PointCloud<pcl::FPFHSignature33>::Ptr &fpfhs_src,
-                     const pcl::PointCloud<pcl::FPFHSignature33>::Ptr &fpfhs_tgt,
-                     pcl::Correspondences &all_correspondences)
-{
-    std::cout << "findCorrespondences\n";
-  pcl::registration::CorrespondenceEstimation<pcl::FPFHSignature33, pcl::FPFHSignature33> est;
-  est.setInputSource (fpfhs_src);
-  est.setInputTarget (fpfhs_tgt);
-  est.determineReciprocalCorrespondences (all_correspondences);
-}
-
-void PCLViewer::estimateFPFH (const PointCloudT::Ptr &src,
-              const PointCloudT::Ptr &tgt,
-              const pcl::PointCloud<pcl::Normal>::Ptr &normals_src,
-              const pcl::PointCloud<pcl::Normal>::Ptr &normals_tgt,
-              const PointCloudT::Ptr &keypoints_src,
-              const PointCloudT::Ptr &keypoints_tgt,
-              pcl::PointCloud<pcl::FPFHSignature33> &fpfhs_src,
-              pcl::PointCloud<pcl::FPFHSignature33> &fpfhs_tgt)
-{
-    std::cout << "estimateFPFH\n";
-  pcl::FPFHEstimation<PointT, pcl::Normal, pcl::FPFHSignature33> fpfh_est;
-  fpfh_est.setInputCloud (keypoints_src);
-  fpfh_est.setInputNormals (normals_src);
-  fpfh_est.setRadiusSearch (1); // 1m
-  fpfh_est.setSearchSurface (src);
-  fpfh_est.compute (fpfhs_src);
-
-  fpfh_est.setInputCloud (keypoints_tgt);
-  fpfh_est.setInputNormals (normals_tgt);
-  fpfh_est.setSearchSurface (tgt);
-  fpfh_est.compute (fpfhs_tgt);
-}
-
-void PCLViewer::estimateNormals (const PointCloudT::Ptr &src,
-                 const PointCloudT::Ptr &tgt,
-                 pcl::PointCloud<pcl::Normal> &normals_src,
-                 pcl::PointCloud<pcl::Normal> &normals_tgt)
-{
-    std::cout << "estimateNormals\n";
-  pcl::NormalEstimationOMP<PointT, pcl::Normal> normal_est;
-  normal_est.setNumberOfThreads(4);
-  normal_est.setInputCloud (src);
-  std::cout << "normals source " << src->points.size() << "\n";
-  normal_est.setRadiusSearch (0.5);  // 50cm
-  normal_est.compute (normals_src);
-
-  std::cout << "normals target " << tgt->points.size() << "\n";
-  normal_est.setInputCloud (tgt);
-  normal_est.compute (normals_tgt);
-}
-
-void PCLViewer::estimateKeypoints (const PointCloudT::Ptr &src,
-                   const PointCloudT::Ptr &tgt,
-                   PointCloudT &keypoints_src,
-                   PointCloudT &keypoints_tgt)
-{
-    std::cout << "estimateKeypoints\n";
-  // Get an uniform grid of keypoints
-  pcl::UniformSampling<PointT> uniform;
-  uniform.setRadiusSearch (1);  // 1m
-
-  uniform.setInputCloud (src);
-  uniform.filter (keypoints_src);
-
-  uniform.setInputCloud (tgt);
-  uniform.filter (keypoints_tgt);
-}
-
-void PCLViewer::downsample (const PointCloudT::Ptr &src_origin, const PointCloudT::Ptr &tgt_origin, PointCloudT &src, PointCloudT &tgt) {
-
-    std::cout << "downsample\n";
-      // Get an uniform grid of keypoints
-      pcl::UniformSampling<PointT> uniform;
-      uniform.setRadiusSearch (0.05);  // 5cm
-
-      uniform.setInputCloud (src_origin);
-      uniform.filter (src);
-
-      uniform.setInputCloud (tgt_origin);
-      uniform.filter (tgt);
-}
-
 
 
 

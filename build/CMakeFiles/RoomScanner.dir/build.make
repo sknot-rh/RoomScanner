@@ -73,9 +73,33 @@ moc_application.cpp: /home/stanly/kinect/DP/RoomScanner/src/application.h
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating moc_application.cpp"
 	/opt/Qt/5.7/gcc_64/bin/moc @/home/stanly/kinect/DP/RoomScanner/build/moc_application.cpp_parameters
 
+moc_mytemplate.cpp: /home/stanly/kinect/DP/RoomScanner/src/mytemplate.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating moc_mytemplate.cpp"
+	/opt/Qt/5.7/gcc_64/bin/moc @/home/stanly/kinect/DP/RoomScanner/build/moc_mytemplate.cpp_parameters
+
+moc_parameters.cpp: /home/stanly/kinect/DP/RoomScanner/src/parameters.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Generating moc_parameters.cpp"
+	/opt/Qt/5.7/gcc_64/bin/moc @/home/stanly/kinect/DP/RoomScanner/build/moc_parameters.cpp_parameters
+
+moc_filters.cpp: /home/stanly/kinect/DP/RoomScanner/src/filters.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Generating moc_filters.cpp"
+	/opt/Qt/5.7/gcc_64/bin/moc @/home/stanly/kinect/DP/RoomScanner/build/moc_filters.cpp_parameters
+
+moc_pointrepr.cpp: /home/stanly/kinect/DP/RoomScanner/src/pointrepr.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Generating moc_pointrepr.cpp"
+	/opt/Qt/5.7/gcc_64/bin/moc @/home/stanly/kinect/DP/RoomScanner/build/moc_pointrepr.cpp_parameters
+
+moc_mesh.cpp: /home/stanly/kinect/DP/RoomScanner/src/mesh.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Generating moc_mesh.cpp"
+	/opt/Qt/5.7/gcc_64/bin/moc @/home/stanly/kinect/DP/RoomScanner/build/moc_mesh.cpp_parameters
+
+moc_registration.cpp: /home/stanly/kinect/DP/RoomScanner/src/registration.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Generating moc_registration.cpp"
+	/opt/Qt/5.7/gcc_64/bin/moc @/home/stanly/kinect/DP/RoomScanner/build/moc_registration.cpp_parameters
+
 CMakeFiles/RoomScanner.dir/main.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
 CMakeFiles/RoomScanner.dir/main.cpp.o: /home/stanly/kinect/DP/RoomScanner/src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/RoomScanner.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/RoomScanner.dir/main.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/main.cpp.o -c /home/stanly/kinect/DP/RoomScanner/src/main.cpp
 
 CMakeFiles/RoomScanner.dir/main.cpp.i: cmake_force
@@ -99,7 +123,7 @@ CMakeFiles/RoomScanner.dir/main.cpp.o.provides.build: CMakeFiles/RoomScanner.dir
 
 CMakeFiles/RoomScanner.dir/application.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
 CMakeFiles/RoomScanner.dir/application.cpp.o: /home/stanly/kinect/DP/RoomScanner/src/application.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/RoomScanner.dir/application.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/RoomScanner.dir/application.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/application.cpp.o -c /home/stanly/kinect/DP/RoomScanner/src/application.cpp
 
 CMakeFiles/RoomScanner.dir/application.cpp.i: cmake_force
@@ -121,9 +145,105 @@ CMakeFiles/RoomScanner.dir/application.cpp.o.provides: CMakeFiles/RoomScanner.di
 CMakeFiles/RoomScanner.dir/application.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/application.cpp.o
 
 
+CMakeFiles/RoomScanner.dir/mytemplate.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
+CMakeFiles/RoomScanner.dir/mytemplate.cpp.o: /home/stanly/kinect/DP/RoomScanner/src/mytemplate.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/RoomScanner.dir/mytemplate.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/mytemplate.cpp.o -c /home/stanly/kinect/DP/RoomScanner/src/mytemplate.cpp
+
+CMakeFiles/RoomScanner.dir/mytemplate.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RoomScanner.dir/mytemplate.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/src/mytemplate.cpp > CMakeFiles/RoomScanner.dir/mytemplate.cpp.i
+
+CMakeFiles/RoomScanner.dir/mytemplate.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RoomScanner.dir/mytemplate.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/src/mytemplate.cpp -o CMakeFiles/RoomScanner.dir/mytemplate.cpp.s
+
+CMakeFiles/RoomScanner.dir/mytemplate.cpp.o.requires:
+
+.PHONY : CMakeFiles/RoomScanner.dir/mytemplate.cpp.o.requires
+
+CMakeFiles/RoomScanner.dir/mytemplate.cpp.o.provides: CMakeFiles/RoomScanner.dir/mytemplate.cpp.o.requires
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mytemplate.cpp.o.provides.build
+.PHONY : CMakeFiles/RoomScanner.dir/mytemplate.cpp.o.provides
+
+CMakeFiles/RoomScanner.dir/mytemplate.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/mytemplate.cpp.o
+
+
+CMakeFiles/RoomScanner.dir/filters.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
+CMakeFiles/RoomScanner.dir/filters.cpp.o: /home/stanly/kinect/DP/RoomScanner/src/filters.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/RoomScanner.dir/filters.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/filters.cpp.o -c /home/stanly/kinect/DP/RoomScanner/src/filters.cpp
+
+CMakeFiles/RoomScanner.dir/filters.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RoomScanner.dir/filters.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/src/filters.cpp > CMakeFiles/RoomScanner.dir/filters.cpp.i
+
+CMakeFiles/RoomScanner.dir/filters.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RoomScanner.dir/filters.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/src/filters.cpp -o CMakeFiles/RoomScanner.dir/filters.cpp.s
+
+CMakeFiles/RoomScanner.dir/filters.cpp.o.requires:
+
+.PHONY : CMakeFiles/RoomScanner.dir/filters.cpp.o.requires
+
+CMakeFiles/RoomScanner.dir/filters.cpp.o.provides: CMakeFiles/RoomScanner.dir/filters.cpp.o.requires
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/filters.cpp.o.provides.build
+.PHONY : CMakeFiles/RoomScanner.dir/filters.cpp.o.provides
+
+CMakeFiles/RoomScanner.dir/filters.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/filters.cpp.o
+
+
+CMakeFiles/RoomScanner.dir/mesh.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
+CMakeFiles/RoomScanner.dir/mesh.cpp.o: /home/stanly/kinect/DP/RoomScanner/src/mesh.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/RoomScanner.dir/mesh.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/mesh.cpp.o -c /home/stanly/kinect/DP/RoomScanner/src/mesh.cpp
+
+CMakeFiles/RoomScanner.dir/mesh.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RoomScanner.dir/mesh.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/src/mesh.cpp > CMakeFiles/RoomScanner.dir/mesh.cpp.i
+
+CMakeFiles/RoomScanner.dir/mesh.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RoomScanner.dir/mesh.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/src/mesh.cpp -o CMakeFiles/RoomScanner.dir/mesh.cpp.s
+
+CMakeFiles/RoomScanner.dir/mesh.cpp.o.requires:
+
+.PHONY : CMakeFiles/RoomScanner.dir/mesh.cpp.o.requires
+
+CMakeFiles/RoomScanner.dir/mesh.cpp.o.provides: CMakeFiles/RoomScanner.dir/mesh.cpp.o.requires
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mesh.cpp.o.provides.build
+.PHONY : CMakeFiles/RoomScanner.dir/mesh.cpp.o.provides
+
+CMakeFiles/RoomScanner.dir/mesh.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/mesh.cpp.o
+
+
+CMakeFiles/RoomScanner.dir/registration.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
+CMakeFiles/RoomScanner.dir/registration.cpp.o: /home/stanly/kinect/DP/RoomScanner/src/registration.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/RoomScanner.dir/registration.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/registration.cpp.o -c /home/stanly/kinect/DP/RoomScanner/src/registration.cpp
+
+CMakeFiles/RoomScanner.dir/registration.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RoomScanner.dir/registration.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/src/registration.cpp > CMakeFiles/RoomScanner.dir/registration.cpp.i
+
+CMakeFiles/RoomScanner.dir/registration.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RoomScanner.dir/registration.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/src/registration.cpp -o CMakeFiles/RoomScanner.dir/registration.cpp.s
+
+CMakeFiles/RoomScanner.dir/registration.cpp.o.requires:
+
+.PHONY : CMakeFiles/RoomScanner.dir/registration.cpp.o.requires
+
+CMakeFiles/RoomScanner.dir/registration.cpp.o.provides: CMakeFiles/RoomScanner.dir/registration.cpp.o.requires
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/registration.cpp.o.provides.build
+.PHONY : CMakeFiles/RoomScanner.dir/registration.cpp.o.provides
+
+CMakeFiles/RoomScanner.dir/registration.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/registration.cpp.o
+
+
 CMakeFiles/RoomScanner.dir/moc_application.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
 CMakeFiles/RoomScanner.dir/moc_application.cpp.o: moc_application.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/RoomScanner.dir/moc_application.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/RoomScanner.dir/moc_application.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/moc_application.cpp.o -c /home/stanly/kinect/DP/RoomScanner/build/moc_application.cpp
 
 CMakeFiles/RoomScanner.dir/moc_application.cpp.i: cmake_force
@@ -145,9 +265,153 @@ CMakeFiles/RoomScanner.dir/moc_application.cpp.o.provides: CMakeFiles/RoomScanne
 CMakeFiles/RoomScanner.dir/moc_application.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/moc_application.cpp.o
 
 
+CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
+CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o: moc_mytemplate.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o -c /home/stanly/kinect/DP/RoomScanner/build/moc_mytemplate.cpp
+
+CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/build/moc_mytemplate.cpp > CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.i
+
+CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/build/moc_mytemplate.cpp -o CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.s
+
+CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o.requires:
+
+.PHONY : CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o.requires
+
+CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o.provides: CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o.requires
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o.provides.build
+.PHONY : CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o.provides
+
+CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o
+
+
+CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
+CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o: moc_parameters.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o -c /home/stanly/kinect/DP/RoomScanner/build/moc_parameters.cpp
+
+CMakeFiles/RoomScanner.dir/moc_parameters.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RoomScanner.dir/moc_parameters.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/build/moc_parameters.cpp > CMakeFiles/RoomScanner.dir/moc_parameters.cpp.i
+
+CMakeFiles/RoomScanner.dir/moc_parameters.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RoomScanner.dir/moc_parameters.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/build/moc_parameters.cpp -o CMakeFiles/RoomScanner.dir/moc_parameters.cpp.s
+
+CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o.requires:
+
+.PHONY : CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o.requires
+
+CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o.provides: CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o.requires
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o.provides.build
+.PHONY : CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o.provides
+
+CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o
+
+
+CMakeFiles/RoomScanner.dir/moc_filters.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
+CMakeFiles/RoomScanner.dir/moc_filters.cpp.o: moc_filters.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/RoomScanner.dir/moc_filters.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/moc_filters.cpp.o -c /home/stanly/kinect/DP/RoomScanner/build/moc_filters.cpp
+
+CMakeFiles/RoomScanner.dir/moc_filters.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RoomScanner.dir/moc_filters.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/build/moc_filters.cpp > CMakeFiles/RoomScanner.dir/moc_filters.cpp.i
+
+CMakeFiles/RoomScanner.dir/moc_filters.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RoomScanner.dir/moc_filters.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/build/moc_filters.cpp -o CMakeFiles/RoomScanner.dir/moc_filters.cpp.s
+
+CMakeFiles/RoomScanner.dir/moc_filters.cpp.o.requires:
+
+.PHONY : CMakeFiles/RoomScanner.dir/moc_filters.cpp.o.requires
+
+CMakeFiles/RoomScanner.dir/moc_filters.cpp.o.provides: CMakeFiles/RoomScanner.dir/moc_filters.cpp.o.requires
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_filters.cpp.o.provides.build
+.PHONY : CMakeFiles/RoomScanner.dir/moc_filters.cpp.o.provides
+
+CMakeFiles/RoomScanner.dir/moc_filters.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/moc_filters.cpp.o
+
+
+CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
+CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o: moc_pointrepr.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o -c /home/stanly/kinect/DP/RoomScanner/build/moc_pointrepr.cpp
+
+CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/build/moc_pointrepr.cpp > CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.i
+
+CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/build/moc_pointrepr.cpp -o CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.s
+
+CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o.requires:
+
+.PHONY : CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o.requires
+
+CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o.provides: CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o.requires
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o.provides.build
+.PHONY : CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o.provides
+
+CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o
+
+
+CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
+CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o: moc_mesh.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o -c /home/stanly/kinect/DP/RoomScanner/build/moc_mesh.cpp
+
+CMakeFiles/RoomScanner.dir/moc_mesh.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RoomScanner.dir/moc_mesh.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/build/moc_mesh.cpp > CMakeFiles/RoomScanner.dir/moc_mesh.cpp.i
+
+CMakeFiles/RoomScanner.dir/moc_mesh.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RoomScanner.dir/moc_mesh.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/build/moc_mesh.cpp -o CMakeFiles/RoomScanner.dir/moc_mesh.cpp.s
+
+CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o.requires:
+
+.PHONY : CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o.requires
+
+CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o.provides: CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o.requires
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o.provides.build
+.PHONY : CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o.provides
+
+CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o
+
+
+CMakeFiles/RoomScanner.dir/moc_registration.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
+CMakeFiles/RoomScanner.dir/moc_registration.cpp.o: moc_registration.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/RoomScanner.dir/moc_registration.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/moc_registration.cpp.o -c /home/stanly/kinect/DP/RoomScanner/build/moc_registration.cpp
+
+CMakeFiles/RoomScanner.dir/moc_registration.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RoomScanner.dir/moc_registration.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stanly/kinect/DP/RoomScanner/build/moc_registration.cpp > CMakeFiles/RoomScanner.dir/moc_registration.cpp.i
+
+CMakeFiles/RoomScanner.dir/moc_registration.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RoomScanner.dir/moc_registration.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stanly/kinect/DP/RoomScanner/build/moc_registration.cpp -o CMakeFiles/RoomScanner.dir/moc_registration.cpp.s
+
+CMakeFiles/RoomScanner.dir/moc_registration.cpp.o.requires:
+
+.PHONY : CMakeFiles/RoomScanner.dir/moc_registration.cpp.o.requires
+
+CMakeFiles/RoomScanner.dir/moc_registration.cpp.o.provides: CMakeFiles/RoomScanner.dir/moc_registration.cpp.o.requires
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_registration.cpp.o.provides.build
+.PHONY : CMakeFiles/RoomScanner.dir/moc_registration.cpp.o.provides
+
+CMakeFiles/RoomScanner.dir/moc_registration.cpp.o.provides.build: CMakeFiles/RoomScanner.dir/moc_registration.cpp.o
+
+
 CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o: CMakeFiles/RoomScanner.dir/flags.make
 CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o: CMakeFiles/RoomScanner.dir/qrc_Resources.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o -c /home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp
 
 CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.i: cmake_force
@@ -173,7 +437,17 @@ CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o.provid
 RoomScanner_OBJECTS = \
 "CMakeFiles/RoomScanner.dir/main.cpp.o" \
 "CMakeFiles/RoomScanner.dir/application.cpp.o" \
+"CMakeFiles/RoomScanner.dir/mytemplate.cpp.o" \
+"CMakeFiles/RoomScanner.dir/filters.cpp.o" \
+"CMakeFiles/RoomScanner.dir/mesh.cpp.o" \
+"CMakeFiles/RoomScanner.dir/registration.cpp.o" \
 "CMakeFiles/RoomScanner.dir/moc_application.cpp.o" \
+"CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o" \
+"CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o" \
+"CMakeFiles/RoomScanner.dir/moc_filters.cpp.o" \
+"CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o" \
+"CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o" \
+"CMakeFiles/RoomScanner.dir/moc_registration.cpp.o" \
 "CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o"
 
 # External object files for target RoomScanner
@@ -181,7 +455,17 @@ RoomScanner_EXTERNAL_OBJECTS =
 
 RoomScanner: CMakeFiles/RoomScanner.dir/main.cpp.o
 RoomScanner: CMakeFiles/RoomScanner.dir/application.cpp.o
+RoomScanner: CMakeFiles/RoomScanner.dir/mytemplate.cpp.o
+RoomScanner: CMakeFiles/RoomScanner.dir/filters.cpp.o
+RoomScanner: CMakeFiles/RoomScanner.dir/mesh.cpp.o
+RoomScanner: CMakeFiles/RoomScanner.dir/registration.cpp.o
 RoomScanner: CMakeFiles/RoomScanner.dir/moc_application.cpp.o
+RoomScanner: CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o
+RoomScanner: CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o
+RoomScanner: CMakeFiles/RoomScanner.dir/moc_filters.cpp.o
+RoomScanner: CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o
+RoomScanner: CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o
+RoomScanner: CMakeFiles/RoomScanner.dir/moc_registration.cpp.o
 RoomScanner: CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o
 RoomScanner: CMakeFiles/RoomScanner.dir/build.make
 RoomScanner: /usr/local/lib/libboost_system.so
@@ -378,7 +662,7 @@ RoomScanner: /usr/local/lib/libvtkCommonCore-6.3.so.1
 RoomScanner: /usr/local/lib/libvtkzlib-6.3.so.1
 RoomScanner: /usr/local/lib/libvtkexpat-6.3.so.1
 RoomScanner: CMakeFiles/RoomScanner.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable RoomScanner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Linking CXX executable RoomScanner"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/RoomScanner.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -388,7 +672,17 @@ CMakeFiles/RoomScanner.dir/build: RoomScanner
 
 CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/main.cpp.o.requires
 CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/application.cpp.o.requires
+CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/mytemplate.cpp.o.requires
+CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/filters.cpp.o.requires
+CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/mesh.cpp.o.requires
+CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/registration.cpp.o.requires
 CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/moc_application.cpp.o.requires
+CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o.requires
+CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o.requires
+CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/moc_filters.cpp.o.requires
+CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o.requires
+CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o.requires
+CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/moc_registration.cpp.o.requires
 CMakeFiles/RoomScanner.dir/requires: CMakeFiles/RoomScanner.dir/CMakeFiles/RoomScanner.dir/qrc_Resources.cpp.o.requires
 
 .PHONY : CMakeFiles/RoomScanner.dir/requires
@@ -400,6 +694,12 @@ CMakeFiles/RoomScanner.dir/clean:
 CMakeFiles/RoomScanner.dir/depend: qrc_Resources.cpp
 CMakeFiles/RoomScanner.dir/depend: ui_application.h
 CMakeFiles/RoomScanner.dir/depend: moc_application.cpp
+CMakeFiles/RoomScanner.dir/depend: moc_mytemplate.cpp
+CMakeFiles/RoomScanner.dir/depend: moc_parameters.cpp
+CMakeFiles/RoomScanner.dir/depend: moc_filters.cpp
+CMakeFiles/RoomScanner.dir/depend: moc_pointrepr.cpp
+CMakeFiles/RoomScanner.dir/depend: moc_mesh.cpp
+CMakeFiles/RoomScanner.dir/depend: moc_registration.cpp
 	cd /home/stanly/kinect/DP/RoomScanner/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/stanly/kinect/DP/RoomScanner/src /home/stanly/kinect/DP/RoomScanner/src /home/stanly/kinect/DP/RoomScanner/build /home/stanly/kinect/DP/RoomScanner/build /home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/RoomScanner.dir/depend
 
