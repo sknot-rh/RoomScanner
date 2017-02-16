@@ -190,6 +190,33 @@ application.cpp.s:
 	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/application.cpp.s
 .PHONY : application.cpp.s
 
+filters.o: filters.cpp.o
+
+.PHONY : filters.o
+
+# target to build an object file
+filters.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/filters.cpp.o
+.PHONY : filters.cpp.o
+
+filters.i: filters.cpp.i
+
+.PHONY : filters.i
+
+# target to preprocess a source file
+filters.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/filters.cpp.i
+.PHONY : filters.cpp.i
+
+filters.s: filters.cpp.s
+
+.PHONY : filters.s
+
+# target to generate assembly for a file
+filters.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/filters.cpp.s
+.PHONY : filters.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -216,6 +243,33 @@ main.s: main.cpp.s
 main.cpp.s:
 	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/main.cpp.s
 .PHONY : main.cpp.s
+
+mesh.o: mesh.cpp.o
+
+.PHONY : mesh.o
+
+# target to build an object file
+mesh.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mesh.cpp.o
+.PHONY : mesh.cpp.o
+
+mesh.i: mesh.cpp.i
+
+.PHONY : mesh.i
+
+# target to preprocess a source file
+mesh.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mesh.cpp.i
+.PHONY : mesh.cpp.i
+
+mesh.s: mesh.cpp.s
+
+.PHONY : mesh.s
+
+# target to generate assembly for a file
+mesh.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mesh.cpp.s
+.PHONY : mesh.cpp.s
 
 moc_application.o: moc_application.cpp.o
 
@@ -244,6 +298,222 @@ moc_application.cpp.s:
 	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_application.cpp.s
 .PHONY : moc_application.cpp.s
 
+moc_filters.o: moc_filters.cpp.o
+
+.PHONY : moc_filters.o
+
+# target to build an object file
+moc_filters.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_filters.cpp.o
+.PHONY : moc_filters.cpp.o
+
+moc_filters.i: moc_filters.cpp.i
+
+.PHONY : moc_filters.i
+
+# target to preprocess a source file
+moc_filters.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_filters.cpp.i
+.PHONY : moc_filters.cpp.i
+
+moc_filters.s: moc_filters.cpp.s
+
+.PHONY : moc_filters.s
+
+# target to generate assembly for a file
+moc_filters.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_filters.cpp.s
+.PHONY : moc_filters.cpp.s
+
+moc_mesh.o: moc_mesh.cpp.o
+
+.PHONY : moc_mesh.o
+
+# target to build an object file
+moc_mesh.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o
+.PHONY : moc_mesh.cpp.o
+
+moc_mesh.i: moc_mesh.cpp.i
+
+.PHONY : moc_mesh.i
+
+# target to preprocess a source file
+moc_mesh.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mesh.cpp.i
+.PHONY : moc_mesh.cpp.i
+
+moc_mesh.s: moc_mesh.cpp.s
+
+.PHONY : moc_mesh.s
+
+# target to generate assembly for a file
+moc_mesh.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mesh.cpp.s
+.PHONY : moc_mesh.cpp.s
+
+moc_mytemplate.o: moc_mytemplate.cpp.o
+
+.PHONY : moc_mytemplate.o
+
+# target to build an object file
+moc_mytemplate.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o
+.PHONY : moc_mytemplate.cpp.o
+
+moc_mytemplate.i: moc_mytemplate.cpp.i
+
+.PHONY : moc_mytemplate.i
+
+# target to preprocess a source file
+moc_mytemplate.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.i
+.PHONY : moc_mytemplate.cpp.i
+
+moc_mytemplate.s: moc_mytemplate.cpp.s
+
+.PHONY : moc_mytemplate.s
+
+# target to generate assembly for a file
+moc_mytemplate.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.s
+.PHONY : moc_mytemplate.cpp.s
+
+moc_parameters.o: moc_parameters.cpp.o
+
+.PHONY : moc_parameters.o
+
+# target to build an object file
+moc_parameters.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o
+.PHONY : moc_parameters.cpp.o
+
+moc_parameters.i: moc_parameters.cpp.i
+
+.PHONY : moc_parameters.i
+
+# target to preprocess a source file
+moc_parameters.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_parameters.cpp.i
+.PHONY : moc_parameters.cpp.i
+
+moc_parameters.s: moc_parameters.cpp.s
+
+.PHONY : moc_parameters.s
+
+# target to generate assembly for a file
+moc_parameters.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_parameters.cpp.s
+.PHONY : moc_parameters.cpp.s
+
+moc_pointrepr.o: moc_pointrepr.cpp.o
+
+.PHONY : moc_pointrepr.o
+
+# target to build an object file
+moc_pointrepr.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o
+.PHONY : moc_pointrepr.cpp.o
+
+moc_pointrepr.i: moc_pointrepr.cpp.i
+
+.PHONY : moc_pointrepr.i
+
+# target to preprocess a source file
+moc_pointrepr.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.i
+.PHONY : moc_pointrepr.cpp.i
+
+moc_pointrepr.s: moc_pointrepr.cpp.s
+
+.PHONY : moc_pointrepr.s
+
+# target to generate assembly for a file
+moc_pointrepr.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.s
+.PHONY : moc_pointrepr.cpp.s
+
+moc_registration.o: moc_registration.cpp.o
+
+.PHONY : moc_registration.o
+
+# target to build an object file
+moc_registration.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_registration.cpp.o
+.PHONY : moc_registration.cpp.o
+
+moc_registration.i: moc_registration.cpp.i
+
+.PHONY : moc_registration.i
+
+# target to preprocess a source file
+moc_registration.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_registration.cpp.i
+.PHONY : moc_registration.cpp.i
+
+moc_registration.s: moc_registration.cpp.s
+
+.PHONY : moc_registration.s
+
+# target to generate assembly for a file
+moc_registration.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_registration.cpp.s
+.PHONY : moc_registration.cpp.s
+
+mytemplate.o: mytemplate.cpp.o
+
+.PHONY : mytemplate.o
+
+# target to build an object file
+mytemplate.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mytemplate.cpp.o
+.PHONY : mytemplate.cpp.o
+
+mytemplate.i: mytemplate.cpp.i
+
+.PHONY : mytemplate.i
+
+# target to preprocess a source file
+mytemplate.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mytemplate.cpp.i
+.PHONY : mytemplate.cpp.i
+
+mytemplate.s: mytemplate.cpp.s
+
+.PHONY : mytemplate.s
+
+# target to generate assembly for a file
+mytemplate.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mytemplate.cpp.s
+.PHONY : mytemplate.cpp.s
+
+registration.o: registration.cpp.o
+
+.PHONY : registration.o
+
+# target to build an object file
+registration.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/registration.cpp.o
+.PHONY : registration.cpp.o
+
+registration.i: registration.cpp.i
+
+.PHONY : registration.i
+
+# target to preprocess a source file
+registration.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/registration.cpp.i
+.PHONY : registration.cpp.i
+
+registration.s: registration.cpp.s
+
+.PHONY : registration.s
+
+# target to generate assembly for a file
+registration.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/registration.cpp.s
+.PHONY : registration.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -260,12 +530,42 @@ help:
 	@echo "... application.o"
 	@echo "... application.i"
 	@echo "... application.s"
+	@echo "... filters.o"
+	@echo "... filters.i"
+	@echo "... filters.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... mesh.o"
+	@echo "... mesh.i"
+	@echo "... mesh.s"
 	@echo "... moc_application.o"
 	@echo "... moc_application.i"
 	@echo "... moc_application.s"
+	@echo "... moc_filters.o"
+	@echo "... moc_filters.i"
+	@echo "... moc_filters.s"
+	@echo "... moc_mesh.o"
+	@echo "... moc_mesh.i"
+	@echo "... moc_mesh.s"
+	@echo "... moc_mytemplate.o"
+	@echo "... moc_mytemplate.i"
+	@echo "... moc_mytemplate.s"
+	@echo "... moc_parameters.o"
+	@echo "... moc_parameters.i"
+	@echo "... moc_parameters.s"
+	@echo "... moc_pointrepr.o"
+	@echo "... moc_pointrepr.i"
+	@echo "... moc_pointrepr.s"
+	@echo "... moc_registration.o"
+	@echo "... moc_registration.i"
+	@echo "... moc_registration.s"
+	@echo "... mytemplate.o"
+	@echo "... mytemplate.i"
+	@echo "... mytemplate.s"
+	@echo "... registration.o"
+	@echo "... registration.i"
+	@echo "... registration.s"
 .PHONY : help
 
 

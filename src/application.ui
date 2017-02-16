@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PCLViewer</class>
- <widget class="QMainWindow" name="PCLViewer">
+ <class>RoomScanner</class>
+ <widget class="QMainWindow" name="RoomScanner">
   <property name="geometry">
    <rect>
     <x>0</x>

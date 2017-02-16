@@ -1,4 +1,4 @@
-set(AM_SOURCES "/home/stanly/kinect/DP/RoomScanner/src/main.cpp;/home/stanly/kinect/DP/RoomScanner/src/application.cpp" )
+set(AM_SOURCES "/home/stanly/kinect/DP/RoomScanner/src/main.cpp;/home/stanly/kinect/DP/RoomScanner/src/application.cpp;/home/stanly/kinect/DP/RoomScanner/src/mytemplate.cpp;/home/stanly/kinect/DP/RoomScanner/src/filters.cpp;/home/stanly/kinect/DP/RoomScanner/src/mesh.cpp;/home/stanly/kinect/DP/RoomScanner/src/registration.cpp" )
 set(AM_RCC_SOURCES "/home/stanly/kinect/DP/RoomScanner/src/Resources/Resources.qrc" )
 set(AM_RCC_INPUTS "/home/stanly/kinect/DP/RoomScanner/src/Resources/images/loader2.gif@list_sep@/home/stanly/kinect/DP/RoomScanner/src/Resources/images/box.gif@list_sep@/home/stanly/kinect/DP/RoomScanner/src/Resources/images/loader.gif@list_sep@/home/stanly/kinect/DP/RoomScanner/src/Resources/images/Terminator.jpg")
 set(AM_SKIP_MOC  )
