@@ -131,8 +131,8 @@ void registration::computeTransformation (const PointCloudT::Ptr &src_origin,
   PointCloudT::Ptr src (new PointCloudT),
                    tgt (new PointCloudT);
 
-  filters::downsample(src_origin, *src);
-  filters::downsample(tgt_origin, *tgt);
+  filters::downsample(src_origin, *src, 0.02);
+  filters::downsample(tgt_origin, *tgt, 0.02);
 
   registration::estimateKeypoints (src, tgt, *keypoints_src, *keypoints_tgt);
   printf ("Found %lu and %lu keypoints for the source and target datasets.\n", keypoints_src->points.size (), keypoints_tgt->points.size ());
