@@ -36,18 +36,16 @@ void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
     ds.setLeafSize (params->VGFleafSize, params->VGFleafSize, params->VGFleafSize);
     //ds.setRadiusSearch(VGFleafSize);
     ds.filter (*filtered);
-    std::cout<<"Filtered points: " << filtered->points.size() << "\n";
+    std::cout<<"Filtered points: " << filtered->points.size() << "\n\n";
 }
 
-void filters::downsample (const PointCloudT::Ptr &src_origin,  PointCloudT &src) {
-
-    std::cout << "downsampling\n";
+void filters::downsample (const PointCloudT::Ptr &input,  PointCloudT &output, double radius) {
     // Get an uniform grid of keypoints
     pcl::UniformSampling<PointT> uniform;
-    uniform.setRadiusSearch (0.05);  // 5cm
+    uniform.setRadiusSearch (radius);
 
-    uniform.setInputCloud (src_origin);
-    uniform.filter (src);
+    uniform.setInputCloud (input);
+    uniform.filter (output);
 }
 
 
@@ -114,10 +112,16 @@ void filters::cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr outpu
 }
 
 void filters::oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered) {
-    pcl::StatisticalOutlierRemoval<PointT> sor;
+    /*pcl::StatisticalOutlierRemoval<PointT> sor;
     sor.setInputCloud (cloudToFilter);
     sor.setMeanK (50);
     sor.setStddevMulThresh (1.0);
-    sor.filter (*filtered);
+    sor.filter (*filtered);*/
+
+    pcl::RadiusOutlierRemoval<PointT> rorfilter;
+    rorfilter.setInputCloud (cloudToFilter);
+    rorfilter.setRadiusSearch (0.1);
+    rorfilter.setMinNeighborsInRadius (5);
+    rorfilter.filter (*filtered);
 }
 

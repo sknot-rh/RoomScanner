@@ -159,8 +159,12 @@ void RoomScanner::drawFrame() {
         }
 
         if (ui->actionShow_keypoints->isChecked() == true) {
-            //TODO!!! voxel grid for input data
             parameters* params = parameters::GetInstance();
+            // Downsample data for faster computation
+            PointCloudT::Ptr tmp;
+            tmp.reset(new PointCloudT);
+            filters::downsample(kinectCloud, *tmp, 0.05);
+
             // Estimate the sift interest points using Intensity values from RGB values
             pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift;
             pcl::PointCloud<pcl::PointWithScale> result;
@@ -168,7 +172,7 @@ void RoomScanner::drawFrame() {
             sift.setSearchMethod(tree);
             sift.setScales(params->min_scale, params->n_octaves, params->n_scales_per_octave);
             sift.setMinimumContrast(params->min_contrast);
-            sift.setInputCloud(kinectCloud);
+            sift.setInputCloud(tmp);
             sift.compute(result);
 
             copyPointCloud(result, *key_cloud); // from PointWithScale to PointCloudAT
@@ -243,27 +247,32 @@ void RoomScanner::saveButtonPressed() {
         return;
     }
 
-    PointCloudT::Ptr cloud_out (new PointCloudT);
+    PointCloudT::Ptr tmp (new PointCloudT);
+    PointCloudT::Ptr output (new PointCloudT);
     stream = false; // "safe" copy
     // Allocate enough space and copy the basics
-    cloud_out->header   = kinectCloud->header;
-    cloud_out->width    = kinectCloud->width;
-    cloud_out->height   = kinectCloud->height;
-    cloud_out->is_dense = kinectCloud->is_dense;
-    cloud_out->sensor_orientation_ = kinectCloud->sensor_orientation_;
-    cloud_out->sensor_origin_ = kinectCloud->sensor_origin_;
-    cloud_out->points.resize (kinectCloud->points.size ());
+    tmp->header   = kinectCloud->header;
+    tmp->width    = kinectCloud->width;
+    tmp->height   = kinectCloud->height;
+    tmp->is_dense = kinectCloud->is_dense;
+    tmp->sensor_orientation_ = kinectCloud->sensor_orientation_;
+    tmp->sensor_origin_ = kinectCloud->sensor_origin_;
+    tmp->points.resize (kinectCloud->points.size ());
 
-    memcpy (&cloud_out->points[0], &kinectCloud->points[0], kinectCloud->points.size () * sizeof (PointT));
+    memcpy (&tmp->points[0], &kinectCloud->points[0], kinectCloud->points.size () * sizeof (PointT));
     stream = true;
-    clouds.push_back(cloud_out);
+
+    filters::voxelGridFilter(tmp, output);
+    //filters::oultlierRemoval(output, output);
+    clouds.push_back(output);
+
     std::cout << "Saving frame #"<<clouds.size()<<"\n";
 
     std::stringstream ss;
     ss << "frame_" << clouds.size()<<  ".pcd";
     std::string s = ss.str();
 
-    pcl::io::savePCDFile (s , *cloud_out);
+    pcl::io::savePCDFile (s , *output);
     lastFrameToggled();
 }
 
@@ -327,7 +336,6 @@ void RoomScanner::polyButtonPressed() {
             labelPolygonate = new QLabel;
             loading(labelPolygonate);
         }
-
     }
 }
 
@@ -389,7 +397,7 @@ void RoomScanner::polyButtonPressedFunc() {
 
             //}
 
-            filters::voxelGridFilter(cloudtmp, output);
+            //filters::voxelGridFilter(cloudtmp, output);
             //filters::cloudSmooth(holder, output); TODO!!!
             mesh::polygonateCloud(output, triangles);
         }
@@ -402,9 +410,9 @@ void RoomScanner::polyButtonPressedFunc() {
         }
     }
     else {
-        filters::voxelGridFilter(clouds.back(), output);
+        //filters::voxelGridFilter(clouds.back(), output);
         //filters::cloudSmooth(holder, output);
-        mesh::polygonateCloud(output, triangles);
+        mesh::polygonateCloud(clouds.back(), triangles);
     }
 
 

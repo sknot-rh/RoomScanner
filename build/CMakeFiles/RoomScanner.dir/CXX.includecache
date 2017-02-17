@@ -171,6 +171,8 @@ pcl/surface/impl/mls.hpp
 -
 pcl/filters/statistical_outlier_removal.h
 -
+pcl/filters/radius_outlier_removal.h
+-
 
 /home/stanly/kinect/DP/RoomScanner/src/main.cpp
 application.h
@@ -31394,6 +31396,12 @@ pcl/pcl_macros.h
 pcl/filters/filter_indices.h
 -
 
+/usr/local/include/pcl-1.8/pcl/filters/impl/radius_outlier_removal.hpp
+pcl/filters/radius_outlier_removal.h
+-
+pcl/common/io.h
+-
+
 /usr/local/include/pcl-1.8/pcl/filters/impl/statistical_outlier_removal.hpp
 pcl/filters/statistical_outlier_removal.h
 -
@@ -31414,6 +31422,14 @@ pcl/common/common.h
 pcl/common/io.h
 -
 pcl/filters/voxel_grid.h
+-
+
+/usr/local/include/pcl-1.8/pcl/filters/radius_outlier_removal.h
+pcl/filters/filter_indices.h
+-
+pcl/search/pcl_search.h
+-
+pcl/filters/impl/radius_outlier_removal.hpp
 -
 
 /usr/local/include/pcl-1.8/pcl/filters/statistical_outlier_removal.h
