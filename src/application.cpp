@@ -23,8 +23,8 @@
 parameters* parameters::instance = 0;
 
 RoomScanner::RoomScanner (QWidget *parent) :
-  QMainWindow (parent),
-  ui (new Ui::RoomScanner) {
+    QMainWindow (parent),
+    ui (new Ui::RoomScanner) {
     ui->setupUi (this);
     pcl::console::setVerbosityLevel(pcl::console::L_DEBUG);
     this->setWindowTitle ("RoomScanner");
@@ -43,8 +43,8 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Tell to sensor in which position is expected input
     Eigen::Quaternionf m;
     m = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitX())
-      * Eigen::AngleAxisf(0.0f,  Eigen::Vector3f::UnitY())
-      * Eigen::AngleAxisf(0.0f, Eigen::Vector3f::UnitZ());
+        * Eigen::AngleAxisf(0.0f,  Eigen::Vector3f::UnitY())
+        * Eigen::AngleAxisf(0.0f, Eigen::Vector3f::UnitZ());
     kinectCloud->sensor_orientation_ = m;
     key_cloud->sensor_orientation_ = m;
 
@@ -129,7 +129,6 @@ RoomScanner::RoomScanner (QWidget *parent) :
     pSliderValueChanged (2);
     ui->tabWidget->setCurrentIndex(0);
 
-
     /*mytemplate test;
     test.mytemplateMethod(5);*/
 
@@ -148,7 +147,7 @@ void RoomScanner::drawFrame() {
             float *pY = &cloudY[0];
             float *pZ = &cloudZ[0];
             unsigned long *pRGB = &cloudRGB[0];
-            for(int i = 0; i < kinectCloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
+            for(int i = 0; i < kinectCloud->points.size(); i++,pX++,pY++,pZ++,pRGB++) {
                 kinectCloud->points[i].x = (*pX);
                 kinectCloud->points[i].y = (*pY);
                 kinectCloud->points[i].z = (*pZ);
@@ -170,8 +169,8 @@ void RoomScanner::drawFrame() {
             pcl::PointCloud<pcl::PointWithScale> result;
             pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT> ());
             sift.setSearchMethod(tree);
-            sift.setScales(params->min_scale, params->n_octaves, params->n_scales_per_octave);
-            sift.setMinimumContrast(params->min_contrast);
+            sift.setScales(params->SIFTmin_scale, params->SIFTn_octaves, params->SIFTn_scales_per_octave);
+            sift.setMinimumContrast(params->SIFTmin_contrast);
             sift.setInputCloud(tmp);
             sift.compute(result);
 
@@ -182,9 +181,9 @@ void RoomScanner::drawFrame() {
                 key_cloud->points[var].g = 255;
                 key_cloud->points[var].b = 0;
             }
-            viewer->updatePointCloud(key_cloud ,"keypoints");
+            viewer->updatePointCloud(key_cloud,"keypoints");
         }
-        viewer->updatePointCloud(kinectCloud ,"kinectCloud");
+        viewer->updatePointCloud(kinectCloud,"kinectCloud");
         ui->qvtkWidget->update ();
     }
 }
@@ -212,8 +211,8 @@ void RoomScanner::cloud_cb_ (const PointCloudAT::ConstPtr &ncloud) {
 
             // Copy data (using pcl::copyPointCloud, the color stream jitters!!! Why?)
             //pcl::copyPointCloud(*ncloud, *cloud);
-            for (int j = 0;j<ncloud->height;j++){
-                for (int i = 0;i<ncloud->width;i++,pX++,pY++,pZ++,pRGB++) {
+            for (int j = 0; j<ncloud->height; j++) {
+                for (int i = 0; i<ncloud->width; i++,pX++,pY++,pZ++,pRGB++) {
                     PointAT P = ncloud->at(i,j);
                     (*pX) = P.x;
                     (*pY) = P.y;
@@ -262,7 +261,11 @@ void RoomScanner::saveButtonPressed() {
     memcpy (&tmp->points[0], &kinectCloud->points[0], kinectCloud->points.size () * sizeof (PointT));
     stream = true;
 
-    filters::voxelGridFilter(tmp, output);
+    output = tmp;
+    //filters::voxelGridFilter(tmp, output, 0.001); //global downsampling
+    std::vector<int> indices;
+    removeNaNFromPointCloud(*output,*output, indices);
+    filters::oultlierRemoval(output, output, 0.8f);
     //filters::oultlierRemoval(output, output);
     clouds.push_back(output);
 
@@ -272,21 +275,21 @@ void RoomScanner::saveButtonPressed() {
     ss << "frame_" << clouds.size()<<  ".pcd";
     std::string s = ss.str();
 
-    pcl::io::savePCDFile (s , *output);
+    pcl::io::savePCDFile (s, *output);
     lastFrameToggled();
 }
 
 void RoomScanner::pSliderValueChanged (int value)
 {
-  viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "kinectCloud");
-  viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloudFromFile");
-  ui->lcdNumber_p->display(value);
-  ui->qvtkWidget->update ();
+    viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "kinectCloud");
+    viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloudFromFile");
+    ui->lcdNumber_p->display(value);
+    ui->qvtkWidget->update ();
 }
 
 void RoomScanner::loadActionPressed() {
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Choose Point Cloud"), "/home", tr("Point Cloud Files (*.pcd)"));
+                       tr("Choose Point Cloud"), "/home", tr("Point Cloud Files (*.pcd)"));
     std::string utf8_fileName = fileName.toUtf8().constData();
     PointCloudT::Ptr cloudFromFile (new PointCloudT);
     if (pcl::io::loadPCDFile<PointT> (utf8_fileName, *cloudFromFile) == -1) // load the file
@@ -303,7 +306,7 @@ void RoomScanner::loadActionPressed() {
     std::cout << "PC Loaded from file " << utf8_fileName << "\n";
     viewer->removeAllPointClouds();
     if (!viewer->addPointCloud(cloudFromFile, "cloudFromFile"))
-        viewer->updatePointCloud(cloudFromFile ,"cloudFromFile");
+        viewer->updatePointCloud(cloudFromFile,"cloudFromFile");
     clouds.push_back(cloudFromFile);
     ui->qvtkWidget->update();
 }
@@ -375,25 +378,25 @@ void RoomScanner::polyButtonPressedFunc() {
         if (sensorConnected) {
 
             //if (mtx_.try_lock()) {
-                cloudtmp->clear();
-                //keep point cloud organized
-                cloudtmp->width = cloudWidth;
-                cloudtmp->height = cloudHeight;
-                cloudtmp->points.resize(cloudHeight*cloudWidth);
-                cloudtmp->is_dense = false;
-                // Fill cloud
-                float *pX = &cloudX[0];
-                float *pY = &cloudY[0];
-                float *pZ = &cloudZ[0];
-                unsigned long *pRGB = &cloudRGB[0];
+            cloudtmp->clear();
+            //keep point cloud organized
+            cloudtmp->width = cloudWidth;
+            cloudtmp->height = cloudHeight;
+            cloudtmp->points.resize(cloudHeight*cloudWidth);
+            cloudtmp->is_dense = false;
+            // Fill cloud
+            float *pX = &cloudX[0];
+            float *pY = &cloudY[0];
+            float *pZ = &cloudZ[0];
+            unsigned long *pRGB = &cloudRGB[0];
 
-                for(int i = 0; i < kinectCloud->points.size();i++,pX++,pY++,pZ++,pRGB++) {
-                    cloudtmp->points[i].x = (*pX);
-                    cloudtmp->points[i].y = (*pY);
-                    cloudtmp->points[i].z = (*pZ);
-                    cloudtmp->points[i].rgba = (*pRGB);
-                }
-                //mtx_.unlock();
+            for(int i = 0; i < kinectCloud->points.size(); i++,pX++,pY++,pZ++,pRGB++) {
+                cloudtmp->points[i].x = (*pX);
+                cloudtmp->points[i].y = (*pY);
+                cloudtmp->points[i].z = (*pZ);
+                cloudtmp->points[i].rgba = (*pRGB);
+            }
+            //mtx_.unlock();
 
             //}
 
@@ -460,7 +463,7 @@ void RoomScanner::polyButtonPressedFunc() {
     //meshViewer->addPointCloud(output,"smoothed");
     meshViewer->addPolygonMesh(*triangles, "mesh");
     printf("Mesh done\n");
-    meshViewer->setShapeRenderingProperties ( pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG , "mesh" );
+    meshViewer->setShapeRenderingProperties ( pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG, "mesh" );
     ui->qvtkWidget_2->update();
 
 }
@@ -534,54 +537,35 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
     PointCloudT::Ptr source, target;
 
     Eigen::Matrix4f GlobalTransform = Eigen::Matrix4f::Identity (), pairTransform;
-
-
+    viewer->removeAllPointClouds();
     for (int i = 1; i < clouds.size(); i++) {
 
         source = clouds[i-1];
         target = clouds[i];
 
-        /*// Create the filtering object
-        pcl::StatisticalOutlierRemoval<PointT> sor;
-        sor.setInputCloud (clouds[i-1]);
-        sor.setMeanK (50);
-        sor.setStddevMulThresh (1.0);
-        sor.filter (*source);
 
-        // Create the filtering object 2
-        pcl::StatisticalOutlierRemoval<PointT> sor2;
-        sor2.setInputCloud (clouds[i]);
-        sor2.setMeanK (50);
-        sor2.setStddevMulThresh (1.0);
-        sor2.filter (*target);*/
+        // estimated source position done with fpfh features
+        registration::computeTransformation(source, target);
+
+        // it would be nice to visualize progress, but this method runs in new thread so it has to be investigated
+        /*viewer->addPointCloud(source,"source");
+        viewer->addPointCloud(target,"target");
+        viewer->spinOnce();*/
 
         PointCloudT::Ptr temp (new PointCloudT);
         registration::pairAlign (source, target, temp, pairTransform, true);
-
-
-        //PCLViewer::computeTransformation (source, target, pairTransform);
-        /*if (!viewer->addPointCloud(clouds[i-1], "source")) {
-            viewer->updatePointCloud(clouds[i-1], "source");
-        }
-        if (!viewer->addPointCloud(clouds[i], "target")) {
-            viewer->updatePointCloud(clouds[i], "target");
-        }*/
-
-        //transform current pair into the global transform
         pcl::transformPointCloud (*temp, *result, GlobalTransform);
 
+        if (!viewer->addPointCloud(result, "result")) {
+            viewer->updatePointCloud(result, "result");
+        }
+        ui->qvtkWidget->update();
 
         //update the global transform
         GlobalTransform = GlobalTransform * pairTransform;
 
         //clouds[i] = result;
-        //TODO!!! filtrovat vysledek
-        pcl::UniformSampling<PointT> uniform;
-        uniform.setRadiusSearch (0.001);  // 1cm
-
-        uniform.setInputCloud (result);
-        uniform.filter (*clouds[i]);
-
+        filters::voxelGridFilter(result, clouds[i]);
     }
 
 
@@ -599,12 +583,12 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
       pcl::io::savePCDFileBinary ("kokos.pcd", output);*/
 
     //result = clouds[clouds.size()-1];
-    viewer->removeAllPointClouds();
-    viewer->addPointCloud(clouds[clouds.size()-1], "registrated");
+    //viewer->removeAllPointClouds();
+    //viewer->addPointCloud(clouds[clouds.size()-1], "registrated");
 
 
 
-    std::cout << "Registrated Point Cloud has " << result->points.size() << " points.\n";
+    std::cout << "Registrated Point Cloud has " << clouds[clouds.size()-1]->points.size() << " points.\n";
     labelRegistrate->close();
     registered = true;
     return result;

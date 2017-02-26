@@ -10,7 +10,7 @@ private:
     static parameters* instance;
     parameters() {}
 public:
-
+    // singleton class
     static parameters *GetInstance() {
         if (instance == NULL) {
             instance = new parameters();
@@ -18,14 +18,11 @@ public:
         return instance;
     }
 
-
-    int param1 = 42;
-
     // Parameters for sift computation
-    const float min_scale = 0.1f;
-    const int n_octaves = 6;
-    const int n_scales_per_octave = 10;
-    const float min_contrast = 0.5f;
+    const float SIFTmin_scale = 0.003f;
+    const int SIFTn_octaves = 8;
+    const int SIFTn_scales_per_octave = 10;
+    const float SIFTmin_contrast = 0.3f;
 
     // Parameters for MLS
     int MLSpolynomialOrder = 2;
@@ -45,6 +42,12 @@ public:
     double GPsearchRadius = 0.06;
     double GPmu = 2.5;
     int GPmaximumNearestNeighbors = 100;
+
+    // Parameters for registration module
+    double REGnormalsRadius = 0.05;
+    double REGfpfh = 0.25;
+    double REGreject = 2.0;
+    double REGcorrDist = 0.2;
 };
 
 

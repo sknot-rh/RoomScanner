@@ -14,13 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         application.cpp \
-    mytemplate.cpp \
     filters.cpp \
     mesh.cpp \
     registration.cpp
 
 HEADERS  += application.h \
-    mytemplate.h \
     parameters.h \
     filters.h \
     types.h \

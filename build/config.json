@@ -13,7 +13,7 @@
 		},
 	"gridFilter" :
 		{
-			"leafSize" : 0.002,
+			"leafSize" : 0.01,
 			"_leafSize" : 0.02
 		},
 	"greedyProjection" :

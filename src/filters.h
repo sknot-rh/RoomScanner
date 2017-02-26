@@ -19,10 +19,10 @@ class filters
 {
 public:
     filters();
-    static void voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered);
+    static void voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float leaf = -1.0f);
     static void downsample (const PointCloudT::Ptr &input,  PointCloudT &output, double radius);
     static void cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output);
-    static void oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered);
+    static void oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float radius);
 };
 
 #endif // FILTERS_H
