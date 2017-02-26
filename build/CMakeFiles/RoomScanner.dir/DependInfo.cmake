@@ -12,11 +12,10 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/stanly/kinect/DP/RoomScanner/build/moc_application.cpp" "/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/moc_application.cpp.o"
   "/home/stanly/kinect/DP/RoomScanner/build/moc_filters.cpp" "/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/moc_filters.cpp.o"
   "/home/stanly/kinect/DP/RoomScanner/build/moc_mesh.cpp" "/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/moc_mesh.cpp.o"
-  "/home/stanly/kinect/DP/RoomScanner/build/moc_mytemplate.cpp" "/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o"
   "/home/stanly/kinect/DP/RoomScanner/build/moc_parameters.cpp" "/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/moc_parameters.cpp.o"
   "/home/stanly/kinect/DP/RoomScanner/build/moc_pointrepr.cpp" "/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/moc_pointrepr.cpp.o"
   "/home/stanly/kinect/DP/RoomScanner/build/moc_registration.cpp" "/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/moc_registration.cpp.o"
-  "/home/stanly/kinect/DP/RoomScanner/src/mytemplate.cpp" "/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/mytemplate.cpp.o"
+  "/home/stanly/kinect/DP/RoomScanner/build/moc_types.cpp" "/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/moc_types.cpp.o"
   "/home/stanly/kinect/DP/RoomScanner/src/registration.cpp" "/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir/registration.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

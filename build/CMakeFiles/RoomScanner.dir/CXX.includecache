@@ -20,13 +20,13 @@ QtCore/qmetatype.h
 
 /home/stanly/kinect/DP/RoomScanner/build/moc_mesh.cpp
 
-/home/stanly/kinect/DP/RoomScanner/build/moc_mytemplate.cpp
-
 /home/stanly/kinect/DP/RoomScanner/build/moc_parameters.cpp
 
 /home/stanly/kinect/DP/RoomScanner/build/moc_pointrepr.cpp
 
 /home/stanly/kinect/DP/RoomScanner/build/moc_registration.cpp
+
+/home/stanly/kinect/DP/RoomScanner/build/moc_types.cpp
 
 /home/stanly/kinect/DP/RoomScanner/build/ui_application.h
 QtCore/QVariant
@@ -131,8 +131,6 @@ vtkRenderWindow.h
 -
 boost/atomic.hpp
 -
-mytemplate.h
-/home/stanly/kinect/DP/RoomScanner/src/mytemplate.h
 parameters.h
 /home/stanly/kinect/DP/RoomScanner/src/parameters.h
 types.h
@@ -212,18 +210,6 @@ pcl/surface/marching_cubes_rbf.h
 pcl/surface/marching_cubes.h
 -
 
-/home/stanly/kinect/DP/RoomScanner/src/mytemplate.cpp
-mytemplate.h
-/home/stanly/kinect/DP/RoomScanner/src/mytemplate.h
-parameters.h
-/home/stanly/kinect/DP/RoomScanner/src/parameters.h
-
-/home/stanly/kinect/DP/RoomScanner/src/mytemplate.h
-iostream
--
-parameters.h
-/home/stanly/kinect/DP/RoomScanner/src/parameters.h
-
 /home/stanly/kinect/DP/RoomScanner/src/parameters.h
 iostream
 -
@@ -261,7 +247,15 @@ pointrepr.h
 /home/stanly/kinect/DP/RoomScanner/src/pointrepr.h
 filters.h
 /home/stanly/kinect/DP/RoomScanner/src/filters.h
+parameters.h
+/home/stanly/kinect/DP/RoomScanner/src/parameters.h
 pcl/features/normal_3d_omp.h
+-
+pcl/keypoints/sift_keypoint.h
+-
+pcl/visualization/pcl_visualizer.h
+-
+pcl/features/fpfh_omp.h
 -
 
 /home/stanly/kinect/DP/RoomScanner/src/types.h
@@ -31300,6 +31294,14 @@ set
 pcl/features/impl/fpfh.hpp
 -
 
+/usr/local/include/pcl-1.8/pcl/features/fpfh_omp.h
+pcl/features/feature.h
+-
+pcl/features/fpfh.h
+-
+pcl/features/impl/fpfh_omp.hpp
+-
+
 /usr/local/include/pcl-1.8/pcl/features/impl/feature.hpp
 pcl/search/pcl_search.h
 -
@@ -31308,6 +31310,10 @@ pcl/search/pcl_search.h
 pcl/features/fpfh.h
 -
 pcl/features/pfh_tools.h
+-
+
+/usr/local/include/pcl-1.8/pcl/features/impl/fpfh_omp.hpp
+pcl/features/fpfh_omp.h
 -
 
 /usr/local/include/pcl-1.8/pcl/features/impl/normal_3d.hpp

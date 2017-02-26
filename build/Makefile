@@ -352,33 +352,6 @@ moc_mesh.cpp.s:
 	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mesh.cpp.s
 .PHONY : moc_mesh.cpp.s
 
-moc_mytemplate.o: moc_mytemplate.cpp.o
-
-.PHONY : moc_mytemplate.o
-
-# target to build an object file
-moc_mytemplate.cpp.o:
-	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.o
-.PHONY : moc_mytemplate.cpp.o
-
-moc_mytemplate.i: moc_mytemplate.cpp.i
-
-.PHONY : moc_mytemplate.i
-
-# target to preprocess a source file
-moc_mytemplate.cpp.i:
-	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.i
-.PHONY : moc_mytemplate.cpp.i
-
-moc_mytemplate.s: moc_mytemplate.cpp.s
-
-.PHONY : moc_mytemplate.s
-
-# target to generate assembly for a file
-moc_mytemplate.cpp.s:
-	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_mytemplate.cpp.s
-.PHONY : moc_mytemplate.cpp.s
-
 moc_parameters.o: moc_parameters.cpp.o
 
 .PHONY : moc_parameters.o
@@ -460,32 +433,32 @@ moc_registration.cpp.s:
 	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_registration.cpp.s
 .PHONY : moc_registration.cpp.s
 
-mytemplate.o: mytemplate.cpp.o
+moc_types.o: moc_types.cpp.o
 
-.PHONY : mytemplate.o
+.PHONY : moc_types.o
 
 # target to build an object file
-mytemplate.cpp.o:
-	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mytemplate.cpp.o
-.PHONY : mytemplate.cpp.o
+moc_types.cpp.o:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_types.cpp.o
+.PHONY : moc_types.cpp.o
 
-mytemplate.i: mytemplate.cpp.i
+moc_types.i: moc_types.cpp.i
 
-.PHONY : mytemplate.i
+.PHONY : moc_types.i
 
 # target to preprocess a source file
-mytemplate.cpp.i:
-	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mytemplate.cpp.i
-.PHONY : mytemplate.cpp.i
+moc_types.cpp.i:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_types.cpp.i
+.PHONY : moc_types.cpp.i
 
-mytemplate.s: mytemplate.cpp.s
+moc_types.s: moc_types.cpp.s
 
-.PHONY : mytemplate.s
+.PHONY : moc_types.s
 
 # target to generate assembly for a file
-mytemplate.cpp.s:
-	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/mytemplate.cpp.s
-.PHONY : mytemplate.cpp.s
+moc_types.cpp.s:
+	$(MAKE) -f CMakeFiles/RoomScanner.dir/build.make CMakeFiles/RoomScanner.dir/moc_types.cpp.s
+.PHONY : moc_types.cpp.s
 
 registration.o: registration.cpp.o
 
@@ -548,9 +521,6 @@ help:
 	@echo "... moc_mesh.o"
 	@echo "... moc_mesh.i"
 	@echo "... moc_mesh.s"
-	@echo "... moc_mytemplate.o"
-	@echo "... moc_mytemplate.i"
-	@echo "... moc_mytemplate.s"
 	@echo "... moc_parameters.o"
 	@echo "... moc_parameters.i"
 	@echo "... moc_parameters.s"
@@ -560,9 +530,9 @@ help:
 	@echo "... moc_registration.o"
 	@echo "... moc_registration.i"
 	@echo "... moc_registration.s"
-	@echo "... mytemplate.o"
-	@echo "... mytemplate.i"
-	@echo "... mytemplate.s"
+	@echo "... moc_types.o"
+	@echo "... moc_types.i"
+	@echo "... moc_types.s"
 	@echo "... registration.o"
 	@echo "... registration.i"
 	@echo "... registration.s"

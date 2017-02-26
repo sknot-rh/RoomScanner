@@ -6,8 +6,8 @@ filters::filters()
 }
 
 
-void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered) {
-    std::cout<<"downsampling filter\n";
+void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float leaf) {
+    std::cout<<"downsampling filter " << leaf << "\n";
 
     parameters* params = parameters::GetInstance();
     std::ifstream config_file("config.json");
@@ -30,13 +30,19 @@ void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
         params->VGFleafSize = pt.get<float>("gridFilter.leafSize");
     }
 
+
     pcl::VoxelGrid<PointT> ds;  //create downsampling filter
     //pcl::UniformSampling<PointT> ds;  //create downsampling filter
     ds.setInputCloud (cloudToFilter);
-    ds.setLeafSize (params->VGFleafSize, params->VGFleafSize, params->VGFleafSize);
-    //ds.setRadiusSearch(VGFleafSize);
+    if (leaf > 0.00000f) {
+        printf("VoxelGrid parameter with priority %f\n", leaf);
+        ds.setLeafSize (leaf, leaf, leaf);
+    }
+    else {
+        ds.setLeafSize (params->VGFleafSize, params->VGFleafSize, params->VGFleafSize);
+    }
     ds.filter (*filtered);
-    std::cout<<"Filtered points: " << filtered->points.size() << "\n\n";
+    std::cout<<"Filtered points: " << filtered->points.size() << "\n";
 }
 
 void filters::downsample (const PointCloudT::Ptr &input,  PointCloudT &output, double radius) {
@@ -85,33 +91,33 @@ void filters::cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr outpu
 
 
 
-     pcl::MovingLeastSquares<PointT, PointT> mls;
-     mls.setInputCloud (cloudToSmooth);
-     mls.setSearchRadius (params->MLSsearchRadius);
-     mls.setSqrGaussParam (params->MLSsqrGaussParam);
-     mls.setPolynomialFit (params->MLSusePolynomialFit);
-     mls.setPolynomialOrder (params->MLSpolynomialOrder);
+    pcl::MovingLeastSquares<PointT, PointT> mls;
+    mls.setInputCloud (cloudToSmooth);
+    mls.setSearchRadius (params->MLSsearchRadius);
+    mls.setSqrGaussParam (params->MLSsqrGaussParam);
+    mls.setPolynomialFit (params->MLSusePolynomialFit);
+    mls.setPolynomialOrder (params->MLSpolynomialOrder);
 
-     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::SAMPLE_LOCAL_PLANE);
-     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::RANDOM_UNIFORM_DENSITY);
-     mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
-     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointXYZRGB>::NONE);
-     mls.setPointDensity ( int (60000 * params->MLSsearchRadius)); // 300 points in a 5 cm radius
-     mls.setUpsamplingRadius (params->MLSupsamplingRadius);
-     mls.setUpsamplingStepSize (params->MLSupsamplingStepSize);
-     mls.setDilationIterations (params->MLSdilationIterations);
-     mls.setDilationVoxelSize (params->MLSdilationVoxelSize);
+    //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::SAMPLE_LOCAL_PLANE);
+    //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::RANDOM_UNIFORM_DENSITY);
+    mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
+    //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointXYZRGB>::NONE);
+    mls.setPointDensity ( int (60000 * params->MLSsearchRadius)); // 300 points in a 5 cm radius
+    mls.setUpsamplingRadius (params->MLSupsamplingRadius);
+    mls.setUpsamplingStepSize (params->MLSupsamplingStepSize);
+    mls.setDilationIterations (params->MLSdilationIterations);
+    mls.setDilationVoxelSize (params->MLSdilationVoxelSize);
 
-     pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
-     //pcl::search::OrganizedNeighbor<PointT> tree (new pcl::search::OrganizedNeighbor<PointT> ());
-     mls.setSearchMethod (tree);
-     mls.setComputeNormals (params->MLScomputeNormals);
-     mls.process (*output);
-     std::cout<<"now we have "<< output->points.size() <<" points\n";
+    pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
+    //pcl::search::OrganizedNeighbor<PointT> tree (new pcl::search::OrganizedNeighbor<PointT> ());
+    mls.setSearchMethod (tree);
+    mls.setComputeNormals (params->MLScomputeNormals);
+    mls.process (*output);
+    std::cout<<"now we have "<< output->points.size() <<" points\n";
 
 }
 
-void filters::oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered) {
+void filters::oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float radius) {
     /*pcl::StatisticalOutlierRemoval<PointT> sor;
     sor.setInputCloud (cloudToFilter);
     sor.setMeanK (50);
@@ -120,7 +126,7 @@ void filters::oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
 
     pcl::RadiusOutlierRemoval<PointT> rorfilter;
     rorfilter.setInputCloud (cloudToFilter);
-    rorfilter.setRadiusSearch (0.1);
+    rorfilter.setRadiusSearch (radius);
     rorfilter.setMinNeighborsInRadius (5);
     rorfilter.filter (*filtered);
 }

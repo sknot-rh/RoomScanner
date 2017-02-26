@@ -10,5 +10,6 @@ e083f5c5bafe8ffefa83ec737184d87d moc_mytemplate.cpp
 989f5bdbfb5d00416cd7c56a4c498469 moc_registration.cpp
 37ea4a5f2d5b951d1993b93f62bac668 moc_template.cpp
 a280e46c4fb31bb5013f0eb319046274 moc_test.cpp
+58b4ce2e3dd8d97d40cb9b18f554ce71 moc_types.cpp
 43edb81d040fa6c6b19afd87f09978c9 qrc_Resources.cpp
 c1c33818ab69ab9b32ad8b807ac310ab ui_application.h
