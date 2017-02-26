@@ -71,6 +71,8 @@ public slots:
 
     void keypointsToggled(void);
 
+    void registrationFrameDoneSlot(int);
+
 protected:
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
     boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;
@@ -80,6 +82,7 @@ protected:
     std::vector<PointCloudT::Ptr> clouds;
     QTimer *tmrTimer;
     QMovie *movie;
+
 
     unsigned int red;
     unsigned int green;
@@ -95,7 +98,6 @@ protected:
     boost::mutex mtx_;
     bool sensorConnected;
     bool registered = false;
-
 
 private:
     Ui::RoomScanner *ui;

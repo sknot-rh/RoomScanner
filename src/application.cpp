@@ -19,6 +19,8 @@
 #include <QMovie>
 #include <unistd.h>
 #include <pcl/console/parse.h>
+#include <QtConcurrent/QtConcurrent>
+#include <QFuture>
 
 parameters* parameters::instance = 0;
 
@@ -316,7 +318,8 @@ void RoomScanner::polyButtonPressed() {
     if (clouds.empty()) {
         if (sensorConnected) {
             ui->tabWidget->setCurrentIndex(1);
-            boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
+            //boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
+            QFuture<void> future = QtConcurrent::run(this, &RoomScanner::polyButtonPressedFunc);
             labelPolygonate = new QLabel;
             loading(labelPolygonate);
         }
@@ -335,8 +338,10 @@ void RoomScanner::polyButtonPressed() {
         }
         else {
             ui->tabWidget->setCurrentIndex(1);
-            boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
+            //boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
+            QFuture<void> future = QtConcurrent::run(this, &RoomScanner::polyButtonPressedFunc);
             labelPolygonate = new QLabel;
+            //QFuture<void> future = QtConcurrent::run(this, &RoomScanner::loading, labelPolygonate);
             loading(labelPolygonate);
         }
     }
@@ -527,8 +532,10 @@ void RoomScanner::regButtonPressed() {
     stream = false;
     std::cout << "Registrating " << clouds.size() << " point clouds.\n";
     labelRegistrate = new QLabel;
-    boost::thread* thr = new boost::thread(boost::bind(&RoomScanner::registrateNClouds, this));
-    loading(labelRegistrate);
+    //boost::thread* thr = new boost::thread(boost::bind(&RoomScanner::registrateNClouds, this));
+    QFuture<void> future = QtConcurrent::run(this, &RoomScanner::registrateNClouds);
+    //QFuture<void> future2 = QtConcurrent::run(this, &RoomScanner::loading, labelRegistrate);
+    //loading(labelRegistrate);
 }
 
 PointCloudT::Ptr RoomScanner::registrateNClouds() {
@@ -536,16 +543,21 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
     PointCloudT::Ptr globalResult (new PointCloudT);
     PointCloudT::Ptr source, target;
 
+    registration reg;
+    connect(&reg, SIGNAL(registrationFrameDoneSignal(int)), this, SLOT(registrationFrameDoneSlot(int)));
+
     Eigen::Matrix4f GlobalTransform = Eigen::Matrix4f::Identity (), pairTransform;
-    viewer->removeAllPointClouds();
+
     for (int i = 1; i < clouds.size(); i++) {
 
         source = clouds[i-1];
         target = clouds[i];
 
+        viewer->removeAllPointClouds();
+        viewer->addPointCloud(target, "target");
 
         // estimated source position done with fpfh features
-        registration::computeTransformation(source, target);
+        reg.computeTransformation(source, target);
 
         // it would be nice to visualize progress, but this method runs in new thread so it has to be investigated
         /*viewer->addPointCloud(source,"source");
@@ -553,13 +565,10 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
         viewer->spinOnce();*/
 
         PointCloudT::Ptr temp (new PointCloudT);
-        registration::pairAlign (source, target, temp, pairTransform, true);
+        reg.pairAlign (source, target, temp, pairTransform, i-1, true);
         pcl::transformPointCloud (*temp, *result, GlobalTransform);
 
-        if (!viewer->addPointCloud(result, "result")) {
-            viewer->updatePointCloud(result, "result");
-        }
-        ui->qvtkWidget->update();
+        //source cloud should be updated by signal
 
         //update the global transform
         GlobalTransform = GlobalTransform * pairTransform;
@@ -568,25 +577,9 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
         filters::voxelGridFilter(result, clouds[i]);
     }
 
-
-
-    /*source = clouds[0];
-    target = clouds[1];
-
-    Eigen::Matrix4f transform;
-      PCLViewer::computeTransformation (source, target, transform);
-
-      std::cerr << transform << std::endl;
-      // Transform the data and write it to disk
-      pcl::PointCloud<PointT> output;
-      pcl::transformPointCloud (*source, output, transform);
-      pcl::io::savePCDFileBinary ("kokos.pcd", output);*/
-
-    //result = clouds[clouds.size()-1];
-    //viewer->removeAllPointClouds();
-    //viewer->addPointCloud(clouds[clouds.size()-1], "registrated");
-
-
+    viewer->removeAllPointClouds();
+    viewer->addPointCloud(result, "result");
+    ui->qvtkWidget->update();
 
     std::cout << "Registrated Point Cloud has " << clouds[clouds.size()-1]->points.size() << " points.\n";
     labelRegistrate->close();
@@ -618,6 +611,14 @@ void RoomScanner::keypointsToggled() {
     }
 }
 
+void RoomScanner::registrationFrameDoneSlot(int index) {
+    printf("zmena\n");
+    viewer->removePointCloud("source");
+
+    //viewer->addPointCloud(registration::regStep, "source");
+    ui->qvtkWidget->update();
+    viewer->resetCamera();
+}
 
 
 

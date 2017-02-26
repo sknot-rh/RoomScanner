@@ -10,5 +10,8 @@ typedef pcl::PointCloud<PointAT> PointCloudAT;
 typedef pcl::PointCloud<PointT> PointCloudT;
 typedef pcl::PointNormal PointNormalT;
 typedef pcl::PointCloud<PointNormalT> PointCloudWithNormals;
+typedef pcl::PointXYZRGBNormal PointRGBNormalT;
+typedef pcl::PointCloud<PointRGBNormalT> PointCloudWithRGBNormals;
+
 
 #endif // TYPES_H

@@ -1,5 +1,7 @@
 #include "registration.h"
 
+
+
 registration::registration()
 {
 
@@ -12,7 +14,7 @@ registration::registration()
   * \param output the resultant aligned source PointCloud
   * \param final_transform the resultant transform between source and target
   */
-void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, bool downsample)
+void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, int index, bool downsample)
 {
 
     parameters *param = parameters::GetInstance();
@@ -75,12 +77,13 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     reg.setInputTarget (points_with_normals_tgt);
 
 
-
-    //
     // Run the same optimization in a loop
     Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
     PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
     reg.setMaximumIterations (20);
+
+
+
     for (int i = 0; i < 100; ++i)
     {
         PCL_INFO ("Iteration Nr. %d.\n", i);
@@ -95,6 +98,9 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
         //accumulate transformation between each Iteration
         Ti = reg.getFinalTransformation () * Ti;
 
+        //pcl::transformPointCloud(*cloud_tgt, *(this->regStep), Ti);
+        emit registrationFrameDoneSignal(index);
+
         //if the difference between this transformation and the previous one
         //is smaller than the threshold, refine the process by reducing
         //the maximal correspondence distance
@@ -102,6 +108,8 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
             reg.setMaxCorrespondenceDistance (reg.getMaxCorrespondenceDistance () * 0.9);
 
         prev = reg.getLastIncrementalTransformation ();
+
+
     }
 
     //
@@ -174,6 +182,7 @@ void registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     pcl::registration::TransformationEstimationSVD<PointT, PointT> trans_est;
     trans_est.estimateRigidTransformation (*keypoints_src, *keypoints_tgt, *good_correspondences, transform);
     transformPointCloud (*src_origin, *src_origin, transform);
+
 }
 
 
