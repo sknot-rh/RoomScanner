@@ -25,6 +25,12 @@ QtCore/qmetatype.h
 /home/stanly/kinect/DP/RoomScanner/build/moc_pointrepr.cpp
 
 /home/stanly/kinect/DP/RoomScanner/build/moc_registration.cpp
+../src/registration.h
+/home/stanly/kinect/DP/RoomScanner/src/registration.h
+QtCore/qbytearray.h
+-
+QtCore/qmetatype.h
+-
 
 /home/stanly/kinect/DP/RoomScanner/build/moc_types.cpp
 
@@ -256,6 +262,8 @@ pcl/keypoints/sift_keypoint.h
 pcl/visualization/pcl_visualizer.h
 -
 pcl/features/fpfh_omp.h
+-
+QObject
 -
 
 /home/stanly/kinect/DP/RoomScanner/src/types.h
