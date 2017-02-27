@@ -5,9 +5,6 @@ registration::registration()
 
 }
 
-
-PointCloudT::Ptr registration::regFrame (new PointCloudT);
-
 ////////////////////////////////////////////////////////////////////////////////
 /** \brief Align a pair of PointCloud datasets and return the result
   * \param cloud_src the source PointCloud
@@ -83,7 +80,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     // Run the same optimization in a loop
     Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
     PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
-    reg.setMaximumIterations (10);
+    reg.setMaximumIterations (20);
     for (int i = 0; i < 100; ++i)
     {
         PCL_INFO ("Iteration Nr. %d.\n", i);
@@ -97,11 +94,6 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 
         //accumulate transformation between each Iteration
         Ti = reg.getFinalTransformation () * Ti;
-
-        if (reg.getMaxCorrespondenceDistance() > 0.0015) { //magic value
-            pcl::transformPointCloud (*cloud_src, *(registration::regFrame), Ti);
-            emit regFrameSignal();
-        }
 
         //if the difference between this transformation and the previous one
         //is smaller than the threshold, refine the process by reducing
@@ -181,10 +173,7 @@ void registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     // Obtain the best transformation between the two sets of keypoints given the remaining correspondences
     pcl::registration::TransformationEstimationSVD<PointT, PointT> trans_est;
     trans_est.estimateRigidTransformation (*keypoints_src, *keypoints_tgt, *good_correspondences, transform);
-
     transformPointCloud (*src_origin, *src_origin, transform);
-    registration::regFrame = src_origin;
-    emit regFrameSignal();
 }
 
 

@@ -71,8 +71,6 @@ public slots:
 
     void keypointsToggled(void);
 
-    void regFrameSlot(void);
-
 protected:
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
     boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;

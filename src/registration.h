@@ -17,16 +17,13 @@
 #include <pcl/keypoints/sift_keypoint.h>
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/features/fpfh_omp.h>
-#include <QObject>
 
 
-class registration : public QObject
+class registration
 {
-    Q_OBJECT
-
 public:
     registration();
-    void pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, bool downsample = false);
+    static void pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, bool downsample = false);
     static void estimateKeypoints (const PointCloudT::Ptr &cloud, PointCloudT &keypoints);
     static void estimateNormals (const PointCloudT::Ptr &cloud, pcl::PointCloud<pcl::Normal> &normals, float radius);
     static void estimateFPFH (const PointCloudT::Ptr &cloud, const pcl::PointCloud<pcl::Normal>::Ptr &normals, const PointCloudT::Ptr &keypoints, pcl::PointCloud<pcl::FPFHSignature33> &fpfhs);
@@ -38,11 +35,8 @@ public:
                                           const PointCloudT::Ptr &keypoints_tgt,
                                           pcl::Correspondences &remaining_correspondences);
 
-    void computeTransformation (const PointCloudT::Ptr &src, const PointCloudT::Ptr &tgt);
+    static void computeTransformation (const PointCloudT::Ptr &src, const PointCloudT::Ptr &tgt);
 
-    static PointCloudT::Ptr regFrame;
-signals:
-    void regFrameSignal(void);
 };
 
 #endif // REGISTRATION_H

@@ -536,43 +536,55 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
     PointCloudT::Ptr globalResult (new PointCloudT);
     PointCloudT::Ptr source, target;
 
-    registration reg;
-    connect(&reg, SIGNAL(regFrameSignal()), this, SLOT(regFrameSlot()));
-
     Eigen::Matrix4f GlobalTransform = Eigen::Matrix4f::Identity (), pairTransform;
     viewer->removeAllPointClouds();
-
-    viewer->addPointCloud(clouds[1], "source");
-    viewer->addPointCloud(target, "target");
     for (int i = 1; i < clouds.size(); i++) {
 
         source = clouds[i-1];
         target = clouds[i];
-        viewer->updatePointCloud(target, "target");
+
 
         // estimated source position done with fpfh features
-        reg.computeTransformation(source, target);
+        registration::computeTransformation(source, target);
+
+        // it would be nice to visualize progress, but this method runs in new thread so it has to be investigated
+        /*viewer->addPointCloud(source,"source");
+        viewer->addPointCloud(target,"target");
+        viewer->spinOnce();*/
 
         PointCloudT::Ptr temp (new PointCloudT);
-        reg.pairAlign (source, target, temp, pairTransform, true);
+        registration::pairAlign (source, target, temp, pairTransform, true);
         pcl::transformPointCloud (*temp, *result, GlobalTransform);
 
-        /*if (!viewer->addPointCloud(result, "result")) {
+        if (!viewer->addPointCloud(result, "result")) {
             viewer->updatePointCloud(result, "result");
         }
-        ui->qvtkWidget->update();*/
+        ui->qvtkWidget->update();
 
         //update the global transform
         GlobalTransform = GlobalTransform * pairTransform;
 
         //clouds[i] = result;
         filters::voxelGridFilter(result, clouds[i]);
-        pcl::io::savePCDFile ("spojene2.pcd", *result, true);
-
     }
 
-    //viewer->addPointCloud(clouds[clouds.size()-1], "result");
 
+
+    /*source = clouds[0];
+    target = clouds[1];
+
+    Eigen::Matrix4f transform;
+      PCLViewer::computeTransformation (source, target, transform);
+
+      std::cerr << transform << std::endl;
+      // Transform the data and write it to disk
+      pcl::PointCloud<PointT> output;
+      pcl::transformPointCloud (*source, output, transform);
+      pcl::io::savePCDFileBinary ("kokos.pcd", output);*/
+
+    //result = clouds[clouds.size()-1];
+    //viewer->removeAllPointClouds();
+    //viewer->addPointCloud(clouds[clouds.size()-1], "registrated");
 
 
 
@@ -604,15 +616,6 @@ void RoomScanner::keypointsToggled() {
         viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 10, "keypoints");
         ui->qvtkWidget->update();
     }
-}
-
-void RoomScanner::regFrameSlot() {
-    //printf("zmena %d\n", registration::regFrame->points.size() );
-    printf("zmena\n");
-
-    viewer->updatePointCloud(registration::regFrame, "source");
-    ui->qvtkWidget->update();
-    viewer->resetCamera();
 }
 
 
