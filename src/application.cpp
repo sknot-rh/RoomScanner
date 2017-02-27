@@ -289,7 +289,7 @@ void RoomScanner::pSliderValueChanged (int value)
 
 void RoomScanner::loadActionPressed() {
     QString fileName = QFileDialog::getOpenFileName(this,
-                       tr("Choose Point Cloud"), "/home", tr("Point Cloud Files (*.pcd)"));
+                       tr("Choose Point Cloud"), ".", tr("Point Cloud Files (*.pcd)"));
     std::string utf8_fileName = fileName.toUtf8().constData();
     PointCloudT::Ptr cloudFromFile (new PointCloudT);
     if (pcl::io::loadPCDFile<PointT> (utf8_fileName, *cloudFromFile) == -1) // load the file
