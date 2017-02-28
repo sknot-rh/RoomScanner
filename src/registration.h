@@ -18,7 +18,7 @@
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/features/fpfh_omp.h>
 #include <QObject>
-
+#include <pcl/registration/transformation_estimation_svd_scale.h>
 
 class registration : public QObject
 {

@@ -187,6 +187,7 @@ void registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     registration::rejectBadCorrespondences (all_correspondences, keypoints_src, keypoints_tgt, *good_correspondences);
 
     // Obtain the best transformation between the two sets of keypoints given the remaining correspondences
+    //pcl::registration::TransformationEstimationSVDScale<PointT, PointT> trans_est;
     pcl::registration::TransformationEstimationSVD<PointT, PointT> trans_est;
     trans_est.estimateRigidTransformation (*keypoints_src, *keypoints_tgt, *good_correspondences, transform);
     transformPointCloud (*src_origin, *src_origin, transform);
