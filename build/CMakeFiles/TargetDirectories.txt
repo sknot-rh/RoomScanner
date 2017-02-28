@@ -1,4 +1,0 @@
-/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/edit_cache.dir
-/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/rebuild_cache.dir
-/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner.dir
-/home/stanly/kinect/DP/RoomScanner/build/CMakeFiles/RoomScanner_automoc.dir
