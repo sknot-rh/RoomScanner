@@ -39,7 +39,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -175,6 +175,13 @@
            <widget class="QPushButton" name="pushButton_reset">
             <property name="text">
              <string>Reset Camera</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_stream">
+            <property name="text">
+             <string>Stream</string>
             </property>
            </widget>
           </item>
