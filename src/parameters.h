@@ -46,7 +46,7 @@ public:
     // Parameters for registration module
     double REGnormalsRadius = 0.05;
     double REGfpfh = 0.25;
-    double REGreject = 2.0;
+    double REGreject = 1.0;
     double REGcorrDist = 0.2;
 };
 

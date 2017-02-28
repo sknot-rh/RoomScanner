@@ -572,7 +572,9 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
 
 
 
-    pcl::io::savePCDFileBinary ("kokos.pcd", *(clouds[clouds.size()-1]));
+    copyPointCloud(*(clouds.back()), *(clouds.front()));
+    clouds.erase(clouds.begin()+1, clouds.end());
+    pcl::io::savePCDFileBinary ("kokos.pcd", *(clouds[0]));
 
     std::cout << "Registrated Point Cloud has " << clouds[clouds.size()-1]->points.size() << " points.\n";
     labelRegistrate->close();
