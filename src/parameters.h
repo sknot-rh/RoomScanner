@@ -22,7 +22,7 @@ public:
     const float SIFTmin_scale = 0.003f;
     const int SIFTn_octaves = 8;
     const int SIFTn_scales_per_octave = 10;
-    const float SIFTmin_contrast = 0.3f;
+    const float SIFTmin_contrast = 0.9f;
 
     // Parameters for MLS
     int MLSpolynomialOrder = 2;
