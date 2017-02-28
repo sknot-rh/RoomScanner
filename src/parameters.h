@@ -44,9 +44,11 @@ public:
     int GPmaximumNearestNeighbors = 100;
 
     // Parameters for registration module
+    //fpfh
     double REGnormalsRadius = 0.05;
     double REGfpfh = 0.25;
     double REGreject = 1.0;
+    //icp
     double REGcorrDist = 0.2;
 };
 

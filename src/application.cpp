@@ -118,6 +118,9 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Connect keypoint action
     connect(ui->actionShow_keypoints, SIGNAL(triggered()), this, SLOT(keypointsToggled()));
 
+    //Connect poly button
+    connect(ui->pushButton_stream, SIGNAL (clicked ()), this, SLOT (streamButtonPressed ()));
+
 
     //Add empty pointclouds
     viewer->addPointCloud(kinectCloud, "kinectCloud");
@@ -546,6 +549,7 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
     for (int i = 1; i < clouds.size(); i++) {
 
         source = clouds[i-1];
+        pcl::io::savePCDFileBinary ("previousRegisteredOutput.pcd", *(source));
         target = clouds[i];
         viewer->updatePointCloud(target, "target");
 
@@ -574,7 +578,7 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
 
     copyPointCloud(*(clouds.back()), *(clouds.front()));
     clouds.erase(clouds.begin()+1, clouds.end());
-    pcl::io::savePCDFileBinary ("kokos.pcd", *(clouds[0]));
+    pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
 
     std::cout << "Registrated Point Cloud has " << clouds[clouds.size()-1]->points.size() << " points.\n";
     labelRegistrate->close();
@@ -610,6 +614,14 @@ void RoomScanner::keypointsToggled() {
 void RoomScanner::regFrameSlot() {
     printf("Signal receieved\n");
     viewer->updatePointCloud(registration::regFrame, "source");
+    ui->qvtkWidget->update();
+    viewer->resetCamera();
+}
+
+void RoomScanner::streamButtonPressed() {
+    stream = true;
+    viewer->removeAllPointClouds();
+    viewer->addPointCloud(kinectCloud, "kinectCloud");
     ui->qvtkWidget->update();
     viewer->resetCamera();
 }
