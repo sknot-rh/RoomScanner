@@ -82,7 +82,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     // Run the same optimization in a loop
     Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
     PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
-    reg.setMaximumIterations (10);
+    reg.setMaximumIterations (20);
 
     for (int i = 0; i < 100; ++i)
     {
@@ -256,5 +256,13 @@ void registration::estimateKeypoints (const PointCloudT::Ptr &cloud, PointCloudT
     sift.setInputCloud(cloud);
     sift.compute(result);
 
+
     copyPointCloud(result, keypoints); // from PointWithScale to PointCloudAT
+
+    printf ("keypoints %d\n", keypoints.points.size());
+    // get undersampled cloud as "3D keypoints"
+    PointCloudT::Ptr depthKeypoints(new PointCloudT);
+    filters::downsample(cloud, *depthKeypoints, 0.1);
+    keypoints += *depthKeypoints;
+    printf ("keypoints %d\n", keypoints.points.size());
 }
