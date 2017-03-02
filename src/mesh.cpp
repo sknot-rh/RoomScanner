@@ -125,3 +125,64 @@ void mesh::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMes
     std::cout << triangles->polygons.size() << " triangles created" << std::endl;
     //return triangles;
 }
+
+
+void mesh::polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
+
+    // Get Poisson result
+    pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
+    pcl::PassThrough<PointT> filter;
+    filter.setInputCloud(cloudToPolygonate);
+    filter.filter(*filtered);
+    std::cout << "passthrough filter complete" << std::endl;
+
+    std::cout << "begin normal estimation" << std::endl;
+    pcl::NormalEstimationOMP<PointT, pcl::Normal> ne;
+    ne.setNumberOfThreads(8);
+    ne.setInputCloud(filtered);
+    ne.setRadiusSearch(0.01);
+    Eigen::Vector4f centroid;
+    pcl::compute3DCentroid(*filtered, centroid);
+    ne.setViewPoint(centroid[0], centroid[1], centroid[2]);
+
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>());
+    ne.compute(*cloud_normals);
+    std::cout << "normal estimation complete" << std::endl;
+    std::cout << "reverse normals' direction" << std::endl;
+
+    for(size_t i = 0; i < cloud_normals->size(); ++i){
+        cloud_normals->points[i].normal_x *= -1;
+        cloud_normals->points[i].normal_y *= -1;
+        cloud_normals->points[i].normal_z *= -1;
+    }
+
+    std::cout << "combine points and normals" << std::endl;
+    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_smoothed_normals(new pcl::PointCloud<pcl::PointXYZRGBNormal>());
+    concatenateFields(*filtered, *cloud_normals, *cloud_smoothed_normals);
+
+    std::cout << "begin poisson reconstruction" << std::endl;
+    pcl::Poisson<pcl::PointXYZRGBNormal> poisson;
+    poisson.setDepth(9);
+    poisson.setInputCloud(cloud_smoothed_normals);
+    poisson.setInputCloud(cloud_smoothed_normals);
+    poisson.reconstruct(*triangles);
+    printf("mesh has %d triangles\n", triangles->polygons.size());
+
+}
+
+
+
+void mesh::fillHoles(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut) {
+    vtkSmartPointer<vtkPolyData> input;
+    pcl::VTKUtils::mesh2vtk(*trianglesIn, input);
+
+    vtkSmartPointer<vtkFillHolesFilter> fillHolesFilter = vtkSmartPointer<vtkFillHolesFilter>::New();
+
+    fillHolesFilter->SetInputData(input);
+    fillHolesFilter->SetHoleSize(5.0);
+    fillHolesFilter->Update ();
+
+    vtkSmartPointer<vtkPolyData> polyData = fillHolesFilter->GetOutput();
+
+    pcl::VTKUtils::vtk2mesh(polyData, *trianglesOut);
+}
