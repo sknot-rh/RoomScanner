@@ -368,7 +368,6 @@ void RoomScanner::polyButtonPressedFunc() {
     PointCloudT::Ptr output (new PointCloudT);
     PointCloudT::Ptr holder (new PointCloudT);
     pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
-    //stop stream to avoid changes of polygonated kinect point cloud
 
     //                                                     /+++ polygonate kinect frame
     //                               /+++ sensor connected?
@@ -380,7 +379,6 @@ void RoomScanner::polyButtonPressedFunc() {
     if (clouds.empty()) {
         if (sensorConnected) {
 
-            //if (mtx_.try_lock()) {
             cloudtmp->clear();
             //keep point cloud organized
             cloudtmp->width = cloudWidth;
@@ -399,9 +397,6 @@ void RoomScanner::polyButtonPressedFunc() {
                 cloudtmp->points[i].z = (*pZ);
                 cloudtmp->points[i].rgba = (*pRGB);
             }
-            //mtx_.unlock();
-
-            //}
 
             //filters::voxelGridFilter(cloudtmp, output);
             //filters::cloudSmooth(holder, output); TODO!!!
@@ -421,52 +416,34 @@ void RoomScanner::polyButtonPressedFunc() {
         mesh::polygonateCloud(clouds.back(), triangles);
     }
 
-
-    // Get Poisson result
-    /*pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
-    pcl::PassThrough<PointT> filter;
-    filter.setInputCloud(cloudtmp);
-    filter.filter(*filtered);
-
-    pcl::NormalEstimationOMP<PointT, pcl::Normal> ne;
-    ne.setNumberOfThreads(8);
-    ne.setInputCloud(filtered);
-    ne.setRadiusSearch(0.01);
-    Eigen::Vector4f centroid;
-    pcl::compute3DCentroid(*filtered, centroid);
-    ne.setViewPoint(centroid[0], centroid[1], centroid[2]);
-
-    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>());
-    ne.compute(*cloud_normals);
-
-    for(size_t i = 0; i < cloud_normals->size(); ++i){
-        cloud_normals->points[i].normal_x *= -1;
-        cloud_normals->points[i].normal_y *= -1;
-        cloud_normals->points[i].normal_z *= -1;
-    }
-
-    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_smoothed_normals(new pcl::PointCloud<pcl::PointXYZRGBNormal>());
-    pcl::concatenateFields(*filtered, *cloud_normals, *cloud_smoothed_normals);
-
-    pcl::Poisson<pcl::PointXYZRGBNormal> poisson;
-    poisson.setDepth(9);
-    poisson.setInputCloud(cloud_smoothed_normals);
-    poisson.reconstruct(trianglesSimpl);*/
-
-
-
-
-
+    // Smoothing mesh
+    //after mesh smooth fix we can use this
     //pcl::PolygonMesh::Ptr trianglesPtr(&triangles);
     //triangles = PCLViewer::smoothMesh(trianglesPtr);
 
+    meshViewer->removePolygonMesh("mesh");
+
+
+    /* // Hole Filling
+    pcl::PolygonMesh::Ptr trianglesFilled(new pcl::PolygonMesh);
+    mesh::fillHoles(triangles, trianglesFilled);
+    std::cout << "After holefilling: " << trianglesFilled->polygons.size() << "\n";
+    //TODO hole filling is not helping at this moment. MLS needs to be done
+    //meshViewer->addPolygonMesh(*trianglesFilled, "mesh2");
+    */
 
     labelPolygonate->close();
-    meshViewer->removePolygonMesh("mesh");
-    //meshViewer->addPointCloud(output,"smoothed");
-    meshViewer->addPolygonMesh(*triangles, "mesh");
+
     printf("Mesh done\n");
+
+    /* // Shading set
+    //we want to set phong (or another than flat shading to our mesh, but...
+    https://github.com/PointCloudLibrary/pcl/issues/178
     meshViewer->setShapeRenderingProperties ( pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG, "mesh" );
+    */
+
+    pcl::io::saveOBJFile("mesh.obj", *triangles);
+    meshViewer->addPolygonMesh(*triangles, "mesh");
     ui->qvtkWidget_2->update();
 
 }

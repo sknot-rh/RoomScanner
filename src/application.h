@@ -27,7 +27,7 @@
 
 namespace Ui
 {
-class RoomScanner;
+    class RoomScanner;
 }
 
 class RoomScanner : public QMainWindow
