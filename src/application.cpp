@@ -405,7 +405,7 @@ void RoomScanner::polyButtonPressedFunc() {
 
             //filters::voxelGridFilter(cloudtmp, output);
             //filters::cloudSmooth(holder, output); TODO!!!
-            mesh::polygonateCloud(output, triangles);
+            mesh::polygonateCloud(cloudtmp, triangles);
         }
         else {
             // empty clouds & no sensor
