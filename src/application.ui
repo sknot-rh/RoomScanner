@@ -262,6 +262,7 @@
     <addaction name="actionShow_keypoints"/>
     <addaction name="actionShow_captured_frames"/>
     <addaction name="actionClear"/>
+    <addaction name="actionSmooth_cloud"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
@@ -292,6 +293,11 @@
   <action name="actionClear">
    <property name="text">
     <string>Clear</string>
+   </property>
+  </action>
+  <action name="actionSmooth_cloud">
+   <property name="text">
+    <string>Smooth cloud</string>
    </property>
   </action>
  </widget>

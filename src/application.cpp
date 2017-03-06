@@ -118,8 +118,11 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Connect keypoint action
     connect(ui->actionShow_keypoints, SIGNAL(triggered()), this, SLOT(keypointsToggled()));
 
-    //Connect poly button
+    //Connect stream button
     connect(ui->pushButton_stream, SIGNAL (clicked ()), this, SLOT (streamButtonPressed ()));
+
+    //Connect smooth action
+    connect(ui->actionSmooth_cloud, SIGNAL (triggered()), this, SLOT (actionSmoothTriggered ()));
 
 
     //Add empty pointclouds
@@ -265,19 +268,18 @@ void RoomScanner::saveButtonPressed() {
     stream = true;
 
     output = tmp;
+
     //filters::voxelGridFilter(tmp, output, 0.001); //global downsampling
+    filters::cloudSmoothFBF(tmp, output);
     std::vector<int> indices;
     removeNaNFromPointCloud(*output,*output, indices);
     filters::oultlierRemoval(output, output, 0.8f);
-    //filters::oultlierRemoval(output, output);
     clouds.push_back(output);
 
     std::cout << "Saving frame #"<<clouds.size()<<"\n";
-
     std::stringstream ss;
     ss << "frame_" << clouds.size()<<  ".pcd";
     std::string s = ss.str();
-
     pcl::io::savePCDFile (s, *output);
     lastFrameToggled();
 }
@@ -523,20 +525,17 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
     viewer->removeAllPointClouds();
     viewer->addPointCloud(clouds[1], "target");
     viewer->addPointCloud(clouds[0], "source");
+
     for (int i = 1; i < clouds.size(); i++) {
 
         source = clouds[i-1];
+        printf ("source %d\n", source->points.size());
         pcl::io::savePCDFileBinary ("previousRegisteredOutput.pcd", *(source));
         target = clouds[i];
         viewer->updatePointCloud(target, "target");
 
         // estimated source position done with fpfh features
         reg.computeTransformation(source, target);
-
-        // it would be nice to visualize progress, but this method runs in new thread so it has to be investigated
-        /*viewer->addPointCloud(source,"source");
-        viewer->addPointCloud(target,"target");
-        viewer->spinOnce();*/
 
         PointCloudT::Ptr temp (new PointCloudT);
         reg.pairAlign (source, target, temp, pairTransform, true);
@@ -551,10 +550,15 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
         filters::voxelGridFilter(result, clouds[i]);
     }
 
-
+    filters::voxelGridFilter(result, clouds[i]);
 
     copyPointCloud(*(clouds.back()), *(clouds.front()));
     clouds.erase(clouds.begin()+1, clouds.end());
+
+    viewer->removeAllPointClouds();
+    filters::cloudSmoothMLS(clouds[0], clouds[0]);
+    //filters::voxelGridFilter(clouds[0], clouds[0], 0.02);
+    viewer->addPointCloud(clouds[0], "result");
     pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
 
     std::cout << "Registrated Point Cloud has " << clouds[clouds.size()-1]->points.size() << " points.\n";
@@ -603,6 +607,16 @@ void RoomScanner::streamButtonPressed() {
     viewer->resetCamera();
 }
 
+void RoomScanner::actionSmoothTriggered() {
+    stream = false;
+    printf("Smoothing input cloud\n");
+    filters::cloudSmoothMLS(clouds.back(), clouds.back());
+    //filters::voxelGridFilter(clouds[0], clouds[0], 0.01);
+    viewer->removeAllPointClouds();
+    viewer->addPointCloud((clouds.back()), "smoothCloud");
+    ui->qvtkWidget->update();
+    viewer->resetCamera();
+}
 
 
 

@@ -32,7 +32,6 @@ void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
 
 
     pcl::VoxelGrid<PointT> ds;  //create downsampling filter
-    //pcl::UniformSampling<PointT> ds;  //create downsampling filter
     ds.setInputCloud (cloudToFilter);
     if (leaf > 0.00000f) {
         printf("VoxelGrid parameter with priority %f\n", leaf);
@@ -55,7 +54,7 @@ void filters::downsample (const PointCloudT::Ptr &input,  PointCloudT &output, d
 }
 
 
-void filters::cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
+void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
     std::cout<<"smoothing "<< cloudToSmooth->points.size() <<" points\n";
     // final version will load from json while startup and changes will be done in GUI
 
@@ -90,7 +89,6 @@ void filters::cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr outpu
     }
 
 
-
     pcl::MovingLeastSquares<PointT, PointT> mls;
     mls.setInputCloud (cloudToSmooth);
     mls.setSearchRadius (params->MLSsearchRadius);
@@ -100,21 +98,24 @@ void filters::cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr outpu
 
     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::SAMPLE_LOCAL_PLANE);
     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::RANDOM_UNIFORM_DENSITY);
-    mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
+    //mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointXYZRGB>::NONE);
-    mls.setPointDensity ( int (60000 * params->MLSsearchRadius)); // 300 points in a 5 cm radius
+    //mls.setPointDensity ( int (60000 * params->MLSsearchRadius)); // 300 points in a 5 cm radius
     mls.setUpsamplingRadius (params->MLSupsamplingRadius);
-    mls.setUpsamplingStepSize (params->MLSupsamplingStepSize);
-    mls.setDilationIterations (params->MLSdilationIterations);
+    //mls.setUpsamplingStepSize (params->MLSupsamplingStepSize);
+    //mls.setDilationIterations (params->MLSdilationIterations);
     mls.setDilationVoxelSize (params->MLSdilationVoxelSize);
+    //mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
 
     pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
     //pcl::search::OrganizedNeighbor<PointT> tree (new pcl::search::OrganizedNeighbor<PointT> ());
     mls.setSearchMethod (tree);
     mls.setComputeNormals (params->MLScomputeNormals);
-    mls.process (*output);
-    std::cout<<"now we have "<< output->points.size() <<" points\n";
 
+    PointCloudT::Ptr cloud_smoothed (new PointCloudT ());
+    mls.process (*cloud_smoothed);
+    output = cloud_smoothed;
+    std::cout<<"Smoothed cloud has "<< output->points.size() <<" points\n";
 }
 
 void filters::oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float radius) {
@@ -129,5 +130,13 @@ void filters::oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
     rorfilter.setRadiusSearch (radius);
     rorfilter.setMinNeighborsInRadius (5);
     rorfilter.filter (*filtered);
+}
+
+void filters::cloudSmoothFBF(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
+    pcl::FastBilateralFilter<PointT> filter;
+    filter.setInputCloud(cloudToSmooth);
+    filter.setSigmaS(5);
+    filter.setSigmaR(0.2);
+    filter.applyFilter(*output);
 }
 

@@ -12,7 +12,7 @@
 #include <pcl/surface/impl/mls.hpp>
 #include <pcl/filters/statistical_outlier_removal.h>
 #include <pcl/filters/radius_outlier_removal.h>
-
+#include <pcl/filters/fast_bilateral.h>
 
 
 class filters
@@ -21,7 +21,8 @@ public:
     filters();
     static void voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float leaf = -1.0f);
     static void downsample (const PointCloudT::Ptr &input,  PointCloudT &output, double radius);
-    static void cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output);
+    static void cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output);
+    static void cloudSmoothFBF(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output);
     static void oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float radius);
 };
 
