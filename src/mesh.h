@@ -17,6 +17,7 @@
 #include <vtkFillHolesFilter.h>
 #include <pcl/surface/poisson.h>
 #include <pcl/filters/passthrough.h>
+#include <pcl/surface/vtk_smoothing/vtk_mesh_quadric_decimation.h>
 
 class mesh
 {
@@ -28,6 +29,7 @@ public:
     static void polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles); //bug in pcl
     static void fillHoles(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut);
     static void polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
+    static void meshDecimation(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut);
 
 };
 

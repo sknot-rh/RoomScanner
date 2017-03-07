@@ -35,10 +35,10 @@ void mesh::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh:
 
         for (auto & array_element: pt) {
             if (array_element.first == "greedyProjection")
-                sPCL_INFO("greedyProjection\n");
+                PCL_INFO("greedyProjection\n");
             for (auto & property: array_element.second) {
                 if (array_element.first == "greedyProjection")
-                    PCL_INFO(" %s = %s\n", property.first, property.second.get_value < std::string > ());
+                    PCL_INFO(" %s = %s\n", property.first.c_str(), property.second.get_value < std::string > ().c_str());
             }
         }
 
@@ -174,10 +174,18 @@ void mesh::fillHoles(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr tr
     vtkSmartPointer<vtkFillHolesFilter> fillHolesFilter = vtkSmartPointer<vtkFillHolesFilter>::New();
 
     fillHolesFilter->SetInputData(input);
-    fillHolesFilter->SetHoleSize(5.0);
+    fillHolesFilter->SetHoleSize(0.03);
     fillHolesFilter->Update ();
 
     vtkSmartPointer<vtkPolyData> polyData = fillHolesFilter->GetOutput();
 
     pcl::VTKUtils::vtk2mesh(polyData, *trianglesOut);
+}
+
+void mesh::meshDecimation(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut) {
+    pcl::MeshQuadricDecimationVTK meshDecimator;
+    meshDecimator.setInputMesh(trianglesIn);
+    meshDecimator.setTargetReductionFactor(0.20); // percents
+    meshDecimator.process(*trianglesOut);
+    PCL_INFO("Triangles count reduced from %d to %d\n", trianglesIn->polygons.size(), trianglesOut->polygons.size());
 }

@@ -295,7 +295,7 @@ void RoomScanner::loadActionPressed() {
     }
 
     ui->tabWidget->setCurrentIndex(0);
-    PCL_INFO("PC Loaded from file %s\n", utf8_fileName);
+    PCL_INFO("PC Loaded from file %s\n", utf8_fileName.c_str());
     viewer->removeAllPointClouds();
     if (!viewer->addPointCloud(cloudFromFile, "cloudFromFile"))
         viewer->updatePointCloud(cloudFromFile,"cloudFromFile");
@@ -405,35 +405,38 @@ void RoomScanner::polyButtonPressedFunc() {
         mesh::polygonateCloud(clouds.back(), triangles);
     }
 
-    // Smoothing mesh
-    //after mesh smooth fix we can use this
-    //pcl::PolygonMesh::Ptr trianglesPtr(&triangles);
-    //triangles = PCLViewer::smoothMesh(trianglesPtr);
+
 
     meshViewer->removePolygonMesh("mesh");
 
 
-    /* // Hole Filling
+    // Hole Filling
     pcl::PolygonMesh::Ptr trianglesFilled(new pcl::PolygonMesh);
     mesh::fillHoles(triangles, trianglesFilled);
     PCL_INFO("After holefilling: %d\n", trianglesFilled->polygons.size());
-    //TODO hole filling is not helping at this moment. MLS needs to be done
-    //meshViewer->addPolygonMesh(*trianglesFilled, "mesh2");
-    */
 
-    labelPolygonate->close();
 
-    PCL_INFO("Mesh done\n");
 
-    /* // Shading set
-    //we want to set phong (or another than flat shading to our mesh, but...
-    https://github.com/PointCloudLibrary/pcl/issues/178
+    pcl::PolygonMesh::Ptr trianglesDecimated(new pcl::PolygonMesh);
+    mesh::meshDecimation(trianglesFilled, trianglesDecimated);
+
+    // Smoothing mesh
+    // not sure if necessary, surface is already smooth. This'd just decimaced another details
+    //pcl::PolygonMesh::Ptr trianglesPtr(&triangles);
+    //triangles = PCLViewer::smoothMesh(trianglesPtr);
+
+    /* // Shading setting
+    //we want to set phong (or another than flat shading) to our mesh, but... https://github.com/PointCloudLibrary/pcl/issues/178
     meshViewer->setShapeRenderingProperties ( pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG, "mesh" );
     */
 
-    pcl::io::saveOBJFile("mesh.obj", *triangles);
-    meshViewer->addPolygonMesh(*triangles, "mesh");
+
+    pcl::io::saveOBJFile("mesh.obj", *trianglesDecimated);
+    meshViewer->addPolygonMesh(*trianglesDecimated, "mesh");
     ui->qvtkWidget_2->update();
+    labelPolygonate->close();
+
+    PCL_INFO("Mesh done\n");
 
 }
 

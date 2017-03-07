@@ -23,7 +23,7 @@ void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
                 PCL_INFO("gridFilter\n");
             for (auto & property: array_element.second) {
                 if (array_element.first == "gridFilter")
-                    PCL_INFO(" %s = %s\n", property.first, property.second.get_value < std::string > ());
+                    PCL_INFO(" %s = %s\n", property.first.c_str(), property.second.get_value < std::string > ().c_str());
             }
         }
 
@@ -74,7 +74,7 @@ void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
             for (auto & property: array_element.second) {
                 if (array_element.first == "mls")
                     //std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
-                    PCL_INFO(" %s = %s\n", property.first, property.second.get_value < std::string > ());
+                    PCL_INFO(" %s = %s\n", property.first.c_str(), property.second.get_value < std::string > ().c_str());
             }
         }
 
