@@ -106,7 +106,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
         else {
             pcl::transformPointCloud (*cloud_src, *(registration::regFrame), Ti); //send final output
             emit regFrameSignal();
-            printf("Final output sent\n");
+            PCL_INFO("Final output sent\n");
 
         }
 
@@ -138,7 +138,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 
 bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, const PointCloudT::Ptr &tgt_origin)
 {
-    std::cout << "computeTransformation\n";
+    PCL_INFO("computeTransformation\n");
     Eigen::Matrix4f transform;
 
     parameters *params = parameters::GetInstance();
@@ -152,7 +152,7 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     filters::voxelGridFilter(src_origin, src, 0.05f); // we want downsampled copies of clouds for computation...direct downsampling would affect output quality
     filters::voxelGridFilter(tgt_origin, tgt, 0.05f);
 
-    printf ("after filtering clouds have %lu and %lu points for the source and target datasets.\n", src->points.size (), tgt->points.size ());
+    PCL_INFO ("after filtering clouds have %lu and %lu points for the source and target datasets.\n", src->points.size (), tgt->points.size ());
 
     /*std::vector<int> indices; // this filtering is performed while saving frame to vector
     removeNaNFromPointCloud(*src,*src, indices);
@@ -164,10 +164,10 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     registration::estimateKeypoints (src, *keypoints_src);
     registration::estimateKeypoints (tgt, *keypoints_tgt);
 
-    printf ("Found %lu and %lu keypoints for the source and target datasets.\n", keypoints_src->points.size (), keypoints_tgt->points.size ());
+    PCL_INFO ("Found %lu and %lu keypoints for the source and target datasets.\n", keypoints_src->points.size (), keypoints_tgt->points.size ());
 
     if (keypoints_src->points.size() == 0 || keypoints_tgt->points.size() == 0) {
-        printf("Clouds have no key points!\n");
+        PCL_INFO("Clouds have no key points!\n");
         return false;
     }
 
@@ -176,7 +176,7 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
         normals_tgt (new pcl::PointCloud<pcl::Normal>);
     registration::estimateNormals (src, *normals_src, params->REGnormalsRadius);
     registration::estimateNormals (tgt, *normals_tgt, params->REGnormalsRadius);
-    printf ("Estimated %lu and %lu normals for the source and target datasets.\n", normals_src->points.size (), normals_tgt->points.size ());
+    PCL_INFO ("Estimated %lu and %lu normals for the source and target datasets.\n", normals_src->points.size (), normals_tgt->points.size ());
 
     // Compute FPFH features at each keypoint
     pcl::PointCloud<pcl::FPFHSignature33>::Ptr fpfhs_src (new pcl::PointCloud<pcl::FPFHSignature33>),
@@ -205,7 +205,7 @@ void registration::rejectBadCorrespondences (const pcl::CorrespondencesPtr &all_
         pcl::Correspondences &remaining_correspondences)
 {
     parameters *params = parameters::GetInstance();
-    std::cout << "rejectBadCorrespondences\n";
+    PCL_INFO("rejectBadCorrespondences\n");
     pcl::registration::CorrespondenceRejectorDistance rej;
     rej.setInputSource<PointT> (keypoints_src);
     rej.setInputTarget<PointT> (keypoints_tgt);
@@ -218,7 +218,7 @@ void registration::findCorrespondences (const pcl::PointCloud<pcl::FPFHSignature
                                         const pcl::PointCloud<pcl::FPFHSignature33>::Ptr &fpfhs_tgt,
                                         pcl::Correspondences &all_correspondences)
 {
-    std::cout << "findCorrespondences\n";
+    PCL_INFO("findCorrespondences\n");
     pcl::registration::CorrespondenceEstimation<pcl::FPFHSignature33, pcl::FPFHSignature33> est;
     est.setInputSource (fpfhs_src);
     est.setInputTarget (fpfhs_tgt);
@@ -227,7 +227,7 @@ void registration::findCorrespondences (const pcl::PointCloud<pcl::FPFHSignature
 
 void registration::estimateFPFH (const PointCloudT::Ptr &cloud, const pcl::PointCloud<pcl::Normal>::Ptr &normals, const PointCloudT::Ptr &keypoints, pcl::PointCloud<pcl::FPFHSignature33> &fpfhs)
 {
-    std::cout << "estimateFPFH\n";
+    PCL_INFO("estimateFPFH\n");
     parameters* params = parameters::GetInstance();
     pcl::FPFHEstimationOMP<PointT, pcl::Normal, pcl::FPFHSignature33> fpfh_est;
     fpfh_est.setNumberOfThreads(4);
@@ -240,7 +240,7 @@ void registration::estimateFPFH (const PointCloudT::Ptr &cloud, const pcl::Point
 
 void registration::estimateNormals (const PointCloudT::Ptr &cloud, pcl::PointCloud<pcl::Normal> &normals, float radius)
 {
-    std::cout << "estimateNormals\n";
+   PCL_INFO("estimateNormals\n");
     pcl::NormalEstimationOMP<PointT, pcl::Normal> normal_est;
     normal_est.setNumberOfThreads(4);
     normal_est.setInputCloud (cloud);
@@ -251,7 +251,7 @@ void registration::estimateNormals (const PointCloudT::Ptr &cloud, pcl::PointClo
 void registration::estimateKeypoints (const PointCloudT::Ptr &cloud, PointCloudT &keypoints)
 {
     parameters* param = parameters::GetInstance();
-    std::cout << "estimateKeypoints\n";
+    PCL_INFO("estimateKeypoints\n");
     pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift;
     pcl::PointCloud<pcl::PointWithScale> result;
     pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT> ());
@@ -264,10 +264,10 @@ void registration::estimateKeypoints (const PointCloudT::Ptr &cloud, PointCloudT
 
     copyPointCloud(result, keypoints); // from PointWithScale to PointCloudAT
 
-    printf ("keypoints %d\n", keypoints.points.size());
+    PCL_INFO ("keypoints %d\n", keypoints.points.size());
     // get undersampled cloud as "3D keypoints"
     PointCloudT::Ptr depthKeypoints(new PointCloudT);
     filters::downsample(cloud, *depthKeypoints, 0.1);
     keypoints += *depthKeypoints;
-    printf ("keypoints %d\n", keypoints.points.size());
+    PCL_INFO ("keypoints %d\n", keypoints.points.size());
 }

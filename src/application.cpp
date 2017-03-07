@@ -58,7 +58,7 @@ RoomScanner::RoomScanner (QWidget *parent) :
         sensorConnected = true;
     }
     catch (pcl::IOException e) {
-        std::cout << "No sensor connected!" << '\n';
+        PCL_INFO("No sensor connected!\n");
         sensorConnected = false;
     }
 
@@ -271,7 +271,7 @@ void RoomScanner::saveButtonPressed() {
     filters::oultlierRemoval(output, output, 0.8f);
     clouds.push_back(output);
 
-    std::cout << "Saving frame #"<<clouds.size()<<"\n";
+    PCL_INFO("Saving frame #%d\n", clouds.size());
     std::stringstream ss;
     ss << "frame_" << clouds.size()<<  ".pcd";
     std::string s = ss.str();
@@ -295,7 +295,7 @@ void RoomScanner::loadActionPressed() {
     }
 
     ui->tabWidget->setCurrentIndex(0);
-    std::cout << "PC Loaded from file " << utf8_fileName << "\n";
+    PCL_INFO("PC Loaded from file %s\n", utf8_fileName);
     viewer->removeAllPointClouds();
     if (!viewer->addPointCloud(cloudFromFile, "cloudFromFile"))
         viewer->updatePointCloud(cloudFromFile,"cloudFromFile");
@@ -315,14 +315,14 @@ void RoomScanner::polyButtonPressed() {
         else {
             // empty clouds & no sensor
             QMessageBox::warning(this, "Error", "No pointcloud to polygonate!");
-            std::cerr << "No cloud to polygonate!\n";
+            PCL_INFO("No cloud to polygonate!\n");
             return;
         }
     }
     else {
         if (!registered && clouds.size() > 1) {
             QMessageBox::warning(this, "Warning", "Pointclouds ready to registrate!");
-            std::cerr << "Pointclouds ready to registrate!\n";
+            PCL_INFO("Pointclouds ready to registrate!\n");
             return;
         }
         else {
@@ -337,7 +337,7 @@ void RoomScanner::polyButtonPressed() {
 
 void RoomScanner::loading(QLabel* label) {
     if (!movie->isValid()) {
-        std::cerr<<"Invalid loading image " << movie->fileName().toStdString() << "\n";
+        PCL_INFO("Invalid loading image %s\n", movie->fileName().toStdString());
         return;
     }
     label->setMovie(movie);
@@ -394,7 +394,7 @@ void RoomScanner::polyButtonPressedFunc() {
         else {
             // empty clouds & no sensor
             QMessageBox::warning(this, "Error", "No pointcloud to polygonate!");
-            std::cerr << "No cloud to polygonate!\n";
+            PCL_INFO("No cloud to polygonate!\n");
             return;
 
         }
@@ -416,14 +416,14 @@ void RoomScanner::polyButtonPressedFunc() {
     /* // Hole Filling
     pcl::PolygonMesh::Ptr trianglesFilled(new pcl::PolygonMesh);
     mesh::fillHoles(triangles, trianglesFilled);
-    std::cout << "After holefilling: " << trianglesFilled->polygons.size() << "\n";
+    PCL_INFO("After holefilling: %d\n", trianglesFilled->polygons.size());
     //TODO hole filling is not helping at this moment. MLS needs to be done
     //meshViewer->addPolygonMesh(*trianglesFilled, "mesh2");
     */
 
     labelPolygonate->close();
 
-    printf("Mesh done\n");
+    PCL_INFO("Mesh done\n");
 
     /* // Shading set
     //we want to set phong (or another than flat shading to our mesh, but...
@@ -457,13 +457,13 @@ void RoomScanner::lastFrameToggled() {
 }
 
 void RoomScanner::closing() {
-    //printf("Exiting...\n");
+    //PCL_INFO("Exiting...\n");
     //interface->stop();
 }
 
 RoomScanner::~RoomScanner ()
 {
-    printf("Exiting...\n");
+    PCL_INFO("Exiting...\n");
     if (sensorConnected) {
         interface->stop();
     }
@@ -490,11 +490,11 @@ void RoomScanner::actionClearTriggered()
 
 void RoomScanner::regButtonPressed() {
     if (clouds.size() < 2) {
-        std::cerr << "To few clouds to registrate!\n";
+        PCL_INFO("To few clouds to registrate!\n");
     }
     //stop = true;
     stream = false;
-    std::cout << "Registrating " << clouds.size() << " point clouds.\n";
+    PCL_INFO("Registrating %d point clouds.\n", clouds.size());
     labelRegistrate = new QLabel;
     boost::thread* thr = new boost::thread(boost::bind(&RoomScanner::registrateNClouds, this));
     loading(labelRegistrate);
@@ -516,7 +516,7 @@ void RoomScanner::registrateNClouds() {
     for (int i = 1; i < clouds.size(); i++) {
 
         source = clouds[i-1];
-        printf ("source %d\n", source->points.size());
+        PCL_INFO ("source %d\n", source->points.size());
         pcl::io::savePCDFileBinary ("previousRegisteredOutput.pcd", *(source));
         target = clouds[i];
         viewer->updatePointCloud(target, "target");
@@ -551,7 +551,7 @@ void RoomScanner::registrateNClouds() {
     viewer->addPointCloud(clouds[0], "result");
     pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
 
-    std::cout << "Registrated Point Cloud has " << clouds[clouds.size()-1]->points.size() << " points.\n";
+    PCL_INFO( "Registrated Point Cloud has %d points.\n", clouds[clouds.size()-1]->points.size());
     labelRegistrate->close();
     registered = true;
 }
@@ -563,7 +563,7 @@ void RoomScanner::tabChangedEvent(int tabIndex) {
         stream = true;
     }
     else {
-        std::cout<<"Stopping stream...\n";
+        PCL_INFO("Stopping stream...\n");
         stream = false;
     }
 }
@@ -582,7 +582,7 @@ void RoomScanner::keypointsToggled() {
 
 
 void RoomScanner::regFrameSlot() {
-    printf("Signal receieved\n");
+    PCL_INFO("Signal receieved\n");
     viewer->updatePointCloud(registration::regFrame, "source");
     ui->qvtkWidget->update();
     viewer->resetCamera();
@@ -598,7 +598,7 @@ void RoomScanner::streamButtonPressed() {
 
 void RoomScanner::actionSmoothTriggered() {
     stream = false;
-    printf("Smoothing input cloud\n");
+    PCL_INFO("Smoothing input cloud\n");
     filters::cloudSmoothMLS(clouds.back(), clouds.back());
     //filters::voxelGridFilter(clouds[0], clouds[0], 0.01);
     viewer->removeAllPointClouds();

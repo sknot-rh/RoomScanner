@@ -7,23 +7,23 @@ filters::filters()
 
 
 void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float leaf) {
-    std::cout<<"downsampling filter " << leaf << "\n";
+    PCL_INFO("downsampling filter\n");
 
     parameters* params = parameters::GetInstance();
     std::ifstream config_file("config.json");
 
     if (!config_file.fail()) {
-        std::cout << "Config file loaded\n";
+        PCL_INFO("Config file loaded\n");
         using boost::property_tree::ptree;
         ptree pt;
         read_json(config_file, pt);
 
         for (auto & array_element: pt) {
             if (array_element.first == "gridFilter")
-                std::cout << "gridFilter" << "\n";
+                PCL_INFO("gridFilter\n");
             for (auto & property: array_element.second) {
                 if (array_element.first == "gridFilter")
-                    std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
+                    PCL_INFO(" %s = %s\n", property.first, property.second.get_value < std::string > ());
             }
         }
 
@@ -34,14 +34,14 @@ void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
     pcl::VoxelGrid<PointT> ds;  //create downsampling filter
     ds.setInputCloud (cloudToFilter);
     if (leaf > 0.00000f) {
-        printf("VoxelGrid parameter with priority %f\n", leaf);
+        PCL_INFO("VoxelGrid parameter with priority %f\n", leaf);
         ds.setLeafSize (leaf, leaf, leaf);
     }
     else {
         ds.setLeafSize (params->VGFleafSize, params->VGFleafSize, params->VGFleafSize);
     }
     ds.filter (*filtered);
-    std::cout<<"Filtered points: " << filtered->points.size() << "\n";
+    PCL_INFO("Filtered points: %d\n", filtered->points.size());
 }
 
 void filters::downsample (const PointCloudT::Ptr &input,  PointCloudT &output, double radius) {
@@ -55,7 +55,7 @@ void filters::downsample (const PointCloudT::Ptr &input,  PointCloudT &output, d
 
 
 void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
-    std::cout<<"smoothing "<< cloudToSmooth->points.size() <<" points\n";
+    PCL_INFO("smoothing %d points\n", cloudToSmooth->points.size());
     // final version will load from json while startup and changes will be done in GUI
 
     parameters* params = parameters::GetInstance();
@@ -63,17 +63,18 @@ void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
 
 
     if (!config_file.fail()) {
-        std::cout << "Config file loaded\n";
+        PCL_INFO("Config file loaded\n");
         using boost::property_tree::ptree;
         ptree pt;
         read_json(config_file, pt);
 
         for (auto & array_element: pt) {
             if (array_element.first == "mls")
-                std::cout << "mls" << "\n";
+                PCL_INFO("mls\n");
             for (auto & property: array_element.second) {
                 if (array_element.first == "mls")
-                    std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
+                    //std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
+                    PCL_INFO(" %s = %s\n", property.first, property.second.get_value < std::string > ());
             }
         }
 
@@ -115,7 +116,7 @@ void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
     PointCloudT::Ptr cloud_smoothed (new PointCloudT ());
     mls.process (*cloud_smoothed);
     output = cloud_smoothed;
-    std::cout<<"Smoothed cloud has "<< output->points.size() <<" points\n";
+    PCL_INFO("Smoothed cloud has %d points\n", output->points.size());
 }
 
 void filters::oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float radius) {

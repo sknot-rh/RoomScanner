@@ -7,7 +7,7 @@ mesh::mesh()
 
 pcl::PolygonMesh mesh::smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth) {
     //!!! getting double free or corruption (out)
-    std::cout<<"Smoothing mesh\n";
+    PCL_INFO("Smoothing mesh\n");
     pcl::PolygonMesh output;
     pcl::MeshSmoothingLaplacianVTK vtk;
     vtk.setInputMesh(meshToSmooth);
@@ -22,23 +22,23 @@ pcl::PolygonMesh mesh::smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth) {
 }
 
 void mesh::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
-    std::cout<<"Greedy polygonation\n";
+    PCL_INFO("Greedy polygonation\n");
     parameters* params = parameters::GetInstance();
 
     std::ifstream config_file("config.json");
 
     if (!config_file.fail()) {
-        std::cout << "Config file loaded\n";
+        PCL_INFO("Config file loaded\n");
         using boost::property_tree::ptree;
         ptree pt;
         read_json(config_file, pt);
 
         for (auto & array_element: pt) {
             if (array_element.first == "greedyProjection")
-                std::cout << "greedyProjection" << "\n";
+                sPCL_INFO("greedyProjection\n");
             for (auto & property: array_element.second) {
                 if (array_element.first == "greedyProjection")
-                    std::cout << " "<< property.first << " = " << property.second.get_value < std::string > () << "\n";
+                    PCL_INFO(" %s = %s\n", property.first, property.second.get_value < std::string > ());
             }
         }
 
@@ -91,12 +91,12 @@ void mesh::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh:
     gp.setInputCloud (cloud_normals);
     gp.setSearchMethod (tree_normal);
     gp.reconstruct (*triangles);
-    std::cout << "Polygons created: " << triangles->polygons.size() << "\n";
+    PCL_INFO("Polygons created: %d\n", triangles->polygons.size());
     //return triangles;
 }
 
 void mesh::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
-    printf("Marching cubes\n");
+    PCL_INFO("Marching cubes\n");
     pcl::NormalEstimationOMP<PointT, pcl::Normal> ne;
     pcl::search::KdTree<PointT>::Ptr tree1 (new pcl::search::KdTree<PointT>);
     tree1->setInputCloud (cloudToPolygonate);
@@ -114,7 +114,7 @@ void mesh::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMes
     pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
     tree->setInputCloud (cloud_with_normals);
 
-    std::cout << "begin marching cubes reconstruction" << std::endl;
+    PCL_INFO("begin marching cubes reconstruction\n");
 
     pcl::MarchingCubesHoppe<pcl::PointXYZRGBNormal> mc;
     //pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
@@ -122,7 +122,7 @@ void mesh::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMes
     mc.setSearchMethod (tree);
     mc.reconstruct (*triangles);
 
-    std::cout << triangles->polygons.size() << " triangles created" << std::endl;
+    PCL_INFO("%d triangles created\n", triangles->polygons.size());
     //return triangles;
 }
 
@@ -134,9 +134,7 @@ void mesh::polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::Polyg
     pcl::PassThrough<PointT> filter;
     filter.setInputCloud(cloudToPolygonate);
     filter.filter(*filtered);
-    std::cout << "passthrough filter complete" << std::endl;
 
-    std::cout << "begin normal estimation" << std::endl;
     pcl::NormalEstimationOMP<PointT, pcl::Normal> ne;
     ne.setNumberOfThreads(8);
     ne.setInputCloud(filtered);
@@ -147,26 +145,23 @@ void mesh::polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::Polyg
 
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>());
     ne.compute(*cloud_normals);
-    std::cout << "normal estimation complete" << std::endl;
-    std::cout << "reverse normals' direction" << std::endl;
 
+    //reverse normal's direction
     for(size_t i = 0; i < cloud_normals->size(); ++i){
         cloud_normals->points[i].normal_x *= -1;
         cloud_normals->points[i].normal_y *= -1;
         cloud_normals->points[i].normal_z *= -1;
     }
 
-    std::cout << "combine points and normals" << std::endl;
     pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_smoothed_normals(new pcl::PointCloud<pcl::PointXYZRGBNormal>());
     concatenateFields(*filtered, *cloud_normals, *cloud_smoothed_normals);
 
-    std::cout << "begin poisson reconstruction" << std::endl;
     pcl::Poisson<pcl::PointXYZRGBNormal> poisson;
     poisson.setDepth(9);
     poisson.setInputCloud(cloud_smoothed_normals);
     poisson.setInputCloud(cloud_smoothed_normals);
     poisson.reconstruct(*triangles);
-    printf("mesh has %d triangles\n", triangles->polygons.size());
+    PCL_INFO("mesh has %d triangles\n", triangles->polygons.size());
 
 }
 
