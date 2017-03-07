@@ -97,9 +97,6 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Connect poly button
     connect(ui->pushButton_reg, SIGNAL (clicked ()), this, SLOT (regButtonPressed ()));
 
-    //Connect point size slider
-    connect(ui->horizontalSlider_p, SIGNAL (valueChanged (int)), this, SLOT (pSliderValueChanged (int)));
-
     //Connect checkbox
     connect(ui->checkBox, SIGNAL(clicked(bool)), this, SLOT(coordSysToggled(bool)));
 
@@ -131,8 +128,6 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //viewer->addPointCloud(key_cloud, "keypoints");
 
     //viewer->setBackgroundColor(0.5f, 0.5f, 0.5f);
-
-    pSliderValueChanged (2);
     ui->tabWidget->setCurrentIndex(0);
 
     /*mytemplate test;
@@ -282,14 +277,6 @@ void RoomScanner::saveButtonPressed() {
     std::string s = ss.str();
     pcl::io::savePCDFile (s, *output);
     lastFrameToggled();
-}
-
-void RoomScanner::pSliderValueChanged (int value)
-{
-    viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "kinectCloud");
-    viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloudFromFile");
-    ui->lcdNumber_p->display(value);
-    ui->qvtkWidget->update ();
 }
 
 void RoomScanner::loadActionPressed() {

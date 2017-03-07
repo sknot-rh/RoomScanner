@@ -53,8 +53,6 @@ public slots:
 
     void regButtonPressed(void);
 
-    void pSliderValueChanged(int value);
-
     void closing(void);
 
     void drawFrame(void);
