@@ -500,7 +500,7 @@ void RoomScanner::regButtonPressed() {
     loading(labelRegistrate);
 }
 
-PointCloudT::Ptr RoomScanner::registrateNClouds() {
+void RoomScanner::registrateNClouds() {
     PointCloudT::Ptr result (new PointCloudT);
     PointCloudT::Ptr globalResult (new PointCloudT);
     PointCloudT::Ptr source, target;
@@ -522,7 +522,10 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
         viewer->updatePointCloud(target, "target");
 
         // estimated source position done with fpfh features
-        reg.computeTransformation(source, target);
+        if (!reg.computeTransformation(source, target))  {
+            QMessageBox::warning(this, "Error", "No keypoints in input cloud! Stopping registration.");
+            return;
+        }
 
         PointCloudT::Ptr temp (new PointCloudT);
         reg.pairAlign (source, target, temp, pairTransform, true);
@@ -551,7 +554,6 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
     std::cout << "Registrated Point Cloud has " << clouds[clouds.size()-1]->points.size() << " points.\n";
     labelRegistrate->close();
     registered = true;
-    return result;
 }
 
 

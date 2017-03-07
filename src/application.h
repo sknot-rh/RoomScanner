@@ -42,7 +42,7 @@ public:
     void cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output);
     void polyButtonPressedFunc();
     void loading(QLabel* label);
-    PointCloudT::Ptr registrateNClouds();
+    void registrateNClouds();
 
 public slots:
     void resetButtonPressed(void);

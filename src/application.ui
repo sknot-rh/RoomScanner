@@ -74,7 +74,7 @@
            <enum>QLayout::SetMaximumSize</enum>
           </property>
           <property name="leftMargin">
-           <number>50</number>
+           <number>0</number>
           </property>
           <property name="topMargin">
            <number>25</number>

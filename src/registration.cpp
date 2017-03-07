@@ -136,7 +136,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 }
 
 
-void registration::computeTransformation (const PointCloudT::Ptr &src_origin, const PointCloudT::Ptr &tgt_origin)
+bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, const PointCloudT::Ptr &tgt_origin)
 {
     std::cout << "computeTransformation\n";
     Eigen::Matrix4f transform;
@@ -165,6 +165,11 @@ void registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     registration::estimateKeypoints (tgt, *keypoints_tgt);
 
     printf ("Found %lu and %lu keypoints for the source and target datasets.\n", keypoints_src->points.size (), keypoints_tgt->points.size ());
+
+    if (keypoints_src->points.size() == 0 || keypoints_tgt->points.size() == 0) {
+        printf("Clouds have no key points!\n");
+        return false;
+    }
 
     // Compute normals for all points keypoint
     pcl::PointCloud<pcl::Normal>::Ptr normals_src (new pcl::PointCloud<pcl::Normal>),
