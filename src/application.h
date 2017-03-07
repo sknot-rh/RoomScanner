@@ -59,7 +59,7 @@ public slots:
 
     void drawFrame(void);
 
-    void toggled(bool value);
+    void coordSysToggled(bool value);
 
     void loadActionPressed(void);
 

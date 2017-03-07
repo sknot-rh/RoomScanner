@@ -101,7 +101,7 @@ RoomScanner::RoomScanner (QWidget *parent) :
     connect(ui->horizontalSlider_p, SIGNAL (valueChanged (int)), this, SLOT (pSliderValueChanged (int)));
 
     //Connect checkbox
-    connect(ui->checkBox, SIGNAL(clicked(bool)), this, SLOT(toggled(bool)));
+    connect(ui->checkBox, SIGNAL(clicked(bool)), this, SLOT(coordSysToggled(bool)));
 
     //Connect menu checkbox - show last frame
     connect(ui->actionShow_captured_frames, SIGNAL(triggered()), this, SLOT(lastFrameToggled()));
@@ -232,7 +232,7 @@ void RoomScanner::cloud_cb_ (const PointCloudAT::ConstPtr &ncloud) {
     }
 }
 
-void RoomScanner::toggled(bool value) {
+void RoomScanner::coordSysToggled(bool value) {
     if (value) {
         viewer->addCoordinateSystem(1, 0, 0, 0, "viewer", 0);
     }
