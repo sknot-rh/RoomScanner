@@ -550,7 +550,7 @@ PointCloudT::Ptr RoomScanner::registrateNClouds() {
         filters::voxelGridFilter(result, clouds[i]);
     }
 
-    filters::voxelGridFilter(result, clouds[i]);
+    filters::voxelGridFilter(result, clouds[0]);
 
     copyPointCloud(*(clouds.back()), *(clouds.front()));
     clouds.erase(clouds.begin()+1, clouds.end());
