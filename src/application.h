@@ -75,6 +75,10 @@ public slots:
 
     void actionSmoothTriggered(void);
 
+    void loadConfigFile();
+
+    void refreshParams();
+
 protected:
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
     boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;

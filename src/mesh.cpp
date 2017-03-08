@@ -27,7 +27,7 @@ void mesh::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh:
 
     std::ifstream config_file("config.json");
 
-    if (!config_file.fail()) {
+    /*if (!config_file.fail()) {
         PCL_INFO("Config file loaded\n");
         using boost::property_tree::ptree;
         ptree pt;
@@ -45,7 +45,7 @@ void mesh::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh:
         params->GPsearchRadius = pt.get<float>("greedyProjection.searchRadius");
         params->GPmu = pt.get<float>("greedyProjection.mu");
         params->GPmaximumNearestNeighbors = pt.get<int>("greedyProjection.maximumNearestNeighbors");
-    }
+    }*/
 
 
 
@@ -166,15 +166,15 @@ void mesh::polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::Polyg
 }
 
 
-
 void mesh::fillHoles(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut) {
+    parameters* params = parameters::GetInstance();
     vtkSmartPointer<vtkPolyData> input;
     pcl::VTKUtils::mesh2vtk(*trianglesIn, input);
 
     vtkSmartPointer<vtkFillHolesFilter> fillHolesFilter = vtkSmartPointer<vtkFillHolesFilter>::New();
 
     fillHolesFilter->SetInputData(input);
-    fillHolesFilter->SetHoleSize(0.03);
+    fillHolesFilter->SetHoleSize(params->HOLsize);
     fillHolesFilter->Update ();
 
     vtkSmartPointer<vtkPolyData> polyData = fillHolesFilter->GetOutput();
@@ -183,9 +183,10 @@ void mesh::fillHoles(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr tr
 }
 
 void mesh::meshDecimation(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut) {
+    parameters* params = parameters::GetInstance();
     pcl::MeshQuadricDecimationVTK meshDecimator;
     meshDecimator.setInputMesh(trianglesIn);
-    meshDecimator.setTargetReductionFactor(0.20); // percents
+    meshDecimator.setTargetReductionFactor(params->DECtargetReductionFactor); // percents
     meshDecimator.process(*trianglesOut);
     PCL_INFO("Triangles count reduced from %d to %d\n", trianglesIn->polygons.size(), trianglesOut->polygons.size());
 }
