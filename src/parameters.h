@@ -18,11 +18,13 @@ public:
         return instance;
     }
 
+    // Default parameters (config file is not found)
+
     // Parameters for sift computation
-    const float SIFTmin_scale = 0.003f;
-    const int SIFTn_octaves = 8;
-    const int SIFTn_scales_per_octave = 10;
-    const float SIFTmin_contrast = 0.3f;
+    double SIFTmin_scale = 0.003;
+    int SIFTn_octaves = 8;
+    int SIFTn_scales_per_octave = 10;
+    double SIFTmin_contrast = 0.3;
 
     // Parameters for MLS
     int MLSpolynomialOrder = 2;
@@ -50,6 +52,17 @@ public:
     double REGreject = 1.0;
     //icp
     double REGcorrDist = 0.2;
+
+    // Parameters for Fast Bilateral Filter
+    double FBFsigmaS = 10;
+    double FBFsigmaR = 0.1;
+
+    // Parameter for mesh decimation
+    double DECtargetReductionFactor = 0.2; // 20%
+
+    // Parameter for hole filling
+    double HOLsize = 0;
+
 };
 
 

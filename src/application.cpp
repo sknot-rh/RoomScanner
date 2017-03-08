@@ -121,6 +121,9 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Connect smooth action
     connect(ui->actionSmooth_cloud, SIGNAL (triggered()), this, SLOT (actionSmoothTriggered ()));
 
+    //Connect config button
+    connect(ui->pushButton_config, SIGNAL (clicked()), this, SLOT (refreshParams ()));
+
 
     //Add empty pointclouds
     viewer->addPointCloud(kinectCloud, "kinectCloud");
@@ -130,8 +133,7 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //viewer->setBackgroundColor(0.5f, 0.5f, 0.5f);
     ui->tabWidget->setCurrentIndex(0);
 
-    /*mytemplate test;
-    test.mytemplateMethod(5);*/
+    loadConfigFile();
 
 }
 
@@ -262,7 +264,7 @@ void RoomScanner::saveButtonPressed() {
     memcpy (&tmp->points[0], &kinectCloud->points[0], kinectCloud->points.size () * sizeof (PointT));
     stream = true;
 
-    output = tmp;
+    //output = tmp;
 
     //filters::voxelGridFilter(tmp, output, 0.001); //global downsampling
     filters::cloudSmoothFBF(tmp, output);
@@ -295,7 +297,7 @@ void RoomScanner::loadActionPressed() {
     }
 
     ui->tabWidget->setCurrentIndex(0);
-    PCL_INFO("PC Loaded from file %s\n", utf8_fileName.c_str());
+    PCL_INFO("PC Loaded from file %s. Points %d\n", utf8_fileName.c_str(), cloudFromFile->points.size());
     viewer->removeAllPointClouds();
     if (!viewer->addPointCloud(cloudFromFile, "cloudFromFile"))
         viewer->updatePointCloud(cloudFromFile,"cloudFromFile");
@@ -387,9 +389,8 @@ void RoomScanner::polyButtonPressedFunc() {
                 cloudtmp->points[i].rgba = (*pRGB);
             }
 
-            //filters::voxelGridFilter(cloudtmp, output);
-            //filters::cloudSmooth(holder, output); TODO!!!
-            mesh::polygonateCloud(cloudtmp, triangles);
+            filters::cloudSmoothFBF(cloudtmp, output);
+            mesh::polygonateCloud(output, triangles);
         }
         else {
             // empty clouds & no sensor
@@ -400,8 +401,7 @@ void RoomScanner::polyButtonPressedFunc() {
         }
     }
     else {
-        //filters::voxelGridFilter(clouds.back(), output);
-        //filters::cloudSmooth(holder, output);
+        filters::cloudSmoothFBF(cloudtmp, cloudtmp);
         mesh::polygonateCloud(clouds.back(), triangles);
     }
 
@@ -411,17 +411,17 @@ void RoomScanner::polyButtonPressedFunc() {
 
 
     // Hole Filling
-    pcl::PolygonMesh::Ptr trianglesFilled(new pcl::PolygonMesh);
+    /*pcl::PolygonMesh::Ptr trianglesFilled(new pcl::PolygonMesh);
     mesh::fillHoles(triangles, trianglesFilled);
-    PCL_INFO("After holefilling: %d\n", trianglesFilled->polygons.size());
+    PCL_INFO("After holefilling: %d\n", trianglesFilled->polygons.size());*/
 
 
 
-    pcl::PolygonMesh::Ptr trianglesDecimated(new pcl::PolygonMesh);
-    mesh::meshDecimation(trianglesFilled, trianglesDecimated);
+    /*pcl::PolygonMesh::Ptr trianglesDecimated(new pcl::PolygonMesh);
+    mesh::meshDecimation(trianglesFilled, trianglesDecimated);*/
 
     // Smoothing mesh
-    // not sure if necessary, surface is already smooth. This'd just decimaced another details
+    // not sure if necessary, surface is already smooth. This'd just decimate another details
     //pcl::PolygonMesh::Ptr trianglesPtr(&triangles);
     //triangles = PCLViewer::smoothMesh(trianglesPtr);
 
@@ -431,12 +431,14 @@ void RoomScanner::polyButtonPressedFunc() {
     */
 
 
-    pcl::io::saveOBJFile("mesh.obj", *trianglesDecimated);
-    meshViewer->addPolygonMesh(*trianglesDecimated, "mesh");
+    pcl::io::saveOBJFile("mesh.obj", *triangles);
+    meshViewer->addPolygonMesh(*triangles, "mesh");
     ui->qvtkWidget_2->update();
+
     labelPolygonate->close();
 
     PCL_INFO("Mesh done\n");
+    //meshViewer->resetCamera();
 
 }
 
@@ -549,7 +551,7 @@ void RoomScanner::registrateNClouds() {
     clouds.erase(clouds.begin()+1, clouds.end());
 
     viewer->removeAllPointClouds();
-    filters::cloudSmoothMLS(clouds[0], clouds[0]);
+    //filters::cloudSmoothMLS(clouds[0], clouds[0]);
     //filters::voxelGridFilter(clouds[0], clouds[0], 0.02);
     viewer->addPointCloud(clouds[0], "result");
     pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
@@ -610,6 +612,144 @@ void RoomScanner::actionSmoothTriggered() {
     viewer->resetCamera();
 }
 
+void RoomScanner::loadConfigFile() {
+    parameters* params = parameters::GetInstance();
+    std::ifstream config_file("config.json");
+
+    if (!config_file.fail()) {
+        PCL_INFO("Config file loaded\n");
+        using boost::property_tree::ptree;
+        ptree pt;
+        read_json(config_file, pt);
+
+        for (auto & array_element: pt) {
+                PCL_INFO("%s\n", array_element.first.c_str());
+            for (auto & property: array_element.second) {
+                PCL_INFO(" %s = %s\n", property.first.c_str(), property.second.get_value < std::string > ().c_str());
+            }
+            PCL_INFO("\n");
+        }
 
 
+        params->VGFleafSize = pt.get<float>("gridFilter.leafSize");
+
+        ui->lineEdit_VGleaf->setText(QString::number(params->VGFleafSize));
+
+
+        params->MLSpolynomialOrder = pt.get<int>("mls.polynomialOrder");
+        params->MLSusePolynomialFit = pt.get<bool>("mls.usePolynomialFit");
+        params->MLSsearchRadius = pt.get<double>("mls.searchRadius");
+        params->MLSsqrGaussParam = pt.get<double>("mls.sqrGaussParam");
+        params->MLSupsamplingRadius = pt.get<double>("mls.upsamplingRadius");
+        params->MLSupsamplingStepSize = pt.get<double>("mls.upsamplingStepSize");
+        params->MLSdilationIterations = pt.get<int>("mls.dilationIterations");
+        params->MLSdilationVoxelSize = pt.get<double>("mls.dilationVoxelSize");
+        params->MLScomputeNormals = pt.get<bool>("mls.computeNormals");
+
+        ui->lineEdit_MLSorder->setText(QString::number(params->MLSpolynomialOrder));
+        ui->lineEdit_MLSradius->setText(QString::number(params->MLSsearchRadius));
+        ui->lineEdit_MLSgauss->setText(QString::number(params->MLSsqrGaussParam));
+        ui->lineEdit_MLSupRadius->setText(QString::number(params->MLSupsamplingRadius));
+        ui->lineEdit_MLSupSize->setText(QString::number(params->MLSupsamplingStepSize));
+        ui->lineEdit_MLSditer->setText(QString::number(params->MLSdilationIterations));
+        ui->lineEdit_MLSdvsize->setText(QString::number(params->MLSdilationVoxelSize));
+        ui->checkBox_MLSnormals->setChecked(params->MLScomputeNormals);
+        ui->checkBox_MLSpolyfit->setChecked(params->MLSusePolynomialFit);
+
+
+        params->GPsearchRadius = pt.get<double>("greedyProjection.searchRadius");
+        params->GPmu = pt.get<double>("greedyProjection.mu");
+        params->GPmaximumNearestNeighbors = pt.get<int>("greedyProjection.maximumNearestNeighbors");
+
+        ui->lineEdit_GPserrad->setText(QString::number(params->GPsearchRadius));
+        ui->lineEdit_GPmaxneigh->setText(QString::number(params->GPmaximumNearestNeighbors));
+        ui->lineEdit_GPmu->setText(QString::number(params->GPmu));
+
+
+        params->SIFTmin_scale = pt.get<double>("SIFT.min_scale");
+        params->SIFTn_octaves = pt.get<int>("SIFT.n_octaves");
+        params->SIFTn_scales_per_octave = pt.get<int>("SIFT.n_scales_per_octave");
+        params->SIFTmin_contrast = pt.get<double>("SIFT.min_contrast");
+
+        ui->lineEdit_SIFTmin_con->setText(QString::number(params->SIFTmin_contrast));
+        ui->lineEdit_SIFTmin_scale->setText(QString::number(params->SIFTmin_scale));
+        ui->lineEdit_SIFTn_octaves->setText(QString::number(params->SIFTn_octaves));
+        ui->lineEdit_SIFTscales->setText(QString::number(params->SIFTn_scales_per_octave));
+
+
+        params->REGnormalsRadius = pt.get<double>("registration.normalsRadius");
+        params->REGfpfh = pt.get<double>("registration.fpfh");
+        params->REGreject = pt.get<double>("registration.reject");
+        params->REGcorrDist = pt.get<double>("registration.corrDist");
+
+        ui->lineEdit_REGcorrejdist->setText(QString::number(params->REGreject));
+        ui->lineEdit_REGfpfh->setText(QString::number(params->REGfpfh));
+        ui->lineEdit_REGmaxCorrDist->setText(QString::number(params->REGcorrDist));
+        ui->lineEdit_REGnormals->setText(QString::number(params->REGnormalsRadius));
+
+
+        params->FBFsigmaS = pt.get<double>("fastBFilter.sigmaS");
+        params->FBFsigmaR = pt.get<double>("fastBFilter.sigmaR");
+
+        ui->lineEdit_FBSigmaR->setText(QString::number(params->FBFsigmaR));
+        ui->lineEdit_FBSigmaS->setText(QString::number(params->FBFsigmaS));
+
+
+        params->DECtargetReductionFactor = pt.get<double>("decimation.targetReductionFactor");
+
+        ui->lineEdit_DECfactor->setText(QString::number(params->DECtargetReductionFactor));
+
+
+        params->HOLsize = pt.get<double>("holeFill.size");
+
+        ui->lineEdit_HOLsize->setText(QString::number(params->HOLsize));
+    }
+}
+
+
+void RoomScanner::refreshParams() {
+    PCL_INFO("Refreshing params\n");
+    parameters* params = parameters::GetInstance();
+
+
+    params->VGFleafSize = ui->lineEdit_VGleaf->text().toDouble();
+
+
+    params->MLSpolynomialOrder = ui->lineEdit_MLSorder->text().toInt();
+    params->MLSusePolynomialFit = ui->checkBox_MLSpolyfit->isChecked();
+    params->MLSsearchRadius = ui->lineEdit_MLSradius->text().toDouble();
+    params->MLSsqrGaussParam = ui->lineEdit_MLSgauss->text().toDouble();
+    params->MLSupsamplingRadius = ui->lineEdit_MLSupRadius->text().toDouble();
+    params->MLSupsamplingStepSize = ui->lineEdit_MLSupSize->text().toDouble();
+    params->MLSdilationIterations = ui->lineEdit_MLSditer->text().toInt();
+    params->MLSdilationVoxelSize = ui->lineEdit_MLSdvsize->text().toDouble();
+    params->MLScomputeNormals = ui->checkBox_MLSnormals->isChecked();
+
+
+    params->GPsearchRadius = ui->lineEdit_GPserrad->text().toDouble();
+    params->GPmu = ui->lineEdit_GPmu->text().toDouble();
+    params->GPmaximumNearestNeighbors = ui->lineEdit_GPmaxneigh->text().toInt();
+
+
+    params->SIFTmin_scale = ui->lineEdit_SIFTmin_scale->text().toDouble();
+    params->SIFTn_octaves = ui->lineEdit_SIFTn_octaves->text().toInt();
+    params->SIFTn_scales_per_octave = ui->lineEdit_SIFTscales->text().toInt();
+    params->SIFTmin_contrast = ui->lineEdit_SIFTmin_con->text().toDouble();
+
+
+    params->REGnormalsRadius = ui->lineEdit_REGnormals->text().toDouble();
+    params->REGfpfh = ui->lineEdit_REGfpfh->text().toDouble();
+    params->REGreject = ui->lineEdit_REGcorrejdist->text().toDouble();
+    params->REGcorrDist = ui->lineEdit_REGmaxCorrDist->text().toDouble();
+
+
+    params->FBFsigmaS = ui->lineEdit_FBSigmaS->text().toDouble();
+    params->FBFsigmaR = ui->lineEdit_FBSigmaR->text().toDouble();
+
+
+    params->DECtargetReductionFactor = ui->lineEdit_DECfactor->text().toDouble();
+
+
+    params->HOLsize = ui->lineEdit_HOLsize->text().toDouble();
+}
 

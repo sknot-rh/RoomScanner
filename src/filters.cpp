@@ -12,7 +12,7 @@ void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
     parameters* params = parameters::GetInstance();
     std::ifstream config_file("config.json");
 
-    if (!config_file.fail()) {
+    /*if (!config_file.fail()) {
         PCL_INFO("Config file loaded\n");
         using boost::property_tree::ptree;
         ptree pt;
@@ -28,7 +28,7 @@ void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
         }
 
         params->VGFleafSize = pt.get<float>("gridFilter.leafSize");
-    }
+    }*/
 
 
     pcl::VoxelGrid<PointT> ds;  //create downsampling filter
@@ -62,7 +62,7 @@ void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
     std::ifstream config_file("config.json");
 
 
-    if (!config_file.fail()) {
+    /*if (!config_file.fail()) {
         PCL_INFO("Config file loaded\n");
         using boost::property_tree::ptree;
         ptree pt;
@@ -87,7 +87,7 @@ void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
         params->MLSdilationIterations = pt.get<int>("mls.dilationIterations");
         params->MLSdilationVoxelSize = pt.get<double>("mls.dilationVoxelSize");
         params->MLScomputeNormals = pt.get<bool>("mls.computeNormals");
-    }
+    }*/
 
 
     pcl::MovingLeastSquares<PointT, PointT> mls;
@@ -101,10 +101,11 @@ void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::RANDOM_UNIFORM_DENSITY);
     //mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointXYZRGB>::NONE);
+
     //mls.setPointDensity ( int (60000 * params->MLSsearchRadius)); // 300 points in a 5 cm radius
     mls.setUpsamplingRadius (params->MLSupsamplingRadius);
     //mls.setUpsamplingStepSize (params->MLSupsamplingStepSize);
-    //mls.setDilationIterations (params->MLSdilationIterations);
+    mls.setDilationIterations (params->MLSdilationIterations);
     mls.setDilationVoxelSize (params->MLSdilationVoxelSize);
     //mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
 
@@ -134,10 +135,12 @@ void filters::oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
 }
 
 void filters::cloudSmoothFBF(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
+    PCL_INFO("FBFilter\n");
+    parameters* params = parameters::GetInstance();
     pcl::FastBilateralFilter<PointT> filter;
     filter.setInputCloud(cloudToSmooth);
-    filter.setSigmaS(5);
-    filter.setSigmaR(0.2);
+    filter.setSigmaS(params->FBFsigmaS);
+    filter.setSigmaR(params->FBFsigmaR);
     filter.applyFilter(*output);
 }
 

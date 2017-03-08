@@ -25,5 +25,35 @@
 			"searchRadius" : 0.03,
 			"mu" : 2.5,
 			"maximumNearestNeighbors" : 200
+		},
+	"SIFT" :
+		{
+			"min_scale" : 0.003,
+			"n_octaves" : 8,
+			"n_scales_per_octave" : 10,
+			"min_contrast" : 0.3
+		},
+	"registration" :
+		{
+			"normalsRadius" : 0.05,
+			"fpfh" : 0.25,
+			"reject" : 1.0,
+			"corrDist" : 0.2
+		},
+
+	"fastBFilter" :
+		{
+			"sigmaS" : 10,
+			"sigmaR" : 0.1
+		},
+
+	"decimation" :
+		{
+			"targetReductionFactor" : 0.2
+		},
+
+	"holeFill" :
+		{
+			"size" : 0
 		}
 }
