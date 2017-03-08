@@ -27,29 +27,6 @@ void mesh::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh:
 
     std::ifstream config_file("config.json");
 
-    /*if (!config_file.fail()) {
-        PCL_INFO("Config file loaded\n");
-        using boost::property_tree::ptree;
-        ptree pt;
-        read_json(config_file, pt);
-
-        for (auto & array_element: pt) {
-            if (array_element.first == "greedyProjection")
-                PCL_INFO("greedyProjection\n");
-            for (auto & property: array_element.second) {
-                if (array_element.first == "greedyProjection")
-                    PCL_INFO(" %s = %s\n", property.first.c_str(), property.second.get_value < std::string > ().c_str());
-            }
-        }
-
-        params->GPsearchRadius = pt.get<float>("greedyProjection.searchRadius");
-        params->GPmu = pt.get<float>("greedyProjection.mu");
-        params->GPmaximumNearestNeighbors = pt.get<int>("greedyProjection.maximumNearestNeighbors");
-    }*/
-
-
-
-
     // Get Greedy result
     //Normal Estimation
     pcl::NormalEstimation<PointT, pcl::Normal> normEstim;
