@@ -349,6 +349,7 @@ void RoomScanner::loading(QLabel* label) {
     label->setAttribute(Qt::WA_TranslucentBackground);
     label->setWindowModality(Qt::ApplicationModal);
     label->setContentsMargins(0,0,0,0);
+    label->setAlignment(Qt::AlignCenter);
     label->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     label->show();
     movie->start();
