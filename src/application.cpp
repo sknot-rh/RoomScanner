@@ -97,8 +97,8 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Connect poly button
     connect(ui->pushButton_reg, SIGNAL (clicked ()), this, SLOT (regButtonPressed ()));
 
-    //Connect checkbox
-    connect(ui->checkBox, SIGNAL(clicked(bool)), this, SLOT(coordSysToggled(bool)));
+    //Connect menu checkbox - coord system
+    connect(ui->actionShow_Coordinate_System, SIGNAL(triggered(bool)), this, SLOT(coordSysToggled(bool)));
 
     //Connect menu checkbox - show last frame
     connect(ui->actionShow_captured_frames, SIGNAL(triggered()), this, SLOT(lastFrameToggled()));
@@ -410,15 +410,20 @@ void RoomScanner::polyButtonPressedFunc() {
     meshViewer->removePolygonMesh("mesh");
 
 
-    // Hole Filling
-    /*pcl::PolygonMesh::Ptr trianglesFilled(new pcl::PolygonMesh);
-    mesh::fillHoles(triangles, trianglesFilled);
-    PCL_INFO("After holefilling: %d\n", trianglesFilled->polygons.size());*/
+    if (ui->groupBox_6->isChecked()) {
+        // Hole Filling
+        pcl::PolygonMesh::Ptr trianglesFilled(new pcl::PolygonMesh);
+        mesh::fillHoles(triangles, trianglesFilled);
+        PCL_INFO("After holefilling: %d\n", trianglesFilled->polygons.size());
+        triangles = trianglesFilled;
+    }
 
 
-
-    /*pcl::PolygonMesh::Ptr trianglesDecimated(new pcl::PolygonMesh);
-    mesh::meshDecimation(trianglesFilled, trianglesDecimated);*/
+    if (ui->groupBox_7->isChecked()) {
+        pcl::PolygonMesh::Ptr trianglesDecimated(new pcl::PolygonMesh);
+        mesh::meshDecimation(triangles, trianglesDecimated);
+        triangles = trianglesDecimated;
+    }
 
     // Smoothing mesh
     // not sure if necessary, surface is already smooth. This'd just decimate another details
@@ -708,9 +713,7 @@ void RoomScanner::loadConfigFile() {
 
 
 void RoomScanner::refreshParams() {
-    PCL_INFO("Refreshing params\n");
     parameters* params = parameters::GetInstance();
-
 
     params->VGFleafSize = ui->lineEdit_VGleaf->text().toDouble();
 
@@ -751,5 +754,7 @@ void RoomScanner::refreshParams() {
 
 
     params->HOLsize = ui->lineEdit_HOLsize->text().toDouble();
+    PCL_INFO("Parameters refreshed.\n");
+    ui->tabWidget->setCurrentIndex(0);
 }
 

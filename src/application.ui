@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>782</width>
+    <width>1169</width>
     <height>717</height>
    </rect>
   </property>
@@ -39,7 +39,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -67,29 +67,6 @@
            </size>
           </property>
          </widget>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMaximumSize</enum>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>25</number>
-          </property>
-          <property name="rightMargin">
-           <number>20</number>
-          </property>
-          <item>
-           <widget class="QCheckBox" name="checkBox">
-            <property name="text">
-             <string>Show Coordinate System</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -149,7 +126,6 @@
        </layout>
        <zorder>qvtkWidget</zorder>
        <zorder></zorder>
-       <zorder></zorder>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -197,9 +173,9 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-440</y>
+             <y>0</y>
              <width>726</width>
-             <height>1044</height>
+             <height>770</height>
             </rect>
            </property>
            <layout class="QFormLayout" name="formLayout">
@@ -207,6 +183,12 @@
              <widget class="QGroupBox" name="groupBox_9">
               <property name="title">
                <string>Fast Bilateral Filter</string>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
               </property>
               <layout class="QFormLayout" name="formLayout_8">
                <item row="0" column="0">
@@ -217,7 +199,17 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit_FBSigmaS"/>
+                <widget class="QLineEdit" name="lineEdit_FBSigmaS">
+                 <property name="maxLength">
+                  <number>32767</number>
+                 </property>
+                 <property name="frame">
+                  <bool>true</bool>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
                </item>
                <item row="1" column="0">
                 <widget class="QLabel" name="label_24">
@@ -227,7 +219,58 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QLineEdit" name="lineEdit_FBSigmaR"/>
+                <widget class="QLineEdit" name="lineEdit_FBSigmaR">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="9" column="0">
+             <widget class="QGroupBox" name="groupBox_6">
+              <property name="title">
+               <string>Fill Holes</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+              <layout class="QFormLayout" name="formLayout_7">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_11">
+                 <property name="text">
+                  <string>Hole size</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lineEdit_HOLsize"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>Voxel Grid Filter</string>
+              </property>
+              <layout class="QFormLayout" name="formLayout_3">
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lineEdit_VGleaf"/>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>Leaf Size</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -281,7 +324,7 @@
               </layout>
              </widget>
             </item>
-            <item row="5" column="0">
+            <item row="2" column="1">
              <widget class="QGroupBox" name="groupBox">
               <property name="title">
                <string>MLS</string>
@@ -388,7 +431,7 @@
               </layout>
              </widget>
             </item>
-            <item row="7" column="0">
+            <item row="6" column="1">
              <widget class="QGroupBox" name="groupBox_4">
               <property name="title">
                <string>Greedy Projection</string>
@@ -427,29 +470,16 @@
               </layout>
              </widget>
             </item>
-            <item row="9" column="0">
-             <widget class="QGroupBox" name="groupBox_6">
-              <property name="title">
-               <string>Fill Holes</string>
-              </property>
-              <layout class="QFormLayout" name="formLayout_7">
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_11">
-                 <property name="text">
-                  <string>Hole size</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit_HOLsize"/>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="10" column="0">
+            <item row="9" column="1">
              <widget class="QGroupBox" name="groupBox_7">
               <property name="title">
                <string>Mesh Decimation</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
               </property>
               <layout class="QFormLayout" name="formLayout_9">
                <item row="0" column="0">
@@ -461,25 +491,6 @@
                </item>
                <item row="0" column="1">
                 <widget class="QLineEdit" name="lineEdit_DECfactor"/>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QGroupBox" name="groupBox_3">
-              <property name="title">
-               <string>Voxel Grid Filter</string>
-              </property>
-              <layout class="QFormLayout" name="formLayout_3">
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_5">
-                 <property name="text">
-                  <string>Leaf Size</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit_VGleaf"/>
                </item>
               </layout>
              </widget>
@@ -499,8 +510,11 @@
                </item>
                <item row="0" column="1">
                 <widget class="QLineEdit" name="lineEdit_REGnormals">
+                 <property name="inputMask">
+                  <string/>
+                 </property>
                  <property name="text">
-                  <string> </string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -559,8 +573,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>782</width>
-     <height>19</height>
+     <width>1169</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">
@@ -570,6 +584,7 @@
     <addaction name="actionLoad_Point_Cloud"/>
     <addaction name="actionShow_keypoints"/>
     <addaction name="actionShow_captured_frames"/>
+    <addaction name="actionShow_Coordinate_System"/>
     <addaction name="actionClear"/>
     <addaction name="actionSmooth_cloud"/>
    </widget>
@@ -614,6 +629,14 @@
     <string>Settings</string>
    </property>
   </action>
+  <action name="actionShow_Coordinate_System">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Coordinate System</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -624,7 +647,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>pushButton_poly</tabstop>
-  <tabstop>checkBox</tabstop>
   <tabstop>pushButton_reset</tabstop>
   <tabstop>pushButton_save</tabstop>
   <tabstop>tabWidget</tabstop>
