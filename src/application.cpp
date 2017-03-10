@@ -282,28 +282,39 @@ void RoomScanner::saveButtonPressed() {
 }
 
 void RoomScanner::loadActionPressed() {
-    QString fileName = QFileDialog::getOpenFileName(this,
-                       tr("Choose Point Cloud"), ".", tr("Point Cloud Files (*.pcd)"));
-    std::string utf8_fileName = fileName.toUtf8().constData();
-    PointCloudT::Ptr cloudFromFile (new PointCloudT);
-    if (pcl::io::loadPCDFile<PointT> (utf8_fileName, *cloudFromFile) == -1) // load the file
-    {
-        PCL_ERROR ("Couldn't read pcd file!\n");
-        return;
-    }
-    for (size_t i = 0; i < cloudFromFile->size(); i++)
-    {
-        cloudFromFile->points[i].a = 255;
-    }
-
-    ui->tabWidget->setCurrentIndex(0);
-    PCL_INFO("PC Loaded from file %s. Points %d\n", utf8_fileName.c_str(), cloudFromFile->points.size());
     viewer->removeAllPointClouds();
-    if (!viewer->addPointCloud(cloudFromFile, "cloudFromFile"))
-        viewer->updatePointCloud(cloudFromFile,"cloudFromFile");
-    clouds.push_back(cloudFromFile);
-    ui->qvtkWidget->update();
+    ui->tabWidget->setCurrentIndex(0);
+    QStringList fileNames = QFileDialog::getOpenFileNames(this,tr("Choose Point Cloud Files"),QDir::currentPath(),tr("Point Cloud Files (*.pcd)") );
+    if( !fileNames.isEmpty() )
+    {
+        for (int i = 0; i < fileNames.count(); i++) {
+            //ui->lstFiles->addItem(fileNames.at(i));
+            std::string utf8_fileName = fileNames.at(i).toUtf8().constData();
+            PointCloudT::Ptr cloudFromFile (new PointCloudT);
+            if (pcl::io::loadPCDFile<PointT> (utf8_fileName, *cloudFromFile) == -1) // load the file
+            {
+                PCL_ERROR ("Couldn't read pcd file!\n");
+                return;
+            }
+            for (size_t i = 0; i < cloudFromFile->size(); i++)
+            {
+                cloudFromFile->points[i].a = 255;
+            }
+            PCL_INFO("PC Loaded from file %s. Points %d\n", utf8_fileName.c_str(), cloudFromFile->points.size());
+
+            if (!viewer->updatePointCloud(cloudFromFile, "cloudFromFile"))
+                viewer->addPointCloud(cloudFromFile,"cloudFromFile");
+            clouds.push_back(cloudFromFile);
+            ui->qvtkWidget->update();
+        }
+    }
 }
+
+
+
+
+
+
 
 void RoomScanner::polyButtonPressed() {
 
@@ -334,6 +345,7 @@ void RoomScanner::polyButtonPressed() {
             loading(labelPolygonate);
         }
     }
+    ui->qvtkWidget_2->update();
 }
 
 
@@ -565,6 +577,7 @@ void RoomScanner::registrateNClouds() {
 
     PCL_INFO( "Registrated Point Cloud has %d points.\n", clouds[clouds.size()-1]->points.size());
     labelRegistrate->close();
+    ui->qvtkWidget->update();
     registered = true;
 }
 
