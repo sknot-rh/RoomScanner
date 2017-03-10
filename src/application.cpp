@@ -402,7 +402,8 @@ void RoomScanner::polyButtonPressedFunc() {
                 cloudtmp->points[i].rgba = (*pRGB);
             }
 
-            filters::cloudSmoothFBF(cloudtmp, output);
+            //filters::cloudSmoothFBF(cloudtmp, output);
+            filters::bilatelarUpsampling(cloudtmp, output);
             mesh::polygonateCloud(output, triangles);
         }
         else {
