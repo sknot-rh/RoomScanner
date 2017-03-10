@@ -534,6 +534,7 @@ void RoomScanner::registrateNClouds() {
 
         // estimated source position done with fpfh features
         if (!reg.computeTransformation(source, target))  {
+            labelRegistrate->close();
             QMessageBox::warning(this, "Error", "No keypoints in input cloud! Stopping registration.");
             return;
         }

@@ -22,15 +22,18 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     // \note enable this for large datasets
     PointCloudT::Ptr src (new PointCloudT);
     PointCloudT::Ptr tgt (new PointCloudT);
+
     pcl::VoxelGrid<PointT> grid;
     if (downsample)
     {
-        grid.setLeafSize (0.05, 0.05, 0.05);
+        filters::voxelGridFilter(cloud_src, src, 0.05);
+        filters::voxelGridFilter(cloud_tgt, tgt, 0.05);
+        /*grid.setLeafSize (0.05, 0.05, 0.05);
         grid.setInputCloud (cloud_src);
         grid.filter (*src);
 
         grid.setInputCloud (cloud_tgt);
-        grid.filter (*tgt);
+        grid.filter (*tgt);*/
     }
     else
     {
@@ -101,7 +104,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 
         if (i < 98) {
             pcl::transformPointCloud (*src, *(registration::regFrame), Ti); //send undersampled output
-            emit regFrameSignal();
+            //emit regFrameSignal();
         }
         else {
             pcl::transformPointCloud (*cloud_src, *(registration::regFrame), Ti); //send final output
@@ -196,6 +199,7 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     pcl::registration::TransformationEstimationSVD<PointT, PointT> trans_est;
     trans_est.estimateRigidTransformation (*keypoints_src, *keypoints_tgt, *good_correspondences, transform);
     transformPointCloud (*src_origin, *src_origin, transform);
+    return true;
 }
 
 
