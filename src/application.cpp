@@ -302,8 +302,8 @@ void RoomScanner::loadActionPressed() {
             }
             PCL_INFO("PC Loaded from file %s. Points %d\n", utf8_fileName.c_str(), cloudFromFile->points.size());
 
-            if (!viewer->updatePointCloud(cloudFromFile, "cloudFromFile"))
-                viewer->addPointCloud(cloudFromFile,"cloudFromFile");
+            viewer->removeAllPointClouds();
+            viewer->addPointCloud(cloudFromFile,"cloudFromFile");
             clouds.push_back(cloudFromFile);
             ui->qvtkWidget->update();
         }
@@ -454,6 +454,7 @@ void RoomScanner::polyButtonPressedFunc() {
 
 
     pcl::io::saveOBJFile("mesh.obj", *triangles);
+    pcl::io::savePLYFile("mesh.ply", *triangles);
     meshViewer->addPolygonMesh(*triangles, "mesh");
     ui->qvtkWidget_2->update();
 
@@ -576,7 +577,7 @@ void RoomScanner::registrateNClouds() {
 
     viewer->removeAllPointClouds();
     pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
-    filters::cloudSmoothMLS(clouds[0], clouds[0]);
+    //filters::cloudSmoothMLS(clouds[0], clouds[0]);
     filters::voxelGridFilter(clouds[0], clouds[0]);
     //filters::voxelGridFilter(clouds[0], clouds[0], 0.02);
     viewer->addPointCloud(clouds[0], "result");
