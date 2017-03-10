@@ -95,3 +95,20 @@ void filters::cloudSmoothFBF(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
     filter.applyFilter(*output);
 }
 
+void filters::bilatelarUpsampling(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
+    pcl::BilateralUpsampling<PointT, PointT> bu;
+    bu.setInputCloud (cloudToSmooth);
+
+    int window_size = 15;
+    double sigma_color = 15;
+    double sigma_depth = 1.5;
+
+    bu.setWindowSize (window_size);
+    bu.setSigmaColor (sigma_color);
+    bu.setSigmaDepth (sigma_depth);
+
+    // TODO need to fix this somehow
+    bu.setProjectionMatrix (bu.KinectSXGAProjectionMatrix);
+    bu.process (*output);
+}
+
