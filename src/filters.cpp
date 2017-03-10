@@ -97,18 +97,31 @@ void filters::cloudSmoothFBF(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
 
 void filters::bilatelarUpsampling(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
     pcl::BilateralUpsampling<PointT, PointT> bu;
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr tmp (new pcl::PointCloud<pcl::PointXYZRGB>);
+    pcl::copyPointCloud(*cloudToSmooth, *tmp);
     bu.setInputCloud (cloudToSmooth);
 
     int window_size = 15;
     double sigma_color = 15;
-    double sigma_depth = 1.5;
+    double sigma_depth = 15;
 
     bu.setWindowSize (window_size);
     bu.setSigmaColor (sigma_color);
     bu.setSigmaDepth (sigma_depth);
 
-    // TODO need to fix this somehow
+
     bu.setProjectionMatrix (bu.KinectSXGAProjectionMatrix);
     bu.process (*output);
+
+    for (int i = 0; i < cloudToSmooth->points.size(); i++) {
+        //output->points[i].rgb = original->points[i].rgb;
+          tmp->points[i].x = output->points[i].x;
+          tmp->points[i].y = output->points[i].y;
+          tmp->points[i].z = output->points[i].z;
+
+      }
+
+    pcl::copyPointCloud(*tmp, *output);
+    PCL_INFO("output has %d points\n", output->points.size());
 }
 

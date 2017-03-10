@@ -132,6 +132,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     pcl::transformPointCloud (*cloud_tgt, *output, targetToSource);
 
 
+    
     //add the source to the transformed target
     *output += *cloud_src;
 

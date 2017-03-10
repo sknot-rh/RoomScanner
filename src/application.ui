@@ -173,13 +173,13 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
-             <width>726</width>
-             <height>770</height>
+             <y>-446</y>
+             <width>1113</width>
+             <height>1050</height>
             </rect>
            </property>
            <layout class="QFormLayout" name="formLayout">
-            <item row="0" column="0">
+            <item row="1" column="0">
              <widget class="QGroupBox" name="groupBox_9">
               <property name="title">
                <string>Fast Bilateral Filter</string>
@@ -231,7 +231,7 @@
               </layout>
              </widget>
             </item>
-            <item row="9" column="0">
+            <item row="10" column="0">
              <widget class="QGroupBox" name="groupBox_6">
               <property name="title">
                <string>Fill Holes</string>
@@ -256,26 +256,7 @@
               </layout>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QGroupBox" name="groupBox_3">
-              <property name="title">
-               <string>Voxel Grid Filter</string>
-              </property>
-              <layout class="QFormLayout" name="formLayout_3">
-               <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit_VGleaf"/>
-               </item>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_5">
-                 <property name="text">
-                  <string>Leaf Size</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="2" column="0">
+            <item row="3" column="0">
              <widget class="QGroupBox" name="groupBox_2">
               <property name="title">
                <string>SIFT Keypoints</string>
@@ -324,7 +305,82 @@
               </layout>
              </widget>
             </item>
-            <item row="2" column="1">
+            <item row="7" column="0">
+             <widget class="QGroupBox" name="groupBox_5">
+              <property name="title">
+               <string>Registration</string>
+              </property>
+              <layout class="QFormLayout" name="formLayout_6">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Normal Estimation Radius</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lineEdit_REGnormals">
+                 <property name="inputMask">
+                  <string/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_10">
+                 <property name="text">
+                  <string>FPFH Estimation Radius</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="lineEdit_REGfpfh"/>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_21">
+                 <property name="text">
+                  <string>Correspondence Reject Distance</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_22">
+                 <property name="text">
+                  <string>Maximal Correspondence Distance</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="lineEdit_REGcorrejdist"/>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="lineEdit_REGmaxCorrDist"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>Voxel Grid Filter</string>
+              </property>
+              <layout class="QFormLayout" name="formLayout_3">
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lineEdit_VGleaf"/>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>Leaf Size</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="4" column="0">
              <widget class="QGroupBox" name="groupBox">
               <property name="title">
                <string>MLS</string>
@@ -431,7 +487,7 @@
               </layout>
              </widget>
             </item>
-            <item row="6" column="1">
+            <item row="8" column="0">
              <widget class="QGroupBox" name="groupBox_4">
               <property name="title">
                <string>Greedy Projection</string>
@@ -470,7 +526,7 @@
               </layout>
              </widget>
             </item>
-            <item row="9" column="1">
+            <item row="11" column="0">
              <widget class="QGroupBox" name="groupBox_7">
               <property name="title">
                <string>Mesh Decimation</string>
@@ -491,62 +547,6 @@
                </item>
                <item row="0" column="1">
                 <widget class="QLineEdit" name="lineEdit_DECfactor"/>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="6" column="0">
-             <widget class="QGroupBox" name="groupBox_5">
-              <property name="title">
-               <string>Registration</string>
-              </property>
-              <layout class="QFormLayout" name="formLayout_6">
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_9">
-                 <property name="text">
-                  <string>Normal Estimation Radius</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit_REGnormals">
-                 <property name="inputMask">
-                  <string/>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_10">
-                 <property name="text">
-                  <string>FPFH Estimation Radius</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QLineEdit" name="lineEdit_REGfpfh"/>
-               </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="label_21">
-                 <property name="text">
-                  <string>Correspondence Reject Distance</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="0">
-                <widget class="QLabel" name="label_22">
-                 <property name="text">
-                  <string>Maximal Correspondence Distance</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QLineEdit" name="lineEdit_REGcorrejdist"/>
-               </item>
-               <item row="3" column="1">
-                <widget class="QLineEdit" name="lineEdit_REGmaxCorrDist"/>
                </item>
               </layout>
              </widget>
@@ -574,7 +574,7 @@
      <x>0</x>
      <y>0</y>
      <width>1169</width>
-     <height>25</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">

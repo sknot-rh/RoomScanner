@@ -41,7 +41,7 @@ RoomScanner::RoomScanner (QWidget *parent) :
 
 
     //Tell to sensor in which position is expected input
-    Eigen::Quaternionf m;
+
     m = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitX())
         * Eigen::AngleAxisf(0.0f,  Eigen::Vector3f::UnitY())
         * Eigen::AngleAxisf(0.0f, Eigen::Vector3f::UnitZ());
@@ -402,9 +402,12 @@ void RoomScanner::polyButtonPressedFunc() {
                 cloudtmp->points[i].rgba = (*pRGB);
             }
 
-            //filters::cloudSmoothFBF(cloudtmp, output);
-            filters::bilatelarUpsampling(cloudtmp, output);
+            filters::cloudSmoothFBF(cloudtmp, output);
+            //filters::bilatelarUpsampling(cloudtmp, output);
+            filters::voxelGridFilter(output, output);
+            //filters::bilatelarUpsampling(cloudtmp, output);
             mesh::polygonateCloud(output, triangles);
+
         }
         else {
             // empty clouds & no sensor
@@ -415,7 +418,7 @@ void RoomScanner::polyButtonPressedFunc() {
         }
     }
     else {
-        filters::cloudSmoothFBF(cloudtmp, cloudtmp);
+        filters::cloudSmoothFBF(clouds.back(), clouds.back());
         mesh::polygonateCloud(clouds.back(), triangles);
     }
 
@@ -565,16 +568,19 @@ void RoomScanner::registrateNClouds() {
         filters::voxelGridFilter(result, clouds[i]);
     }
 
-    filters::voxelGridFilter(result, clouds[0]);
+
 
     copyPointCloud(*(clouds.back()), *(clouds.front()));
     clouds.erase(clouds.begin()+1, clouds.end());
+    clouds[0]->sensor_orientation_ = m;
 
     viewer->removeAllPointClouds();
-    //filters::cloudSmoothMLS(clouds[0], clouds[0]);
+    pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
+    filters::cloudSmoothMLS(clouds[0], clouds[0]);
+    filters::voxelGridFilter(clouds[0], clouds[0]);
     //filters::voxelGridFilter(clouds[0], clouds[0], 0.02);
     viewer->addPointCloud(clouds[0], "result");
-    pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
+    pcl::io::savePCDFileBinary ("registeredOutputPost.pcd", *(clouds[0]));
 
     PCL_INFO( "Registrated Point Cloud has %d points.\n", clouds[clouds.size()-1]->points.size());
     labelRegistrate->close();
@@ -626,7 +632,7 @@ void RoomScanner::actionSmoothTriggered() {
     stream = false;
     PCL_INFO("Smoothing input cloud\n");
     filters::cloudSmoothMLS(clouds.back(), clouds.back());
-    //filters::voxelGridFilter(clouds[0], clouds[0], 0.01);
+    filters::voxelGridFilter(clouds[0], clouds[0]);
     viewer->removeAllPointClouds();
     viewer->addPointCloud((clouds.back()), "smoothCloud");
     ui->qvtkWidget->update();
