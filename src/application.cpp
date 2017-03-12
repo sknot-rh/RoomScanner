@@ -519,6 +519,7 @@ void RoomScanner::actionClearTriggered()
 void RoomScanner::regButtonPressed() {
     if (clouds.size() < 2) {
         PCL_INFO("To few clouds to registrate!\n");
+        return;
     }
     //stop = true;
     stream = false;
