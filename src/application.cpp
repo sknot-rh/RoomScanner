@@ -311,11 +311,6 @@ void RoomScanner::loadActionPressed() {
 }
 
 
-
-
-
-
-
 void RoomScanner::polyButtonPressed() {
 
     if (clouds.empty()) {
@@ -418,8 +413,14 @@ void RoomScanner::polyButtonPressedFunc() {
         }
     }
     else {
-        filters::cloudSmoothFBF(clouds.back(), clouds.back());
-        mesh::polygonateCloud(clouds.back(), triangles);
+        if (registered) {
+            //filters::cloudSmoothFBF(regResult, regResult);
+            mesh::polygonateCloud(regResult, triangles);
+        }
+        else {
+            filters::cloudSmoothFBF(clouds.back(), clouds.back());
+            mesh::polygonateCloud(clouds.back(), triangles);
+        }
     }
 
 
@@ -530,7 +531,7 @@ void RoomScanner::regButtonPressed() {
 }
 
 void RoomScanner::registrateNClouds() {
-    PointCloudT::Ptr result (new PointCloudT);
+    regResult.reset(new PointCloudT);
     PointCloudT::Ptr globalResult (new PointCloudT);
     PointCloudT::Ptr source, target;
 
@@ -560,31 +561,30 @@ void RoomScanner::registrateNClouds() {
         PointCloudT::Ptr temp (new PointCloudT);
         reg.pairAlign (source, target, temp, pairTransform, true);
         //pcl::transformPointCloud (*temp, *result, GlobalTransform);
-        pcl::transformPointCloud (*temp, *result, GlobalTransform);
+        pcl::transformPointCloud (*temp, *regResult, GlobalTransform);
         ui->qvtkWidget->update();
 
         //update the global transform
         GlobalTransform = GlobalTransform * pairTransform;
 
-        //clouds[i] = result;
-        filters::voxelGridFilter(result, clouds[i]);
     }
 
 
 
-    copyPointCloud(*(clouds.back()), *(clouds.front()));
+    /*copyPointCloud(*(clouds.back()), *(clouds.front()));
     clouds.erase(clouds.begin()+1, clouds.end());
-    clouds[0]->sensor_orientation_ = m;
+    clouds[0]->sensor_orientation_ = m;*/
 
     viewer->removeAllPointClouds();
-    pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
+    /*pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
     //filters::cloudSmoothMLS(clouds[0], clouds[0]);
-    filters::voxelGridFilter(clouds[0], clouds[0]);
-    //filters::voxelGridFilter(clouds[0], clouds[0], 0.02);
-    viewer->addPointCloud(clouds[0], "result");
-    pcl::io::savePCDFileBinary ("registeredOutputPost.pcd", *(clouds[0]));
 
-    PCL_INFO( "Registrated Point Cloud has %d points.\n", clouds[clouds.size()-1]->points.size());
+    //filters::voxelGridFilter(clouds[0], clouds[0], 0.02);*/
+    filters::voxelGridFilter(regResult, regResult);
+    viewer->addPointCloud(regResult, "result");
+    pcl::io::savePCDFileBinary ("registeredOutputPost.pcd", *regResult);
+
+    PCL_INFO( "Registrated Point Cloud has %d points.\n", regResult->points.size());
     labelRegistrate->close();
     ui->qvtkWidget->update();
     registered = true;
@@ -633,10 +633,27 @@ void RoomScanner::streamButtonPressed() {
 void RoomScanner::actionSmoothTriggered() {
     stream = false;
     PCL_INFO("Smoothing input cloud\n");
-    filters::cloudSmoothMLS(clouds.back(), clouds.back());
-    filters::voxelGridFilter(clouds[0], clouds[0]);
-    viewer->removeAllPointClouds();
-    viewer->addPointCloud((clouds.back()), "smoothCloud");
+
+    if (!clouds.empty()) {
+
+        filters::voxelGridFilter(clouds.back(), clouds.back(), 0.05);
+        filters::cloudSmoothMLS(clouds.back(), clouds.back());
+        viewer->removeAllPointClouds();
+        viewer->addPointCloud(clouds.back(), "smoothCloud");
+    }
+    else if (!registered) {
+        PCL_INFO("Nothing to smooth\n");
+        return;
+    }
+    else {
+        filters::cloudSmoothMLS(regResult, regResult);
+        //filters::voxelGridFilter(clouds[0], clouds[0]);
+        viewer->removeAllPointClouds();
+        viewer->addPointCloud(regResult, "smoothCloud");
+    }
+
+
+
     ui->qvtkWidget->update();
     viewer->resetCamera();
 }

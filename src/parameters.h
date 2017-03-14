@@ -48,8 +48,8 @@ public:
     // Parameters for registration module
     //fpfh
     double REGnormalsRadius = 0.05;
-    double REGfpfh = 0.25;
-    double REGreject = 1.0;
+    double REGfpfh = 0.75;
+    double REGreject = 0.75;
     //icp
     double REGcorrDist = 0.2;
 

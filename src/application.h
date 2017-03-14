@@ -85,6 +85,7 @@ protected:
     PointCloudT::Ptr kinectCloud;
     PointCloudT::Ptr registratedCloud;
     PointCloudAT::Ptr key_cloud;
+    PointCloudT::Ptr regResult;
     std::vector<PointCloudT::Ptr> clouds;
     QTimer *tmrTimer;
     QMovie *movie;
