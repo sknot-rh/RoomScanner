@@ -79,6 +79,8 @@ public slots:
 
     void refreshParams();
 
+    void saveModelButtonPressed();
+
 protected:
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
     boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;
@@ -90,6 +92,7 @@ protected:
     QTimer *tmrTimer;
     QMovie *movie;
     Eigen::Quaternionf m;
+    pcl::PolygonMesh::Ptr triangles;
 
     unsigned int red;
     unsigned int green;

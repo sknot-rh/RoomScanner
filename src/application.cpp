@@ -94,8 +94,11 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Connect poly button
     connect(ui->pushButton_poly, SIGNAL (clicked ()), this, SLOT (polyButtonPressed ()));
 
-    //Connect poly button
+    //Connect reg button
     connect(ui->pushButton_reg, SIGNAL (clicked ()), this, SLOT (regButtonPressed ()));
+
+    //Connect save model button
+    connect(ui->pushButton_SaveModel, SIGNAL (clicked ()), this, SLOT (saveModelButtonPressed ()));
 
     //Connect menu checkbox - coord system
     connect(ui->actionShow_Coordinate_System, SIGNAL(triggered(bool)), this, SLOT(coordSysToggled(bool)));
@@ -366,7 +369,7 @@ void RoomScanner::polyButtonPressedFunc() {
     PointCloudT::Ptr cloudtmp (new PointCloudT);
     PointCloudT::Ptr output (new PointCloudT);
     PointCloudT::Ptr holder (new PointCloudT);
-    pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
+    triangles.reset(new pcl::PolygonMesh);
 
     //                                                     /+++ polygonate kinect frame
     //                               /+++ sensor connected?
@@ -797,5 +800,10 @@ void RoomScanner::refreshParams() {
     params->HOLsize = ui->lineEdit_HOLsize->text().toDouble();
     PCL_INFO("Parameters refreshed.\n");
     ui->tabWidget->setCurrentIndex(0);
+}
+
+void RoomScanner::saveModelButtonPressed() {
+    PCL_INFO("Saving mesh.ply\n");
+    pcl::io::savePLYFile("mesh.ply", *triangles);
 }
 
