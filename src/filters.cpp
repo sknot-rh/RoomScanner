@@ -140,8 +140,8 @@ void filters::normalFilter(PointCloudT::Ptr input, PointCloudT::Ptr output) {
     pcl::NormalSpaceSampling<pcl::PointXYZRGBNormal, pcl::PointXYZRGBNormal> normal_space_sampling;
     normal_space_sampling.setInputCloud (temp);
     normal_space_sampling.setNormals (temp);
-    normal_space_sampling.setBins (4, 4, 4);
-    normal_space_sampling.setSeed (0);
+    normal_space_sampling.setBins (16,16,16);
+    normal_space_sampling.setSeed (42);
     normal_space_sampling.setSample (static_cast<unsigned int> (input->size ()-1));
     normal_space_sampling.filter(*temp);
     pcl::copyPointCloud(*temp, *output);

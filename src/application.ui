@@ -39,7 +39,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -592,8 +592,9 @@
     <addaction name="actionShow_keypoints"/>
     <addaction name="actionShow_captured_frames"/>
     <addaction name="actionShow_Coordinate_System"/>
-    <addaction name="actionClear"/>
     <addaction name="actionSmooth_cloud"/>
+    <addaction name="actionClear"/>
+    <addaction name="actionQuit"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
@@ -642,6 +643,11 @@
    </property>
    <property name="text">
     <string>Show Coordinate System</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>

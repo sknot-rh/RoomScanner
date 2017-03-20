@@ -127,6 +127,9 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Connect config button
     connect(ui->pushButton_config, SIGNAL (clicked()), this, SLOT (refreshParams ()));
 
+    //Connect smooth action
+    connect(ui->actionQuit, SIGNAL (triggered()), this, SLOT (actionQuitTriggered ()));
+
 
     //Add empty pointclouds
     viewer->addPointCloud(kinectCloud, "kinectCloud");
@@ -798,5 +801,9 @@ void RoomScanner::refreshParams() {
 void RoomScanner::saveModelButtonPressed() {
     PCL_INFO("Saving mesh.ply\n");
     pcl::io::savePLYFile("mesh.ply", *triangles);
+}
+
+void RoomScanner::actionQuitTriggered() {
+    QCoreApplication::quit();
 }
 
