@@ -572,18 +572,11 @@ void RoomScanner::registrateNClouds() {
 
     }
 
-
-
-    /*copyPointCloud(*(clouds.back()), *(clouds.front()));
-    clouds.erase(clouds.begin()+1, clouds.end());
-    clouds[0]->sensor_orientation_ = m;*/
-
     viewer->removeAllPointClouds();
     /*pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
-    //filters::cloudSmoothMLS(clouds[0], clouds[0]);
 
     //filters::voxelGridFilter(clouds[0], clouds[0], 0.02);*/
-    filters::voxelGridFilter(regResult, regResult);
+    filters::normalFilter(regResult, regResult);
     viewer->addPointCloud(regResult, "result");
     pcl::io::savePCDFileBinary ("registeredOutputPost.pcd", *regResult);
 
@@ -638,9 +631,9 @@ void RoomScanner::actionSmoothTriggered() {
     PCL_INFO("Smoothing input cloud\n");
 
     if (!clouds.empty()) {
-
-        filters::voxelGridFilter(clouds.back(), clouds.back(), 0.05);
-        filters::cloudSmoothMLS(clouds.back(), clouds.back());
+        /*filters::voxelGridFilter(clouds.back(), clouds.back(), 0.05);
+        filters::cloudSmoothMLS(clouds.back(), clouds.back());*/
+        filters::normalFilter(clouds.back(), clouds.back());
         viewer->removeAllPointClouds();
         viewer->addPointCloud(clouds.back(), "smoothCloud");
     }
@@ -649,7 +642,7 @@ void RoomScanner::actionSmoothTriggered() {
         return;
     }
     else {
-        filters::cloudSmoothMLS(regResult, regResult);
+        //filters::cloudSmoothMLS(regResult, regResult);
         //filters::voxelGridFilter(clouds[0], clouds[0]);
         viewer->removeAllPointClouds();
         viewer->addPointCloud(regResult, "smoothCloud");

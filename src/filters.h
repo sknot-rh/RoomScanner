@@ -14,6 +14,9 @@
 #include <pcl/filters/radius_outlier_removal.h>
 #include <pcl/filters/fast_bilateral.h>
 #include <pcl/surface/bilateral_upsampling.h>
+#include <pcl/filters/normal_space.h>
+#include <pcl/features/normal_3d.h>
+#include <pcl/point_types.h>
 
 
 class filters
@@ -26,6 +29,7 @@ public:
     static void cloudSmoothFBF(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output);
     static void oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float radius);
     static void bilatelarUpsampling(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output);
+    static void normalFilter(PointCloudT::Ptr input, PointCloudT::Ptr output);
 };
 
 #endif // FILTERS_H
