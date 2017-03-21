@@ -308,6 +308,7 @@ void RoomScanner::loadActionPressed() {
             }
             PCL_INFO("PC Loaded from file %s. Points %d\n", utf8_fileName.c_str(), cloudFromFile->points.size());
 
+            filters::cloudSmoothFBF(cloudFromFile, cloudFromFile);
             viewer->removeAllPointClouds();
             viewer->addPointCloud(cloudFromFile,"cloudFromFile");
             clouds.push_back(cloudFromFile);
