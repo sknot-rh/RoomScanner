@@ -18,18 +18,24 @@
 #include <pcl/surface/poisson.h>
 #include <pcl/filters/passthrough.h>
 #include <pcl/surface/vtk_smoothing/vtk_mesh_quadric_decimation.h>
+#include <pcl/surface/grid_projection.h>
+#include <pcl/PCLPointCloud2.h>
+#include <pcl/conversions.h>
+
 
 class mesh
 {
 
 public:
     mesh();
-    static pcl::PolygonMesh smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth); //todo bad allocation
+    static void smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth, pcl::PolygonMesh::Ptr output); //todo bad allocation
     static void polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
     static void polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles); //bug in pcl
     static void fillHoles(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut);
     static void polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
     static void meshDecimation(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut);
+    static void polygonateCloudGridProj(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
+    static void retextureMesh(PointCloudT::Ptr originCloud, pcl::PolygonMesh::Ptr triangles);
 
 };
 

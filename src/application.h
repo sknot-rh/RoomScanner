@@ -93,7 +93,6 @@ protected:
     std::vector<PointCloudT::Ptr> clouds;
     QTimer *tmrTimer;
     QMovie *movie;
-    Eigen::Quaternionf m;
     pcl::PolygonMesh::Ptr triangles;
 
     unsigned int red;

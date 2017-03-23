@@ -5,9 +5,7 @@
 			"usePolynomialFit" : true,
 			"searchRadius" : 0.05,
 			"sqrGaussParam" : 0.0016,
-			"_upsamplingRadius" : 0.025,
 			"upsamplingRadius" : 0.08,
-			"_upsamplingStepSize" : 0.015,
 			"upsamplingStepSize" : 0.003,
 			"dilationIterations" : 2,
 			"dilationVoxelSize" : 0.04,
@@ -15,13 +13,10 @@
 		},
 	"gridFilter" :
 		{
-			"leafSize" : 0.01,
-			"_leafSize" : 0.02
+			"leafSize" : 0.01
 		},
 	"greedyProjection" :
 		{
-			"_searchRadius" : 0.06,
-			"_mu" : 2.5,
 			"searchRadius" : 0.03,
 			"mu" : 2.5,
 			"maximumNearestNeighbors" : 200
@@ -54,6 +49,10 @@
 
 	"holeFill" :
 		{
-			"size" : 0
+			"size" : 0.2
+		},
+	"gridProj" :
+		{
+			"size" : 0.01
 		}
 }

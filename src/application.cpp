@@ -42,11 +42,12 @@ RoomScanner::RoomScanner (QWidget *parent) :
 
     //Tell to sensor in which position is expected input
 
-    m = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitX())
+    parameters* params = parameters::GetInstance();
+    params->m = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitX())
         * Eigen::AngleAxisf(0.0f,  Eigen::Vector3f::UnitY())
         * Eigen::AngleAxisf(0.0f, Eigen::Vector3f::UnitZ());
-    kinectCloud->sensor_orientation_ = m;
-    key_cloud->sensor_orientation_ = m;
+    kinectCloud->sensor_orientation_ = params->m;
+    key_cloud->sensor_orientation_ = params->m;
 
     copying = stream = false;
     sensorConnected = false;
@@ -288,6 +289,7 @@ void RoomScanner::saveButtonPressed() {
 }
 
 void RoomScanner::loadActionPressed() {
+    parameters* params = parameters::GetInstance();
     viewer->removeAllPointClouds();
     ui->tabWidget->setCurrentIndex(0);
     QStringList fileNames = QFileDialog::getOpenFileNames(this,tr("Choose Point Cloud Files"),QDir::currentPath(),tr("Point Cloud Files (*.pcd)") );
@@ -308,11 +310,13 @@ void RoomScanner::loadActionPressed() {
             }
             PCL_INFO("PC Loaded from file %s. Points %d\n", utf8_fileName.c_str(), cloudFromFile->points.size());
 
+            cloudFromFile->sensor_orientation_ = params->m;
             filters::cloudSmoothFBF(cloudFromFile, cloudFromFile);
             viewer->removeAllPointClouds();
             viewer->addPointCloud(cloudFromFile,"cloudFromFile");
-            clouds.push_back(cloudFromFile);
+            clouds.push_back(cloudFromFile); 
             ui->qvtkWidget->update();
+            viewer->resetCamera();
         }
     }
 }
@@ -404,15 +408,18 @@ void RoomScanner::polyButtonPressedFunc() {
                 cloudtmp->points[i].rgba = (*pRGB);
             }
 
+            PCL_INFO("Empty clouds & sensor connected\n");
+
             filters::cloudSmoothFBF(cloudtmp, output);
             //filters::bilatelarUpsampling(cloudtmp, output);
-            filters::voxelGridFilter(output, output);
+            filters::voxelGridFilter(output, output, 0.02);
             //filters::bilatelarUpsampling(cloudtmp, output);
-            mesh::polygonateCloud(output, triangles);
+            //mesh::polygonateCloud(output, triangles);
+            mesh::polygonateCloudGridProj(output, triangles);
 
         }
         else {
-            // empty clouds & no sensor
+            PCL_INFO("Empty clouds & sensor disconnected\n");
             QMessageBox::warning(this, "Error", "No pointcloud to polygonate!");
             PCL_INFO("No cloud to polygonate!\n");
             return;
@@ -421,12 +428,15 @@ void RoomScanner::polyButtonPressedFunc() {
     }
     else {
         if (registered) {
+            PCL_INFO("Registered clouds to polygonate\n");
             //filters::cloudSmoothFBF(regResult, regResult);
-            mesh::polygonateCloud(regResult, triangles);
+            mesh::polygonateCloudGridProj(regResult, triangles);
         }
         else {
+            PCL_INFO("Cloud to polygonate\n");
+            filters::voxelGridFilter(clouds.back(), clouds.back(), 0.02);
             filters::cloudSmoothFBF(clouds.back(), clouds.back());
-            mesh::polygonateCloud(clouds.back(), triangles);
+            mesh::polygonateCloudGridProj(clouds.back(), triangles);
         }
     }
 
@@ -577,9 +587,9 @@ void RoomScanner::registrateNClouds() {
     }
 
     viewer->removeAllPointClouds();
-    /*pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
+    //pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
 
-    //filters::voxelGridFilter(clouds[0], clouds[0], 0.02);*/
+    filters::voxelGridFilter(regResult, regResult, 0.02);
     filters::normalFilter(regResult, regResult);
     viewer->addPointCloud(regResult, "result");
     pcl::io::savePCDFileBinary ("registeredOutputPost.pcd", *regResult);
@@ -648,6 +658,7 @@ void RoomScanner::actionSmoothTriggered() {
     else {
         //filters::cloudSmoothMLS(regResult, regResult);
         //filters::voxelGridFilter(clouds[0], clouds[0]);
+        filters::normalFilter(regResult, regResult);
         viewer->removeAllPointClouds();
         viewer->addPointCloud(regResult, "smoothCloud");
     }
@@ -749,6 +760,11 @@ void RoomScanner::loadConfigFile() {
         params->HOLsize = pt.get<double>("holeFill.size");
 
         ui->lineEdit_HOLsize->setText(QString::number(params->HOLsize));
+
+
+        params->GRres = pt.get<double>("gridProj.size");
+
+        ui->lineEdit_GRres->setText(QString::number(params->GRres));
     }
 }
 
@@ -795,6 +811,11 @@ void RoomScanner::refreshParams() {
 
 
     params->HOLsize = ui->lineEdit_HOLsize->text().toDouble();
+
+
+    params->GRres = ui->lineEdit_GRres->text().toDouble();
+
+
     PCL_INFO("Parameters refreshed.\n");
     ui->tabWidget->setCurrentIndex(0);
 }

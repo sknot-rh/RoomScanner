@@ -126,6 +126,7 @@ void filters::bilatelarUpsampling(PointCloudT::Ptr cloudToSmooth, PointCloudT::P
 }
 
 void filters::normalFilter(PointCloudT::Ptr input, PointCloudT::Ptr output) {
+    PCL_INFO("normalFilter\n");
     pcl::NormalEstimation<PointT, pcl::Normal> ne;
     ne.setInputCloud (input);
     pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB> ());
@@ -145,6 +146,6 @@ void filters::normalFilter(PointCloudT::Ptr input, PointCloudT::Ptr output) {
     normal_space_sampling.setSample (static_cast<unsigned int> (input->size ()-1));
     normal_space_sampling.filter(*temp);
     pcl::copyPointCloud(*temp, *output);
-    filters::voxelGridFilter(output, output, 0.02);
+    //filters::voxelGridFilter(output, output, 0.02);
 }
 

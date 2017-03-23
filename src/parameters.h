@@ -18,6 +18,8 @@ public:
         return instance;
     }
 
+    Eigen::Quaternionf m;
+
     // Default parameters (config file is not found)
 
     // Parameters for sift computation
@@ -61,7 +63,11 @@ public:
     double DECtargetReductionFactor = 0.2; // 20%
 
     // Parameter for hole filling
-    double HOLsize = 0;
+    double HOLsize = 0.2;
+
+    // Parameter for Grid projection
+
+    double GRres = 0.01;
 
 };
 
