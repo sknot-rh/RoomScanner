@@ -204,7 +204,6 @@ void mesh::polygonateCloudGridProj(PointCloudT::Ptr cloudToPolygonate, pcl::Poly
     gp.setInputCloud (cloud_normals);
     gp.setSearchMethod (tree_normal);
     gp.setResolution (params->GRres);
-    PCL_INFO("kokotina %d\n",params->GRres);
     gp.reconstruct (*triangles);
     //retextureMesh(cloudToPolygonate, triangles);
     PCL_INFO("Polygons created: %f\n", triangles->polygons.size());
