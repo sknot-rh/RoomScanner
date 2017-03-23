@@ -23,10 +23,10 @@ public:
     // Default parameters (config file is not found)
 
     // Parameters for sift computation
-    double SIFTmin_scale = 0.003;
+    double SIFTmin_scale = 0.05;
     int SIFTn_octaves = 8;
     int SIFTn_scales_per_octave = 10;
-    double SIFTmin_contrast = 0.3;
+    double SIFTmin_contrast = 1.5;
 
     // Parameters for MLS
     int MLSpolynomialOrder = 2;
