@@ -32,8 +32,8 @@
 		{
 			"normalsRadius" : 0.05,
 			"fpfh" : 1.5,
-			"reject" : 2.0,
-			"corrDist" : 1.5
+			"reject" : 1.5,
+			"corrDist" : 0.2
 		},
 
 	"fastBFilter" :
