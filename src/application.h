@@ -66,6 +66,7 @@ public:
     void polyButtonPressedFunc();
     void loading(QLabel* label);
     void registrateNClouds();
+    void saveButtonPressedFun();
 
 public slots:
     void resetButtonPressed(void);
@@ -75,8 +76,6 @@ public slots:
     void polyButtonPressed(void);
 
     void regButtonPressed(void);
-
-    void closing(void);
 
     void drawFrame(void);
 
@@ -139,6 +138,7 @@ private:
     Ui::RoomScanner *ui;
     QLabel* labelRegistrate;
     QLabel* labelPolygonate;
+    QLabel* labelSave;
 
 };
 

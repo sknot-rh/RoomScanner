@@ -104,7 +104,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 
         if (i < 98) {
             pcl::transformPointCloud (*src, *(registration::regFrame), Ti); //send undersampled output
-            //emit regFrameSignal();
+            emit regFrameSignal();
         }
         else {
             pcl::transformPointCloud (*cloud_src, *(registration::regFrame), Ti); //send final output

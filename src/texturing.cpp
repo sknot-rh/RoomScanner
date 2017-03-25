@@ -10,7 +10,9 @@ bool texturing::stitchImages(std::vector<std::string> images) {
     std::vector<cv::Mat> imgs;
     std::string result_name = "texture.jpg";
 
-
+    if (images.size() < 2) {
+        return false;
+    }
 
     for (int i = 0; i < images.size(); ++i)
     {
@@ -33,10 +35,11 @@ bool texturing::stitchImages(std::vector<std::string> images) {
 
      if (status != cv::Stitcher::OK)
      {
-         printf("Can't stitch images, error code = %s\n", status);
-         return -1;
+         printf("Can't stitch images, error code = %d\n", status);
+         return false;
      }
 
     cv::imwrite(result_name, pano);
+    printf("Creating texture done.\n");
 
 }

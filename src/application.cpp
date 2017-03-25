@@ -234,6 +234,14 @@ void RoomScanner::resetButtonPressed() {
 }
 
 void RoomScanner::saveButtonPressed() {
+        boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::saveButtonPressedFun, this));
+        labelSave = new QLabel;
+        loading(labelSave);
+}
+
+
+void RoomScanner::saveButtonPressedFun() {
+
     if (!sensorConnected) {
         return;
     }
@@ -251,7 +259,6 @@ void RoomScanner::saveButtonPressed() {
     tmp->points.resize (kinectCloud->points.size ());
 
     memcpy (&tmp->points[0], &kinectCloud->points[0], kinectCloud->points.size () * sizeof (PointT));
-    stream = true;
 
     // create string for file name
     PCL_INFO("Saving frame #%d\n", clouds.size());
@@ -276,7 +283,6 @@ void RoomScanner::saveButtonPressed() {
     ss2 << "frame_" << images.size()<<  ".png";
     s = ss2.str();
     //pcl::io::savePNGFile(s, *tmp, "rgb");
-    PCL_INFO("saving %s\n",s);
     pcl::io::savePNGFile(s, *image);
     images.push_back(s);
 
@@ -287,6 +293,8 @@ void RoomScanner::saveButtonPressed() {
     filters::oultlierRemoval(output, output, 0.8f);
     clouds.push_back(output);
     lastFrameToggled();
+    stream = true;
+    labelSave->close();
 }
 
 void RoomScanner::loadActionPressed() {
@@ -294,6 +302,7 @@ void RoomScanner::loadActionPressed() {
     viewer->removeAllPointClouds();
     ui->tabWidget->setCurrentIndex(0);
     QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Choose Point Cloud Files"),QDir::currentPath(), tr("Point Cloud Files (*.pcd)") );
+
     if( !fileNames.isEmpty() )
     {
         for (int i = 0; i < fileNames.count(); i++) {
@@ -500,10 +509,6 @@ void RoomScanner::lastFrameToggled() {
     }
 }
 
-void RoomScanner::closing() {
-    //PCL_INFO("Exiting...\n");
-    //interface->stop();
-}
 
 RoomScanner::~RoomScanner ()
 {
@@ -513,6 +518,7 @@ RoomScanner::~RoomScanner ()
     }
     delete ui;
     clouds.clear();
+    images.clear();
     tmrTimer->stop();
     //delete &cloud;
 }
@@ -520,6 +526,7 @@ RoomScanner::~RoomScanner ()
 void RoomScanner::actionClearTriggered()
 {
     clouds.clear();
+    images.clear();
     viewer->removeAllPointClouds();
     meshViewer->removeAllPointClouds();
     ui->qvtkWidget->update();
@@ -558,11 +565,9 @@ void RoomScanner::registrateNClouds() {
     viewer->addPointCloud(clouds[1], "target");
     viewer->addPointCloud(clouds[0], "source");
 
-    //pcl::PCLImage::Ptr texture (new pcl::PCLImage());
-    //pcl::PCLImage::Ptr textureCloud (new PointCloudT());
     if (texturing::stitchImages(images)) {
         PCL_INFO("Texture created in file texture.png\n");
-        //pcl::io::load("texture.png", *textureCloud);
+
     }
     else {
         PCL_INFO("Sorry, no texture\n");
