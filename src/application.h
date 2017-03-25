@@ -2,28 +2,51 @@
 #define PCLVIEWER_H
 
 #include <iostream>
+#include <fstream>
+#include <cstdio>
+#include <unistd.h>
 
 // Qt
 #include <QMainWindow>
 #include <QThread>
 #include <QLabel>
+#include <QTimer>
+#include <QMessageBox>
+#include <QMovie>
+#include <QFileDialog>
 
 // Point Cloud Library
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/io/openni_grabber.h>
+#include <pcl/io/png_io.h>
+#include <pcl/io/vtk_io.h>
+#include <pcl/io/ply_io.h>
+#include <pcl/io/obj_io.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/visualization/cloud_viewer.h>
+#include <pcl/console/parse.h>
+#include <pcl/keypoints/sift_keypoint.h>
+#include <pcl/keypoints/impl/sift_keypoint.hpp>
+#include <pcl/io/point_cloud_image_extractors.h>
 
 // Visualization Toolkit (VTK)
 #include <vtkRenderWindow.h>
 
+// Boost
 #include <boost/atomic.hpp>
+#include "boost/property_tree/ptree.hpp"
+#include "boost/property_tree/json_parser.hpp"
+#include <boost/thread/thread.hpp>
+
 #include "parameters.h"
 #include "types.h"
 #include "filters.h"
 #include "pointrepr.h"
 #include "mesh.h"
 #include "registration.h"
+#include "texturing.h"
 
 namespace Ui
 {
@@ -91,6 +114,7 @@ protected:
     PointCloudAT::Ptr key_cloud;
     PointCloudT::Ptr regResult;
     std::vector<PointCloudT::Ptr> clouds;
+    std::vector<std::string> images;
     QTimer *tmrTimer;
     QMovie *movie;
     pcl::PolygonMesh::Ptr triangles;

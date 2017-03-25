@@ -14,9 +14,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         application.cpp \
-    filters.cpp \
     mesh.cpp \
-    registration.cpp
+    registration.cpp \
+    texturing.cpp \
+    filters.cpp
 
 HEADERS  += application.h \
     parameters.h \
@@ -24,7 +25,8 @@ HEADERS  += application.h \
     types.h \
     pointrepr.h \
     mesh.h \
-    registration.h
+    registration.h \
+    texturing.h
 
 FORMS    += application.ui
 

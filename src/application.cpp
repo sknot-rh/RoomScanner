@@ -1,24 +1,6 @@
 #include "application.h"
 #include "../build/ui_application.h"
-#include <pcl/visualization/cloud_viewer.h>
-#include <boost/thread/thread.hpp>
-#include <QTimer>
-#include <pcl/keypoints/sift_keypoint.h>
-#include <pcl/keypoints/impl/sift_keypoint.hpp>
-#include <QFileDialog>
-#include <pcl/io/vtk_io.h>
-#include <pcl/io/ply_io.h>
-#include <pcl/io/obj_io.h>
-#include <pcl/io/pcd_io.h>
-#include <fstream>
-#include <iostream>
-#include <cstdio>
-#include "boost/property_tree/ptree.hpp"
-#include "boost/property_tree/json_parser.hpp"
-#include <QMessageBox>
-#include <QMovie>
-#include <unistd.h>
-#include <pcl/console/parse.h>
+
 
 parameters* parameters::instance = 0;
 
@@ -271,20 +253,39 @@ void RoomScanner::saveButtonPressed() {
     memcpy (&tmp->points[0], &kinectCloud->points[0], kinectCloud->points.size () * sizeof (PointT));
     stream = true;
 
-    //output = tmp;
+    // create string for file name
+    PCL_INFO("Saving frame #%d\n", clouds.size());
+    std::stringstream ss;
+    ss << "frame_" << clouds.size()<<  ".pcd";
+    std::string s = ss.str();
 
-    //filters::voxelGridFilter(tmp, output, 0.001); //global downsampling
+    //save raw frame
+    pcl::io::savePCDFile (s, *tmp);
+
+
+
+    pcl::PCLImage::Ptr image (new pcl::PCLImage());
+    pcl::io::PointCloudImageExtractorFromRGBField<PointT> pcie;
+    pcie.setPaintNaNsWithBlack (true);
+    pcie.extract(*tmp, *image);
+
+
+
+    //save texture file
+    std::stringstream ss2;
+    ss2 << "frame_" << images.size()<<  ".png";
+    s = ss2.str();
+    //pcl::io::savePNGFile(s, *tmp, "rgb");
+    PCL_INFO("saving %s\n",s);
+    pcl::io::savePNGFile(s, *image);
+    images.push_back(s);
+
+    // perform filtering
     filters::cloudSmoothFBF(tmp, output);
     std::vector<int> indices;
     removeNaNFromPointCloud(*output,*output, indices);
     filters::oultlierRemoval(output, output, 0.8f);
     clouds.push_back(output);
-
-    PCL_INFO("Saving frame #%d\n", clouds.size());
-    std::stringstream ss;
-    ss << "frame_" << clouds.size()<<  ".pcd";
-    std::string s = ss.str();
-    pcl::io::savePCDFile (s, *output);
     lastFrameToggled();
 }
 
@@ -292,7 +293,7 @@ void RoomScanner::loadActionPressed() {
     parameters* params = parameters::GetInstance();
     viewer->removeAllPointClouds();
     ui->tabWidget->setCurrentIndex(0);
-    QStringList fileNames = QFileDialog::getOpenFileNames(this,tr("Choose Point Cloud Files"),QDir::currentPath(),tr("Point Cloud Files (*.pcd)") );
+    QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Choose Point Cloud Files"),QDir::currentPath(), tr("Point Cloud Files (*.pcd)") );
     if( !fileNames.isEmpty() )
     {
         for (int i = 0; i < fileNames.count(); i++) {
@@ -470,9 +471,6 @@ void RoomScanner::polyButtonPressedFunc() {
     meshViewer->setShapeRenderingProperties ( pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG, "mesh" );
     */
 
-
-    pcl::io::saveOBJFile("mesh.obj", *triangles);
-    pcl::io::savePLYFile("mesh.ply", *triangles);
     meshViewer->addPolygonMesh(*triangles, "mesh");
     ui->qvtkWidget_2->update();
 
@@ -560,11 +558,21 @@ void RoomScanner::registrateNClouds() {
     viewer->addPointCloud(clouds[1], "target");
     viewer->addPointCloud(clouds[0], "source");
 
+    //pcl::PCLImage::Ptr texture (new pcl::PCLImage());
+    //pcl::PCLImage::Ptr textureCloud (new PointCloudT());
+    if (texturing::stitchImages(images)) {
+        PCL_INFO("Texture created in file texture.png\n");
+        //pcl::io::load("texture.png", *textureCloud);
+    }
+    else {
+        PCL_INFO("Sorry, no texture\n");
+    }
+
+
     for (int i = 1; i < clouds.size(); i++) {
 
         source = clouds[i-1];
         PCL_INFO ("source %d\n", source->points.size());
-        pcl::io::savePCDFileBinary ("previousRegisteredOutput.pcd", *(source));
         target = clouds[i];
         viewer->updatePointCloud(target, "target");
 
@@ -587,13 +595,10 @@ void RoomScanner::registrateNClouds() {
     }
 
     viewer->removeAllPointClouds();
-    //pcl::io::savePCDFileBinary ("registeredOutput.pcd", *(clouds[0]));
-
     filters::voxelGridFilter(regResult, regResult, 0.02);
-    filters::normalFilter(regResult, regResult);
+    //filters::normalFilter(regResult, regResult);
     viewer->addPointCloud(regResult, "result");
-    pcl::io::savePCDFileBinary ("registeredOutputPost.pcd", *regResult);
-
+    pcl::io::savePCDFileBinary ("registeredOutput.pcd", *regResult);
     PCL_INFO( "Registrated Point Cloud has %d points.\n", regResult->points.size());
     labelRegistrate->close();
     ui->qvtkWidget->update();
