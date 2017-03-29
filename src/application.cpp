@@ -50,6 +50,7 @@ RoomScanner::RoomScanner (QWidget *parent) :
     viewer->registerKeyboardCallback (RoomScanner::keyboardEventOccurred, (void*)viewer.get ());
     ui->qvtkWidget->SetRenderWindow (viewer->getRenderWindow ());
     viewer->setupInteractor (ui->qvtkWidget->GetInteractor (), ui->qvtkWidget->GetRenderWindow ());
+    viewer->registerKeyboardCallback (&RoomScanner::keyboardEventOccurred, *this);
 
     ui->qvtkWidget->update ();
 
@@ -236,18 +237,17 @@ void RoomScanner::resetButtonPressed() {
 }
 
 void RoomScanner::saveButtonPressed() {
-        boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::saveButtonPressedFun, this));
-        labelSave = new QLabel;
-        loading(labelSave);
+    if (!sensorConnected) {
+        PCL_INFO("Nothing to save.\n");
+        return;
+    }
+    boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::saveButtonPressedFun, this));
+    labelSave = new QLabel;
+    loading(labelSave);
 }
 
 
 void RoomScanner::saveButtonPressedFun() {
-
-    if (!sensorConnected) {
-        return;
-    }
-
     PointCloudT::Ptr tmp (new PointCloudT);
     PointCloudT::Ptr output (new PointCloudT);
     stream = false; // "safe" copy
@@ -852,9 +852,8 @@ void RoomScanner::actionQuitTriggered() {
 void RoomScanner::keyboardEventOccurred (const pcl::visualization::KeyboardEvent &event, void* viewer_void) {
 
   pcl::visualization::PCLVisualizer *viewer = static_cast<pcl::visualization::PCLVisualizer *> (viewer_void);
-  if (event.getKeySym () == "n" && event.keyDown ())
+  if (event.getKeySym () == "space" && event.keyDown ())
   {
-    std::cout << "space was pressed" << std::endl;
-
+    RoomScanner::saveButtonPressed();
   }
 }
