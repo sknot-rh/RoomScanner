@@ -198,9 +198,6 @@ void mesh::polygonateCloudGridProj(PointCloudT::Ptr cloudToPolygonate, pcl::Poly
     //boost::shared_ptr<pcl::PolygonMesh> triangles(new pcl::PolygonMesh);
     //pcl::PolygonMesh triangles;
 
-    //Max distance between connecting edge points
-    //gp.setSearchRadius(params->GPsearchRadius);
-
     gp.setInputCloud (cloud_normals);
     gp.setSearchMethod (tree_normal);
     gp.setResolution (params->GRres);

@@ -67,6 +67,7 @@ public:
     void loading(QLabel* label);
     void registrateNClouds();
     void saveButtonPressedFun();
+    void smoothAction();
 
 public slots:
     void resetButtonPressed(void);
@@ -139,6 +140,7 @@ private:
     QLabel* labelRegistrate;
     QLabel* labelPolygonate;
     QLabel* labelSave;
+    QLabel* labelSmooth;
 
 };
 

@@ -651,13 +651,20 @@ void RoomScanner::streamButtonPressed() {
 }
 
 void RoomScanner::actionSmoothTriggered() {
+
+    boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::smoothAction, this));
+    labelSmooth = new QLabel;
+    loading(labelSmooth);
+}
+
+void RoomScanner::smoothAction() {
     stream = false;
     PCL_INFO("Smoothing input cloud\n");
 
     if (!clouds.empty()) {
-        /*filters::voxelGridFilter(clouds.back(), clouds.back(), 0.05);
-        filters::cloudSmoothMLS(clouds.back(), clouds.back());*/
-        filters::normalFilter(clouds.back(), clouds.back());
+        filters::voxelGridFilter(clouds.back(), clouds.back(), 0.02);
+        filters::cloudSmoothMLS(clouds.back(), clouds.back());
+        //filters::normalFilter(clouds.back(), clouds.back());
         viewer->removeAllPointClouds();
         viewer->addPointCloud(clouds.back(), "smoothCloud");
     }
@@ -666,17 +673,18 @@ void RoomScanner::actionSmoothTriggered() {
         return;
     }
     else {
-        //filters::cloudSmoothMLS(regResult, regResult);
+        filters::voxelGridFilter(regResult, regResult, 0.02);
+        filters::cloudSmoothMLS(regResult, regResult);
         //filters::voxelGridFilter(clouds[0], clouds[0]);
         filters::normalFilter(regResult, regResult);
         viewer->removeAllPointClouds();
         viewer->addPointCloud(regResult, "smoothCloud");
     }
-
-
-
+    labelSmooth->close();
     ui->qvtkWidget->update();
-    viewer->resetCamera();
+    //Does not work with vtk7.1
+    //viewer->resetCamera();
+
 }
 
 void RoomScanner::loadConfigFile() {

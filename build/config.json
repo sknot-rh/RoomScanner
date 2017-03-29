@@ -3,12 +3,12 @@
 		{
 			"polynomialOrder" : 2,
 			"usePolynomialFit" : true,
-			"searchRadius" : 0.05,
-			"sqrGaussParam" : 0.0016,
-			"upsamplingRadius" : 0.08,
-			"upsamplingStepSize" : 0.003,
+			"searchRadius" : 0.10,
+			"sqrGaussParam" : 0.04,
+			"upsamplingRadius" : 0.015,
+			"upsamplingStepSize" : 0.01,
 			"dilationIterations" : 2,
-			"dilationVoxelSize" : 0.04,
+			"dilationVoxelSize" : 0.02,
 			"computeNormals" : false
 		},
 	"gridFilter" :

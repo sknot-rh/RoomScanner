@@ -39,35 +39,33 @@ void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
     PCL_INFO("smoothing %d points\n", cloudToSmooth->points.size());
 
     parameters* params = parameters::GetInstance();
-    std::ifstream config_file("config.json");
+
+    pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
+
 
     pcl::MovingLeastSquares<PointT, PointT> mls;
     mls.setInputCloud (cloudToSmooth);
+    mls.setSearchMethod (tree);
+    mls.setComputeNormals (params->MLScomputeNormals);
     mls.setSearchRadius (params->MLSsearchRadius);
     mls.setSqrGaussParam (params->MLSsqrGaussParam);
     mls.setPolynomialFit (params->MLSusePolynomialFit);
     mls.setPolynomialOrder (params->MLSpolynomialOrder);
+    mls.setUpsamplingRadius (params->MLSupsamplingRadius);
+    mls.setUpsamplingStepSize (params->MLSupsamplingStepSize);
+    mls.setDilationVoxelSize (params->MLSdilationVoxelSize);
+    mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
 
+    // Available upsampling methods
     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::SAMPLE_LOCAL_PLANE);
     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::RANDOM_UNIFORM_DENSITY);
-    //mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
+    //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointXYZRGB>::NONE);
-
-    //mls.setPointDensity ( int (60000 * params->MLSsearchRadius)); // 300 points in a 5 cm radius
-    mls.setUpsamplingRadius (params->MLSupsamplingRadius);
-    //mls.setUpsamplingStepSize (params->MLSupsamplingStepSize);
-    mls.setDilationIterations (params->MLSdilationIterations);
-    mls.setDilationVoxelSize (params->MLSdilationVoxelSize);
-    //mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
-
-    pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
-    //pcl::search::OrganizedNeighbor<PointT> tree (new pcl::search::OrganizedNeighbor<PointT> ());
-    mls.setSearchMethod (tree);
-    mls.setComputeNormals (params->MLScomputeNormals);
 
     PointCloudT::Ptr cloud_smoothed (new PointCloudT ());
     mls.process (*cloud_smoothed);
-    output = cloud_smoothed;
+    //output = cloud_smoothed;
+    copyPointCloud(*cloud_smoothed, *output);
     PCL_INFO("Smoothed cloud has %d points\n", output->points.size());
 }
 
