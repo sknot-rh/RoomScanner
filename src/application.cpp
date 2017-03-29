@@ -47,8 +47,10 @@ RoomScanner::RoomScanner (QWidget *parent) :
 
     //Setting up UI
     viewer.reset (new pcl::visualization::PCLVisualizer ("viewer", false));
+    viewer->registerKeyboardCallback (RoomScanner::keyboardEventOccurred, (void*)viewer.get ());
     ui->qvtkWidget->SetRenderWindow (viewer->getRenderWindow ());
     viewer->setupInteractor (ui->qvtkWidget->GetInteractor (), ui->qvtkWidget->GetRenderWindow ());
+
     ui->qvtkWidget->update ();
 
     meshViewer.reset (new pcl::visualization::PCLVisualizer ("meshViewer", false));
@@ -847,3 +849,12 @@ void RoomScanner::actionQuitTriggered() {
     QCoreApplication::quit();
 }
 
+void RoomScanner::keyboardEventOccurred (const pcl::visualization::KeyboardEvent &event, void* viewer_void) {
+
+  pcl::visualization::PCLVisualizer *viewer = static_cast<pcl::visualization::PCLVisualizer *> (viewer_void);
+  if (event.getKeySym () == "n" && event.keyDown ())
+  {
+    std::cout << "space was pressed" << std::endl;
+
+  }
+}

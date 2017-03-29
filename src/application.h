@@ -68,6 +68,7 @@ public:
     void registrateNClouds();
     void saveButtonPressedFun();
     void smoothAction();
+    static void keyboardEventOccurred (const pcl::visualization::KeyboardEvent &event, void* viewer_void);
 
 public slots:
     void resetButtonPressed(void);
