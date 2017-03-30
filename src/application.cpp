@@ -47,7 +47,6 @@ RoomScanner::RoomScanner (QWidget *parent) :
 
     //Setting up UI
     viewer.reset (new pcl::visualization::PCLVisualizer ("viewer", false));
-    viewer->registerKeyboardCallback (RoomScanner::keyboardEventOccurred, (void*)viewer.get ());
     ui->qvtkWidget->SetRenderWindow (viewer->getRenderWindow ());
     viewer->setupInteractor (ui->qvtkWidget->GetInteractor (), ui->qvtkWidget->GetRenderWindow ());
     viewer->registerKeyboardCallback (&RoomScanner::keyboardEventOccurred, *this);
