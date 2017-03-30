@@ -110,7 +110,7 @@
           <item>
            <widget class="QPushButton" name="pushButton_reg">
             <property name="text">
-             <string>Registrate</string>
+             <string>Registration</string>
             </property>
            </widget>
           </item>

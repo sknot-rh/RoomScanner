@@ -113,7 +113,7 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Connect config button
     connect(ui->pushButton_config, SIGNAL (clicked()), this, SLOT (refreshParams ()));
 
-    //Connect smooth action
+    //Connect quit action
     connect(ui->actionQuit, SIGNAL (triggered()), this, SLOT (actionQuitTriggered ()));
 
 
