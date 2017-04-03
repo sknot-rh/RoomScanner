@@ -5,7 +5,10 @@ texturing::texturing()
 
 }
 
-
+/** \brief Stitch N images
+  * \param images names of images which will be stitched
+  * \return true if stitching was successfull
+  */
 bool texturing::stitchImages(std::vector<std::string> images) {
     std::vector<cv::Mat> imgs;
     std::string result_name = "texture.jpg";

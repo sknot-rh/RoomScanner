@@ -29,7 +29,7 @@ class mesh
 public:
     mesh();
     static void smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth, pcl::PolygonMesh::Ptr output); //todo bad allocation
-    static void polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
+    static void polygonateCloudGreedyProj(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);
     static void polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles); //bug in pcl
     static void fillHoles(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut);
     static void polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles);

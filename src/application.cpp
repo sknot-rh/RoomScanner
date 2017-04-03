@@ -4,6 +4,9 @@
 
 parameters* parameters::instance = 0;
 
+/** \brief Constructor and initializing gui
+  * \param parent
+  */
 RoomScanner::RoomScanner (QWidget *parent) :
     QMainWindow (parent),
     ui (new Ui::RoomScanner) {
@@ -128,6 +131,8 @@ RoomScanner::RoomScanner (QWidget *parent) :
 
 }
 
+/** \brief renders frame with sift keypoints if desired
+  */
 void RoomScanner::drawFrame() {
     if (stream) {
         if (mtx_.try_lock()) {
@@ -182,6 +187,9 @@ void RoomScanner::drawFrame() {
     }
 }
 
+/** \brief callback function to get data from sensor using openni grabber
+  * \param ncloud pointer to cloud from sensor
+  */
 void RoomScanner::cloud_cb_ (const PointCloudAT::ConstPtr &ncloud) {
     if (stream) {
         if (mtx_.try_lock()) {
@@ -220,6 +228,9 @@ void RoomScanner::cloud_cb_ (const PointCloudAT::ConstPtr &ncloud) {
     }
 }
 
+/** \brief renders coordination system axes
+  * \param value
+  */
 void RoomScanner::coordSysToggled(bool value) {
     if (value) {
         viewer->addCoordinateSystem(1, 0, 0, 0, "viewer", 0);
@@ -230,11 +241,15 @@ void RoomScanner::coordSysToggled(bool value) {
     ui->qvtkWidget->update();
 }
 
+/** \brief reset camera
+  */
 void RoomScanner::resetButtonPressed() {
     viewer->resetCamera();
     ui->qvtkWidget->update();
 }
 
+/** \brief run loading screen and runs second thread
+  */
 void RoomScanner::saveButtonPressed() {
     if (!sensorConnected) {
         PCL_INFO("Nothing to save.\n");
@@ -245,7 +260,8 @@ void RoomScanner::saveButtonPressed() {
     loading(labelSave);
 }
 
-
+/** \brief save current frame from sensor
+  */
 void RoomScanner::saveButtonPressedFun() {
     PointCloudT::Ptr tmp (new PointCloudT);
     PointCloudT::Ptr output (new PointCloudT);
@@ -298,6 +314,8 @@ void RoomScanner::saveButtonPressedFun() {
     labelSave->close();
 }
 
+/** \brief load point cloud from file
+  */
 void RoomScanner::loadActionPressed() {
     parameters* params = parameters::GetInstance();
     viewer->removeAllPointClouds();
@@ -318,6 +336,12 @@ void RoomScanner::loadActionPressed() {
             for (size_t i = 0; i < cloudFromFile->size(); i++)
             {
                 cloudFromFile->points[i].a = 255;
+                if (cloudFromFile->points[i].r == cloudFromFile->points[i].g && cloudFromFile->points[i].g == cloudFromFile->points[i].b && cloudFromFile->points[i].b == 0 ) {
+                    cloudFromFile->points[i].r = 127;
+                    cloudFromFile->points[i].g = 127;
+                    cloudFromFile->points[i].b = 127;
+                }
+
             }
             PCL_INFO("PC Loaded from file %s. Points %d\n", utf8_fileName.c_str(), cloudFromFile->points.size());
 
@@ -332,7 +356,8 @@ void RoomScanner::loadActionPressed() {
     }
 }
 
-
+/** \brief runs loading screen and runs second thread
+  */
 void RoomScanner::polyButtonPressed() {
 
     if (clouds.empty()) {
@@ -365,7 +390,8 @@ void RoomScanner::polyButtonPressed() {
     ui->qvtkWidget_2->update();
 }
 
-
+/** \brief loading screen
+  */
 void RoomScanner::loading(QLabel* label) {
     if (!movie->isValid()) {
         PCL_INFO("Invalid loading image %s\n", movie->fileName().toStdString());
@@ -384,6 +410,8 @@ void RoomScanner::loading(QLabel* label) {
     movie->start();
 }
 
+/** \brief determines what and polygonates it
+  */
 void RoomScanner::polyButtonPressedFunc() {
     PointCloudT::Ptr cloudtmp (new PointCloudT);
     PointCloudT::Ptr output (new PointCloudT);
@@ -424,9 +452,8 @@ void RoomScanner::polyButtonPressedFunc() {
             filters::cloudSmoothFBF(cloudtmp, output);
             //filters::bilatelarUpsampling(cloudtmp, output);
             filters::voxelGridFilter(output, output, 0.02);
-            //filters::bilatelarUpsampling(cloudtmp, output);
-            //mesh::polygonateCloud(output, triangles);
-            mesh::polygonateCloudGridProj(output, triangles);
+            mesh::polygonateCloudGreedyProj(output, triangles);
+            //mesh::polygonateCloudGridProj(output, triangles);
 
         }
         else {
@@ -441,16 +468,17 @@ void RoomScanner::polyButtonPressedFunc() {
         if (registered) {
             PCL_INFO("Registered clouds to polygonate\n");
             //filters::cloudSmoothFBF(regResult, regResult);
-            mesh::polygonateCloudGridProj(regResult, triangles);
+            mesh::polygonateCloudGreedyProj(output, triangles);
+            //mesh::polygonateCloudGridProj(regResult, triangles);
         }
         else {
             PCL_INFO("Cloud to polygonate\n");
             filters::voxelGridFilter(clouds.back(), clouds.back(), 0.02);
             filters::cloudSmoothFBF(clouds.back(), clouds.back());
-            mesh::polygonateCloudGridProj(clouds.back(), triangles);
+            mesh::polygonateCloudGreedyProj(clouds.back(), triangles);
+            //mesh::polygonateCloudGridProj(clouds.back(), triangles);
         }
     }
-
 
 
     meshViewer->removePolygonMesh("mesh");
@@ -491,6 +519,8 @@ void RoomScanner::polyButtonPressedFunc() {
 
 }
 
+/** \brief show last captured frame switch
+  */
 void RoomScanner::lastFrameToggled() {
     if (clouds.empty()) {
         return;
@@ -510,20 +540,8 @@ void RoomScanner::lastFrameToggled() {
     }
 }
 
-
-RoomScanner::~RoomScanner ()
-{
-    PCL_INFO("Exiting...\n");
-    if (sensorConnected) {
-        interface->stop();
-    }
-    delete ui;
-    clouds.clear();
-    images.clear();
-    tmrTimer->stop();
-    //delete &cloud;
-}
-
+/** \brief clears all vectors and viewports
+  */
 void RoomScanner::actionClearTriggered()
 {
     clouds.clear();
@@ -540,6 +558,8 @@ void RoomScanner::actionClearTriggered()
     registered = false;
 }
 
+/** \brief runs loading screen and econd thread
+  */
 void RoomScanner::regButtonPressed() {
     if (clouds.size() < 2) {
         PCL_INFO("To few clouds to registrate!\n");
@@ -553,6 +573,8 @@ void RoomScanner::regButtonPressed() {
     loading(labelRegistrate);
 }
 
+/** \brief runs registration of frames saved in clouds vector
+  */
 void RoomScanner::registrateNClouds() {
     regResult.reset(new PointCloudT);
     PointCloudT::Ptr globalResult (new PointCloudT);
@@ -611,8 +633,8 @@ void RoomScanner::registrateNClouds() {
     registered = true;
 }
 
-
-
+/** \brief if app is at another than 1st tam, it is reduntant to stream data
+  */
 void RoomScanner::tabChangedEvent(int tabIndex) {
     if (tabIndex == 0) {
         stream = true;
@@ -623,6 +645,8 @@ void RoomScanner::tabChangedEvent(int tabIndex) {
     }
 }
 
+/** \brief show/hide keypoints in sensor frame
+  */
 void RoomScanner::keypointsToggled() {
     if (!ui->actionShow_keypoints->isChecked()) {
         viewer->removePointCloud("keypoints");
@@ -635,7 +659,8 @@ void RoomScanner::keypointsToggled() {
     }
 }
 
-
+/** \brief slot for updating viewport during registration
+  */
 void RoomScanner::regFrameSlot() {
     PCL_INFO("Signal receieved\n");
     viewer->updatePointCloud(registration::regFrame, "source");
@@ -643,6 +668,8 @@ void RoomScanner::regFrameSlot() {
     viewer->resetCamera();
 }
 
+/** \brief runs loading screen and second thread
+  */
 void RoomScanner::streamButtonPressed() {
     stream = true;
     viewer->removeAllPointClouds();
@@ -658,6 +685,8 @@ void RoomScanner::actionSmoothTriggered() {
     loading(labelSmooth);
 }
 
+/** \brief smooth input cloud
+  */
 void RoomScanner::smoothAction() {
     stream = false;
     PCL_INFO("Smoothing input cloud\n");
@@ -688,6 +717,8 @@ void RoomScanner::smoothAction() {
 
 }
 
+/** \brief load paramters from config file and update gui form
+  */
 void RoomScanner::loadConfigFile() {
     parameters* params = parameters::GetInstance();
     std::ifstream config_file("config.json");
@@ -787,7 +818,8 @@ void RoomScanner::loadConfigFile() {
     }
 }
 
-
+/** \brief updates parameter from gui form
+  */
 void RoomScanner::refreshParams() {
     parameters* params = parameters::GetInstance();
 
@@ -839,15 +871,21 @@ void RoomScanner::refreshParams() {
     ui->tabWidget->setCurrentIndex(0);
 }
 
+/** \brief save output mesh to file
+  */
 void RoomScanner::saveModelButtonPressed() {
     PCL_INFO("Saving mesh.ply\n");
     pcl::io::savePLYFile("mesh.ply", *triangles);
 }
 
+/** \brief Quit application, calls destructor
+  */
 void RoomScanner::actionQuitTriggered() {
     QCoreApplication::quit();
 }
 
+/** \brief keyboard event listener
+  */
 void RoomScanner::keyboardEventOccurred (const pcl::visualization::KeyboardEvent &event, void* viewer_void) {
 
   pcl::visualization::PCLVisualizer *viewer = static_cast<pcl::visualization::PCLVisualizer *> (viewer_void);
@@ -855,4 +893,19 @@ void RoomScanner::keyboardEventOccurred (const pcl::visualization::KeyboardEvent
   {
     RoomScanner::saveButtonPressed();
   }
+}
+
+/** \brief destructor
+  */
+RoomScanner::~RoomScanner ()
+{
+    PCL_INFO("Exiting...\n");
+    if (sensorConnected) {
+        interface->stop();
+    }
+    delete ui;
+    clouds.clear();
+    images.clear();
+    tmrTimer->stop();
+    //delete &cloud;
 }

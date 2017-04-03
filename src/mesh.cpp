@@ -5,6 +5,10 @@ mesh::mesh()
 
 }
 
+/** \brief Smooths input polygonmesh
+  * \param meshToSmooth pointer to input polygonmesh
+  * \param output pointer to result
+  */
 void mesh::smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth, pcl::PolygonMesh::Ptr output) {
     PCL_INFO("Smoothing mesh %d\n",meshToSmooth->polygons.size());
     pcl::MeshSmoothingLaplacianVTK vtk;
@@ -20,7 +24,12 @@ void mesh::smoothMesh(pcl::PolygonMesh::Ptr meshToSmooth, pcl::PolygonMesh::Ptr 
     *output = *tmp;
 }
 
-void mesh::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
+
+/** \brief Triangulation performed by greedy projection triangulation
+  * \param cloudToPolygonate pointer to input cloud
+  * \param output pointer to resultant mesh
+  */
+void mesh::polygonateCloudGreedyProj(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
     PCL_INFO("Greedy polygonation\n");
     parameters* params = parameters::GetInstance();
 
@@ -30,8 +39,8 @@ void mesh::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh:
     pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
     pcl::search::KdTree<PointT>::Ptr tree2 (new pcl::search::KdTree<PointT>);
     //pcl::search::OrganizedNeighbor<PointT>::Ptr tree2 (new pcl::search::OrganizedNeighbor<PointT>); //only for organized cloud
-    tree2->setInputCloud(cloudToPolygonate);//cloud_filtered
-    normEstim.setInputCloud(cloudToPolygonate);//cloud_filtered
+    tree2->setInputCloud(cloudToPolygonate);
+    normEstim.setInputCloud(cloudToPolygonate);
     normEstim.setSearchMethod(tree2);
     normEstim.setKSearch(20);
     //normEstim.setNumberOfThreads(4);
@@ -49,8 +58,6 @@ void mesh::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh:
 
     //Initialize objects for triangulation
     pcl::GreedyProjectionTriangulation<pcl::PointXYZRGBNormal> gp;
-    //boost::shared_ptr<pcl::PolygonMesh> triangles(new pcl::PolygonMesh);
-    //pcl::PolygonMesh triangles;
 
     //Max distance between connecting edge points
     gp.setSearchRadius(params->GPsearchRadius);
@@ -68,6 +75,11 @@ void mesh::polygonateCloud(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh:
     mesh::smoothMesh(triangles, triangles);
 }
 
+
+/** \brief Triangulation performed by marching cubes triangulation
+  * \param cloudToPolygonate pointer to input cloud
+  * \param output pointer to resultant mesh
+  */
 void mesh::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
     PCL_INFO("Marching cubes\n");
     pcl::NormalEstimationOMP<PointT, pcl::Normal> ne;
@@ -99,7 +111,10 @@ void mesh::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMes
     //return triangles;
 }
 
-
+/** \brief Triangulation performed by poisson triangulation
+  * \param cloudToPolygonate pointer to input cloud
+  * \param output pointer to resultant mesh
+  */
 void mesh::polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
 
     // Get Poisson result
@@ -138,7 +153,10 @@ void mesh::polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::Polyg
 
 }
 
-
+/** \brief Fills holes in resultant mesh
+  * \param cloudToPolygonate pointer to input mesh
+  * \param output pointer to resultant mesh
+  */
 void mesh::fillHoles(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut) {
     parameters* params = parameters::GetInstance();
     vtkSmartPointer<vtkPolyData> input;
@@ -155,6 +173,10 @@ void mesh::fillHoles(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr tr
     pcl::VTKUtils::vtk2mesh(polyData, *trianglesOut);
 }
 
+/** \brief Mesh decimation algorithm performed by VTK library
+  * \param cloudToPolygonate pointer to input mesh
+  * \param output pointer to resultant mesh
+  */
 void mesh::meshDecimation(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::Ptr trianglesOut) {
     parameters* params = parameters::GetInstance();
     pcl::MeshQuadricDecimationVTK meshDecimator;
@@ -164,22 +186,21 @@ void mesh::meshDecimation(pcl::PolygonMesh::Ptr trianglesIn, pcl::PolygonMesh::P
     PCL_INFO("Triangles count reduced from %d to %d\n", trianglesIn->polygons.size(), trianglesOut->polygons.size());
 }
 
-
+/** \brief Triangulation performed by grid projection triangulation
+  * \param cloudToPolygonate pointer to input cloud
+  * \param output pointer to resultant mesh
+  */
 void mesh::polygonateCloudGridProj(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
     PCL_INFO("Grid projection polygonation\n");
     parameters* params = parameters::GetInstance();
 
-    // Get GridProj result
     //Normal Estimation
     pcl::NormalEstimation<PointT, pcl::Normal> normEstim;
     pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
     pcl::search::KdTree<PointT>::Ptr tree2 (new pcl::search::KdTree<PointT>);
-    //pcl::search::OrganizedNeighbor<PointT>::Ptr tree2 (new pcl::search::OrganizedNeighbor<PointT>); //only for organized cloud
-    tree2->setInputCloud(cloudToPolygonate);//cloud_filtered
-    normEstim.setInputCloud(cloudToPolygonate);//cloud_filtered
+    normEstim.setInputCloud(cloudToPolygonate);
     normEstim.setSearchMethod(tree2);
     normEstim.setKSearch(20);
-    //normEstim.setNumberOfThreads(4);
     normEstim.compute(*normals);
 
     //Concatenate the cloud with the normal fields
@@ -194,9 +215,6 @@ void mesh::polygonateCloudGridProj(PointCloudT::Ptr cloudToPolygonate, pcl::Poly
 
     //Initialize objects for triangulation
     pcl::GridProjection<pcl::PointXYZRGBNormal> gp;
-    //boost::shared_ptr<pcl::PolygonMesh> triangles(new pcl::PolygonMesh);
-    //pcl::PolygonMesh triangles;
-
     gp.setInputCloud (cloud_normals);
     gp.setSearchMethod (tree_normal);
     gp.setResolution (params->GRres);
@@ -205,6 +223,10 @@ void mesh::polygonateCloudGridProj(PointCloudT::Ptr cloudToPolygonate, pcl::Poly
     PCL_INFO("Polygons created: %d\n", triangles->polygons.size());
 }
 
+/** \brief Experimantal algorithm to map RGB values from input cloud to output mesh
+  * \param originCloud pointer to input cloud
+  * \param triangles pointer to resultant mesh
+  */
 void mesh::retextureMesh(PointCloudT::Ptr originCloud, pcl::PolygonMesh::Ptr triangles) {
     PCL_INFO("recoloring\n");
     pcl::KdTreeFLANN<pcl::PointXYZRGB> kdtree;

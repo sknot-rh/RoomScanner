@@ -7,19 +7,18 @@ registration::registration()
 
 PointCloudT::Ptr registration::regFrame (new PointCloudT);
 
-////////////////////////////////////////////////////////////////////////////////
 /** \brief Align a pair of PointCloud datasets and return the result
   * \param cloud_src the source PointCloud
   * \param cloud_tgt the target PointCloud
   * \param output the resultant aligned source PointCloud
   * \param final_transform the resultant transform between source and target
+  * \param downsample bool value if downsample input data
   */
 void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, bool downsample)
 {
 
     parameters *param = parameters::GetInstance();
     // Downsample for consistency and speed
-    // \note enable this for large datasets
     PointCloudT::Ptr src (new PointCloudT);
     PointCloudT::Ptr tgt (new PointCloudT);
 
@@ -59,14 +58,12 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     norm_est.compute (*points_with_normals_tgt);
     pcl::copyPointCloud (*tgt, *points_with_normals_tgt);
 
-    //
-    // Instantiate our custom point representation (defined above) ...
+    // Instantiate our custom point representation
     PointRepr point_representation;
-    // ... and weight the 'curvature' dimension so that it is balanced against x, y, and z
+    // weight the 'curvature' dimension so that it is balanced against x, y, and z
     float alpha[4] = {1.0, 1.0, 1.0, 1.0};
     point_representation.setRescaleValues (alpha);
 
-    //
     // Align
     pcl::IterativeClosestPointNonLinear<PointNormalT, PointNormalT> reg;
     reg.setTransformationEpsilon (1e-26);
@@ -79,9 +76,6 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     reg.setInputSource (points_with_normals_src);
     reg.setInputTarget (points_with_normals_tgt);
 
-
-
-    //
     // Run the same optimization in a loop
     Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
     PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
@@ -92,7 +86,6 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 
         PCL_INFO ("Iteration Nr. %d.\n", i);
 
-        // save cloud for visualization purpose
         points_with_normals_src = reg_result;
 
         // Estimate
@@ -123,14 +116,11 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
         prev = reg.getLastIncrementalTransformation ();
     }
 
-    //
     // Get the transformation from target to source
     targetToSource = Ti.inverse();
 
-    //
     // Transform target back in source frame
     pcl::transformPointCloud (*cloud_tgt, *output, targetToSource);
-
 
     //add the source to the transformed target
     *output += *cloud_src;
@@ -138,7 +128,11 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     final_transform = targetToSource;
 }
 
-
+/** \brief Computes transdormation between source and target pointcloud
+  * \param src_origin the source PointCloud
+  * \param tgt_origin the target PointCloud
+  * \return true if transformation found successfully
+  */
 bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, const PointCloudT::Ptr &tgt_origin)
 {
     PCL_INFO("computeTransformation\n");
@@ -149,7 +143,6 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     PointCloudT::Ptr src (new PointCloudT), tgt (new PointCloudT);
 
     //PointCloudT::Ptr src (new PointCloudT), tgt (new PointCloudT);
-
 
     // Preprocessing
     filters::voxelGridFilter(src_origin, src, 0.05f); // we want downsampled copies of clouds for computation...direct downsampling would affect output quality
@@ -202,7 +195,12 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     return true;
 }
 
-
+/** \brief Rejects bad correspondences
+  * \param all_correspondences all found correspondences
+  * \param keypoints_src keypoints from source point cloud
+  * \param keypoints_tgt keypoints from target point cloud
+  * \param remaining_correspondences remaining correspondences
+  */
 void registration::rejectBadCorrespondences (const pcl::CorrespondencesPtr &all_correspondences,
         const PointCloudT::Ptr &keypoints_src,
         const PointCloudT::Ptr &keypoints_tgt,
@@ -218,6 +216,12 @@ void registration::rejectBadCorrespondences (const pcl::CorrespondencesPtr &all_
     rej.getCorrespondences (remaining_correspondences);
 }
 
+
+/** \brief Finds all correspondences between fpfh features of source and target point cloud
+  * \param fpfhs_src fpfh features of source point cloud
+  * \param fpfhs_tgt fpfh features of target point cloud
+  * \param all_correspondences target correspondences
+  */
 void registration::findCorrespondences (const pcl::PointCloud<pcl::FPFHSignature33>::Ptr &fpfhs_src,
                                         const pcl::PointCloud<pcl::FPFHSignature33>::Ptr &fpfhs_tgt,
                                         pcl::Correspondences &all_correspondences)
@@ -229,7 +233,15 @@ void registration::findCorrespondences (const pcl::PointCloud<pcl::FPFHSignature
     est.determineReciprocalCorrespondences (all_correspondences);
 }
 
-void registration::estimateFPFH (const PointCloudT::Ptr &cloud, const pcl::PointCloud<pcl::Normal>::Ptr &normals, const PointCloudT::Ptr &keypoints, pcl::PointCloud<pcl::FPFHSignature33> &fpfhs)
+
+/** \brief Finds fpfh features of point cloud
+  * \param cloud input point cloud
+  * \param normals estimated normals of input cloud
+  * \param all_correspondences target correspondences
+  * \param keypoints of input cloud
+  * \param fpfh resultant fpfh
+  */
+void registration::estimateFPFH (const PointCloudT::Ptr &cloud, const pcl::PointCloud<pcl::Normal>::Ptr &normals, const PointCloudT::Ptr &keypoints, pcl::PointCloud<pcl::FPFHSignature33> &fpfh)
 {
     PCL_INFO("estimateFPFH\n");
     parameters* params = parameters::GetInstance();
@@ -239,9 +251,15 @@ void registration::estimateFPFH (const PointCloudT::Ptr &cloud, const pcl::Point
     fpfh_est.setInputNormals (normals);
     fpfh_est.setRadiusSearch (params->REGfpfh);
     fpfh_est.setSearchSurface (cloud);
-    fpfh_est.compute (fpfhs);
+    fpfh_est.compute (fpfh);
 }
 
+
+/** \brief Estimates normal for input point cloud
+  * \param cloud input point cloud
+  * \param resultant normals cloud
+  * \param radius in which search for neighbors
+  */
 void registration::estimateNormals (const PointCloudT::Ptr &cloud, pcl::PointCloud<pcl::Normal> &normals, float radius)
 {
    PCL_INFO("estimateNormals\n");
@@ -252,6 +270,11 @@ void registration::estimateNormals (const PointCloudT::Ptr &cloud, pcl::PointClo
     normal_est.compute (normals);
 }
 
+
+/** \brief Finds keypoints of point cloud
+  * \param cloud input point cloud
+  * \param resultant keypoints found by SIFT algorithm
+  */
 void registration::estimateKeypoints (const PointCloudT::Ptr &cloud, PointCloudT &keypoints)
 {
     parameters* param = parameters::GetInstance();

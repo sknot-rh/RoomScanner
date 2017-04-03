@@ -5,13 +5,15 @@ filters::filters()
 
 }
 
-
+/** \brief Voxel grid filter
+  * \param cloudToFilter pointer to input cloud
+  * \param filtered pointer to resultant cloud
+  * \param leaf size of cubic voxel
+  */
 void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float leaf) {
     PCL_INFO("downsampling filter\n");
 
     parameters* params = parameters::GetInstance();
-    std::ifstream config_file("config.json");
-
     pcl::VoxelGrid<PointT> ds;  //create downsampling filter
     ds.setInputCloud (cloudToFilter);
     if (leaf > 0.00000f) {
@@ -25,6 +27,11 @@ void filters::voxelGridFilter(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
     PCL_INFO("Filtered points: %d\n", filtered->points.size());
 }
 
+/** \brief Downsampling performed by uniform sampling filter
+  * \param cloudToFilter pointer to input cloud
+  * \param filtered pointer to resultant cloud
+  * \param radius size of neighborhood
+  */
 void filters::downsample (const PointCloudT::Ptr &input,  PointCloudT &output, double radius) {
     // Get an uniform grid of keypoints
     pcl::UniformSampling<PointT> uniform;
@@ -34,14 +41,16 @@ void filters::downsample (const PointCloudT::Ptr &input,  PointCloudT &output, d
     uniform.filter (output);
 }
 
-
+/** \brief Smoothing of input cloud performed by MLS
+  * \param cloudToSmooth pointer to input cloud
+  * \param output pointer to resultant cloud
+  */
 void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
     PCL_INFO("smoothing %d points\n", cloudToSmooth->points.size());
 
     parameters* params = parameters::GetInstance();
 
     pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
-
 
     pcl::MovingLeastSquares<PointT, PointT> mls;
     mls.setInputCloud (cloudToSmooth);
@@ -69,6 +78,11 @@ void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
     PCL_INFO("Smoothed cloud has %d points\n", output->points.size());
 }
 
+/** \brief Outlier removal
+  * \param cloudToFilter pointer to input cloud
+  * \param filtered pointer to resultant cloud
+  * \param radius to search close points
+  */
 void filters::oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr filtered, float radius) {
     /*pcl::StatisticalOutlierRemoval<PointT> sor;
     sor.setInputCloud (cloudToFilter);
@@ -83,6 +97,10 @@ void filters::oultlierRemoval(PointCloudT::Ptr cloudToFilter, PointCloudT::Ptr f
     rorfilter.filter (*filtered);
 }
 
+/** \brief Smooth organized point cloud with Fast Bilateral Filter
+  * \param cloudToSmooth pointer to input cloud
+  * \param output pointer to resultant cloud
+  */
 void filters::cloudSmoothFBF(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
     PCL_INFO("FBFilter\n");
     parameters* params = parameters::GetInstance();
@@ -93,6 +111,10 @@ void filters::cloudSmoothFBF(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
     filter.applyFilter(*output);
 }
 
+/** \brief Experimental bilateral upsampling
+  * \param cloudToSmooth pointer to input cloud
+  * \param output pointer to resultant cloud
+  */
 void filters::bilatelarUpsampling(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
     pcl::BilateralUpsampling<PointT, PointT> bu;
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr tmp (new pcl::PointCloud<pcl::PointXYZRGB>);
@@ -123,6 +145,10 @@ void filters::bilatelarUpsampling(PointCloudT::Ptr cloudToSmooth, PointCloudT::P
     PCL_INFO("output has %d points\n", output->points.size());
 }
 
+/** \brief Perform sampling in normal space
+  * \param input pointer to input cloud
+  * \param output pointer to resultant cloud
+  */
 void filters::normalFilter(PointCloudT::Ptr input, PointCloudT::Ptr output) {
     PCL_INFO("normalFilter\n");
     pcl::NormalEstimation<PointT, pcl::Normal> ne;
