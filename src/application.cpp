@@ -467,16 +467,16 @@ void RoomScanner::polyButtonPressedFunc() {
     else {
         if (registered) {
             PCL_INFO("Registered clouds to polygonate\n");
-            //filters::cloudSmoothFBF(regResult, regResult);
             mesh::polygonateCloudGreedyProj(output, triangles);
             //mesh::polygonateCloudGridProj(regResult, triangles);
         }
         else {
             PCL_INFO("Cloud to polygonate\n");
-            filters::voxelGridFilter(clouds.back(), clouds.back(), 0.02);
+            //filters::voxelGridFilter(clouds.back(), clouds.back(), 0.02);
             filters::cloudSmoothFBF(clouds.back(), clouds.back());
             mesh::polygonateCloudGreedyProj(clouds.back(), triangles);
             //mesh::polygonateCloudGridProj(clouds.back(), triangles);
+            //mesh::polygonateCloudPoisson(clouds.back(), triangles);
         }
     }
 
@@ -875,7 +875,9 @@ void RoomScanner::refreshParams() {
   */
 void RoomScanner::saveModelButtonPressed() {
     PCL_INFO("Saving mesh.ply\n");
+    PCL_INFO("Saving mesh.obj\n");
     pcl::io::savePLYFile("mesh.ply", *triangles);
+    pcl::io::saveOBJFile("mesh.obj", *triangles);
 }
 
 /** \brief Quit application, calls destructor
