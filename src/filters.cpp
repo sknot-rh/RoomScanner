@@ -66,10 +66,10 @@ void filters::cloudSmoothMLS(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
     mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
 
     // Available upsampling methods
-    //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::SAMPLE_LOCAL_PLANE);
-    //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointNormal>::RANDOM_UNIFORM_DENSITY);
+    //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::SAMPLE_LOCAL_PLANE);
+    //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::RANDOM_UNIFORM_DENSITY);
     //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::VOXEL_GRID_DILATION);
-    //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, pcl::PointXYZRGB>::NONE);
+    //  mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointT, PointT>::NONE);
 
     PointCloudT::Ptr cloud_smoothed (new PointCloudT ());
     mls.process (*cloud_smoothed);
@@ -117,7 +117,7 @@ void filters::cloudSmoothFBF(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr ou
   */
 void filters::bilatelarUpsampling(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output) {
     pcl::BilateralUpsampling<PointT, PointT> bu;
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr tmp (new pcl::PointCloud<pcl::PointXYZRGB>);
+    PointCloudT::Ptr tmp (new PointCloudT);
     pcl::copyPointCloud(*cloudToSmooth, *tmp);
     bu.setInputCloud (cloudToSmooth);
 
@@ -153,16 +153,16 @@ void filters::normalFilter(PointCloudT::Ptr input, PointCloudT::Ptr output) {
     PCL_INFO("normalFilter\n");
     pcl::NormalEstimation<PointT, pcl::Normal> ne;
     ne.setInputCloud (input);
-    pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB> ());
+    pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
     ne.setSearchMethod (tree);
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
     ne.setRadiusSearch (0.02);
     ne.compute (*cloud_normals);
 
-    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr temp(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+    PointCloudRGBNT::Ptr temp(new PointCloudRGBNT);
     pcl::concatenateFields (*input, *cloud_normals, *temp);
 
-    pcl::NormalSpaceSampling<pcl::PointXYZRGBNormal, pcl::PointXYZRGBNormal> normal_space_sampling;
+    pcl::NormalSpaceSampling<NormalRGBT, NormalRGBT> normal_space_sampling;
     normal_space_sampling.setInputCloud (temp);
     normal_space_sampling.setNormals (temp);
     normal_space_sampling.setBins (16,16,16);

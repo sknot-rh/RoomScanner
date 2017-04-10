@@ -47,17 +47,17 @@ void mesh::polygonateCloudGreedyProj(PointCloudT::Ptr cloudToPolygonate, pcl::Po
     normEstim.compute(*normals);
 
     //Concatenate the cloud with the normal fields
-    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+    PointCloudRGBNT::Ptr cloud_normals (new PointCloudRGBNT);
     pcl::concatenateFields(*cloudToPolygonate,*normals,*cloud_normals);
 
     //Create  search tree to include cloud with normals
-    pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree_normal (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
-    //pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>::Ptr tree_normal (new pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>); //only for organized cloud
+    pcl::search::KdTree<NormalRGBT>::Ptr tree_normal (new pcl::search::KdTree<NormalRGBT>);
+    //pcl::search::OrganizedNeighbor<NormalRGBT>::Ptr tree_normal (new pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>); //only for organized cloud
     tree_normal->setInputCloud(cloud_normals);
 
 
     //Initialize objects for triangulation
-    pcl::GreedyProjectionTriangulation<pcl::PointXYZRGBNormal> gp;
+    pcl::GreedyProjectionTriangulation<NormalRGBT> gp;
 
     //Max distance between connecting edge points
     gp.setSearchRadius(params->GPsearchRadius);
@@ -92,16 +92,16 @@ void mesh::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMes
     ne.compute (*normals);
 
     // Concatenate the XYZ and normal fields*
-    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+    PointCloudRGBNT::Ptr cloud_with_normals (new PointCloudRGBNT);
     concatenateFields(*cloudToPolygonate, *normals, *cloud_with_normals);
 
     // Create search tree*
-    pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
+    pcl::search::KdTree<NormalRGBT>::Ptr tree (new pcl::search::KdTree<NormalRGBT>);
     tree->setInputCloud (cloud_with_normals);
 
     PCL_INFO("begin marching cubes reconstruction\n");
 
-    pcl::MarchingCubesHoppe<pcl::PointXYZRGBNormal> mc;
+    pcl::MarchingCubesHoppe<NormalRGBT> mc;
     //pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh);
     mc.setInputCloud (cloud_with_normals);
     mc.setSearchMethod (tree);
@@ -141,10 +141,10 @@ void mesh::polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::Polyg
         cloud_normals->points[i].normal_z *= -1;
     }
 
-    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_smoothed_normals(new pcl::PointCloud<pcl::PointXYZRGBNormal>());
+    PointCloudRGBNT::Ptr cloud_smoothed_normals(new PointCloudRGBNT());
     concatenateFields(*filtered, *cloud_normals, *cloud_smoothed_normals);
 
-    pcl::Poisson<pcl::PointXYZRGBNormal> poisson;
+    pcl::Poisson<NormalRGBT> poisson;
     poisson.setDepth(9);
     poisson.setInputCloud(cloud_smoothed_normals);
     poisson.setInputCloud(cloud_smoothed_normals);
@@ -204,17 +204,17 @@ void mesh::polygonateCloudGridProj(PointCloudT::Ptr cloudToPolygonate, pcl::Poly
     normEstim.compute(*normals);
 
     //Concatenate the cloud with the normal fields
-    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+    PointCloudRGBNT::Ptr cloud_normals (new PointCloudRGBNT);
     pcl::concatenateFields(*cloudToPolygonate,*normals,*cloud_normals);
 
     //Create  search tree to include cloud with normals
-    pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree_normal (new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
-    //pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>::Ptr tree_normal (new pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>); //only for organized cloud
+    pcl::search::KdTree<NormalRGBT>::Ptr tree_normal (new pcl::search::KdTree<NormalRGBT>);
+    //pcl::search::OrganizedNeighbor<NormalRGBT>::Ptr tree_normal (new pcl::search::OrganizedNeighbor<NormalRGBT>); //only for organized cloud
     tree_normal->setInputCloud(cloud_normals);
 
 
     //Initialize objects for triangulation
-    pcl::GridProjection<pcl::PointXYZRGBNormal> gp;
+    pcl::GridProjection<NormalRGBT> gp;
     gp.setInputCloud (cloud_normals);
     gp.setSearchMethod (tree_normal);
     gp.setResolution (params->GRres);
@@ -229,12 +229,12 @@ void mesh::polygonateCloudGridProj(PointCloudT::Ptr cloudToPolygonate, pcl::Poly
   */
 void mesh::retextureMesh(PointCloudT::Ptr originCloud, pcl::PolygonMesh::Ptr triangles) {
     PCL_INFO("recoloring\n");
-    pcl::KdTreeFLANN<pcl::PointXYZRGB> kdtree;
+    pcl::KdTreeFLANN<PointT> kdtree;
     kdtree.setInputCloud (originCloud);
-    pcl::PointXYZRGB searchPoint;
+    PointT searchPoint;
     int K = 3;
 
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr temp_cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
+    PointCloudT::Ptr temp_cloud(new PointCloudT);
     pcl::fromPCLPointCloud2(triangles->cloud, *temp_cloud);
 
     std::vector<int> pointIdxNKNSearch(K);
@@ -245,7 +245,7 @@ void mesh::retextureMesh(PointCloudT::Ptr originCloud, pcl::PolygonMesh::Ptr tri
         searchPoint.y = temp_cloud->points[i].y;
         searchPoint.z = temp_cloud->points[i].z;
 
-        size_t size = pointIdxNKNSearch.size ();
+        //size_t size = pointIdxNKNSearch.size ();
         if ( kdtree.nearestKSearch (searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0 )
         {
             temp_cloud->points[i].r = originCloud->points[pointIdxNKNSearch[0]].r;
