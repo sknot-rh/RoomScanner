@@ -874,10 +874,32 @@ void RoomScanner::refreshParams() {
 /** \brief save output mesh to file
   */
 void RoomScanner::saveModelButtonPressed() {
-    PCL_INFO("Saving mesh.ply\n");
-    PCL_INFO("Saving mesh.obj\n");
-    pcl::io::savePLYFile("mesh.ply", *triangles);
-    pcl::io::saveOBJFile("mesh.obj", *triangles);
+    if (triangles == NULL || triangles->polygons.size() == 0) {
+        PCL_INFO("Nothing to save\n");
+        return;
+    }
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter(tr("Polygonal model (*.ply *.obj)"));
+    QString fileName;
+    if (dialog.exec())
+        fileName = dialog.selectedFiles().at(0);
+
+    std::cout << fileName.toUtf8().constData() << "\n";
+    std::string extension = fileName.split(".",QString::SkipEmptyParts).at(1).toUtf8().constData();
+    std::cout << "'"<<extension.c_str() << "'\n";
+    if (extension.compare("ply") == 0) {
+        PCL_INFO("Saving %s\n",  fileName.toUtf8().constData());
+        pcl::io::savePLYFile(fileName.toUtf8().constData(), *triangles);
+    }
+    else if (extension.compare("obj") == 0) {
+        PCL_INFO("Saving %s\n",  fileName.toUtf8().constData());
+        pcl::io::saveOBJFile(fileName.toUtf8().constData(), *triangles);
+    }
+    else {
+        PCL_INFO("Unsupported format.\n");
+        return;
+    }
 }
 
 /** \brief Quit application, calls destructor
