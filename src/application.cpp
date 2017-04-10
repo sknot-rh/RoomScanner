@@ -884,10 +884,7 @@ void RoomScanner::saveModelButtonPressed() {
     QString fileName;
     if (dialog.exec())
         fileName = dialog.selectedFiles().at(0);
-
-    std::cout << fileName.toUtf8().constData() << "\n";
     std::string extension = fileName.split(".",QString::SkipEmptyParts).at(1).toUtf8().constData();
-    std::cout << "'"<<extension.c_str() << "'\n";
     if (extension.compare("ply") == 0) {
         PCL_INFO("Saving %s\n",  fileName.toUtf8().constData());
         pcl::io::savePLYFile(fileName.toUtf8().constData(), *triangles);
