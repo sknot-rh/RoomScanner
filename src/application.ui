@@ -54,7 +54,7 @@ background: none !important;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="enabled">
@@ -172,6 +172,7 @@ background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #aaa, sto
         </item>
        </layout>
        <zorder>qvtkWidget</zorder>
+       <zorder></zorder>
        <zorder></zorder>
       </widget>
       <widget class="QWidget" name="tab_2">
@@ -734,17 +735,6 @@ min-width: 250px;
    </widget>
    <addaction name="menuMenu"/>
   </widget>
-  <widget class="QToolBar" name="toolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
   <action name="actionLoad_Point_Cloud">
    <property name="text">
     <string>Load Point Cloud</string>
@@ -809,7 +799,6 @@ min-width: 250px;
   <tabstop>pushButton_poly</tabstop>
   <tabstop>pushButton_reset</tabstop>
   <tabstop>pushButton_save</tabstop>
-  <tabstop>tabWidget</tabstop>
  </tabstops>
  <resources/>
  <connections/>
