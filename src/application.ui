@@ -51,7 +51,12 @@ max-height: 20px;
 QLabel{
 color:white;
 background: none !important;
-}</string>
+}
+
+#scrollAreaWidgetContents{
+background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #333 stop: 0.02 #999, stop: 0.12 #333, stop: 0.39 #333, stop: 1 #333);
+}
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -80,10 +85,12 @@ QTabBar::tab:selected, QTabBar::tab:hover {
 background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #aaa, stop: 0.1 #bbb, stop: 0.49 #999, stop: 0.5 #888, stop: 1 #999);
 }
 
+
+
 </string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -254,16 +261,23 @@ background: none !important;
 
 QCheckBox::indicator:checked, QGroupBox::indicator:checked  {
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                stop: 0 #dfd, stop: 0.2#dfd,
+                                stop: 0 #cfc, stop: 0.2#cfc,
                                 stop: 0.5 #353, stop: 1.0 #353);
 }
 
 QCheckBox::indicator:unchecked, QGroupBox::indicator:unchecked  {
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                stop: 0 #fdd, stop: 0.2#fdd,
+                                stop: 0 #fcc, stop: 0.2#fcc,
                                 stop: 0.5 #533, stop: 1.0 #533);
 }
+
 </string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
           </property>
           <property name="verticalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOn</enum>
@@ -279,6 +293,9 @@ background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
              <width>1113</width>
              <height>1276</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
            </property>
            <layout class="QFormLayout" name="formLayout">
             <item row="1" column="0">

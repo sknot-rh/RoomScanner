@@ -501,8 +501,7 @@ void RoomScanner::polyButtonPressedFunc() {
 
     // Smoothing mesh
     // not sure if necessary, surface is already smooth. This'd just decimate another details
-    //pcl::PolygonMesh::Ptr trianglesPtr(&triangles);
-    //triangles = PCLViewer::smoothMesh(trianglesPtr);
+    // mesh::smoothMesh(triangles, triangles);
 
     /* // Shading setting
     //we want to set phong (or another than flat shading) to our mesh, but... https://github.com/PointCloudLibrary/pcl/issues/178
@@ -577,7 +576,6 @@ void RoomScanner::regButtonPressed() {
   */
 void RoomScanner::registrateNClouds() {
     regResult.reset(new PointCloudT);
-    PointCloudT::Ptr globalResult (new PointCloudT);
     PointCloudT::Ptr source, target;
 
     registration reg;
@@ -585,6 +583,7 @@ void RoomScanner::registrateNClouds() {
 
     Eigen::Matrix4f GlobalTransform = Eigen::Matrix4f::Identity (), pairTransform;
     viewer->removeAllPointClouds();
+    // size of vector check is performed before
     viewer->addPointCloud(clouds[1], "target");
     viewer->addPointCloud(clouds[0], "source");
 
@@ -613,7 +612,6 @@ void RoomScanner::registrateNClouds() {
 
         PointCloudT::Ptr temp (new PointCloudT);
         reg.pairAlign (source, target, temp, pairTransform, true);
-        //pcl::transformPointCloud (*temp, *result, GlobalTransform);
         pcl::transformPointCloud (*temp, *regResult, GlobalTransform);
         ui->qvtkWidget->update();
 

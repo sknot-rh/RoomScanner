@@ -72,7 +72,7 @@ void mesh::polygonateCloudGreedyProj(PointCloudT::Ptr cloudToPolygonate, pcl::Po
     gp.setSearchMethod (tree_normal);
     gp.reconstruct (*triangles);
     PCL_INFO("Polygons created: %d\n", triangles->polygons.size());
-    mesh::smoothMesh(triangles, triangles);
+    //mesh::smoothMesh(triangles, triangles);
 }
 
 
