@@ -66,8 +66,10 @@ public:
     double HOLsize = 0.2;
 
     // Parameter for Grid projection
-
     double GRres = 0.01;
+
+    // Parameter for Poisson
+    int POSdepth = 9;
 
 };
 

@@ -54,5 +54,9 @@
 	"gridProj" :
 		{
 			"size" : 0.01
+		},
+        "poissonProj" :
+		{
+			"depth" : 9
 		}
 }

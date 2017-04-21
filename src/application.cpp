@@ -452,8 +452,16 @@ void RoomScanner::polyButtonPressedFunc() {
             filters::cloudSmoothFBF(cloudtmp, output);
             //filters::bilatelarUpsampling(cloudtmp, output);
             filters::voxelGridFilter(output, output, 0.02);
-            mesh::polygonateCloudGreedyProj(output, triangles);
-            //mesh::polygonateCloudGridProj(output, triangles);
+
+            if (ui->radioButton_GT->isChecked()) {
+                mesh::polygonateCloudGreedyProj(output, triangles);
+            }
+            else if (ui->radioButton_GP->isChecked()){
+                mesh::polygonateCloudGridProj(output, triangles);
+            }
+            else {
+                mesh::polygonateCloudPoisson(output, triangles);
+            }
 
         }
         else {
@@ -467,16 +475,30 @@ void RoomScanner::polyButtonPressedFunc() {
     else {
         if (registered) {
             PCL_INFO("Registered clouds to polygonate\n");
-            mesh::polygonateCloudGreedyProj(output, triangles);
-            //mesh::polygonateCloudGridProj(regResult, triangles);
+            if (ui->radioButton_GT->isChecked()) {
+                mesh::polygonateCloudGreedyProj(output, triangles);
+            }
+            else if (ui->radioButton_GP->isChecked()){
+                mesh::polygonateCloudGridProj(output, triangles);
+            }
+            else {
+                mesh::polygonateCloudPoisson(output, triangles);
+            }
         }
         else {
             PCL_INFO("Cloud to polygonate\n");
+            //uncomment before release!!!
             //filters::voxelGridFilter(clouds.back(), clouds.back(), 0.02);
             filters::cloudSmoothFBF(clouds.back(), clouds.back());
-            mesh::polygonateCloudGreedyProj(clouds.back(), triangles);
-            //mesh::polygonateCloudGridProj(clouds.back(), triangles);
-            //mesh::polygonateCloudPoisson(clouds.back(), triangles);
+            if (ui->radioButton_GT->isChecked()) {
+                mesh::polygonateCloudGreedyProj(clouds.back(), triangles);
+            }
+            else if (ui->radioButton_GP->isChecked()){
+                mesh::polygonateCloudGridProj(clouds.back(), triangles);
+            }
+            else {
+                mesh::polygonateCloudPoisson(clouds.back(), triangles);
+            }
         }
     }
 
@@ -813,6 +835,11 @@ void RoomScanner::loadConfigFile() {
         params->GRres = pt.get<double>("gridProj.size");
 
         ui->lineEdit_GRres->setText(QString::number(params->GRres));
+
+
+        params->POSdepth = pt.get<int>("poissonProj.depth");
+
+        ui->lineEdit_POSdepth->setText(QString::number(params->POSdepth));
     }
 }
 
@@ -863,6 +890,9 @@ void RoomScanner::refreshParams() {
 
 
     params->GRres = ui->lineEdit_GRres->text().toDouble();
+
+
+    params->POSdepth = ui->lineEdit_POSdepth->text().toInt();
 
 
     PCL_INFO("Parameters refreshed.\n");

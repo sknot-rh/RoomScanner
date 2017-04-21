@@ -255,22 +255,21 @@ QGroupBox::title {
     padding: 0 3px 0 3px;
 }
 
-QCheckBox, QGroupBox::indicator{
+QCheckBox, QGroupBox::indicator, QRadioButton{
 background: none !important;
 }
 
-QCheckBox::indicator:checked, QGroupBox::indicator:checked  {
+QCheckBox::indicator:checked, QGroupBox::indicator:checked, QRadioButton::indicator::checked  {
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                 stop: 0 #cfc, stop: 0.2#cfc,
                                 stop: 0.5 #353, stop: 1.0 #353);
 }
 
-QCheckBox::indicator:unchecked, QGroupBox::indicator:unchecked  {
+QCheckBox::indicator:unchecked, QGroupBox::indicator:unchecked, QRadioButton::indicator::unchecked  {
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                 stop: 0 #fcc, stop: 0.2#fcc,
                                 stop: 0.5 #533, stop: 1.0 #533);
 }
-
 </string>
           </property>
           <property name="frameShape">
@@ -289,9 +288,9 @@ background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
+             <y>-513</y>
              <width>1113</width>
-             <height>1276</height>
+             <height>1274</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -350,7 +349,7 @@ background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
               </layout>
              </widget>
             </item>
-            <item row="11" column="0">
+            <item row="13" column="0">
              <widget class="QGroupBox" name="groupBox_6">
               <property name="title">
                <string>Fill Holes</string>
@@ -614,7 +613,7 @@ backgroud-color: white;
               </layout>
              </widget>
             </item>
-            <item row="8" column="0">
+            <item row="9" column="0">
              <widget class="QGroupBox" name="groupBox_4">
               <property name="title">
                <string>Greedy Projection</string>
@@ -657,7 +656,7 @@ backgroud-color: white;
               </layout>
              </widget>
             </item>
-            <item row="12" column="0">
+            <item row="14" column="0">
              <widget class="QGroupBox" name="groupBox_7">
               <property name="title">
                <string>Mesh Decimation</string>
@@ -682,7 +681,7 @@ backgroud-color: white;
               </layout>
              </widget>
             </item>
-            <item row="10" column="0">
+            <item row="11" column="0">
              <widget class="QGroupBox" name="groupBox_8">
               <property name="title">
                <string>Grid Projection</string>
@@ -697,6 +696,67 @@ backgroud-color: white;
                </item>
                <item row="0" column="1">
                 <widget class="QLineEdit" name="lineEdit_GRres"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="12" column="0">
+             <widget class="QGroupBox" name="groupBox_10">
+              <property name="title">
+               <string>Poisson</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_27">
+                 <property name="text">
+                  <string>Depth</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lineEdit_POSdepth"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="8" column="0">
+             <widget class="QGroupBox" name="groupBox_method">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="title">
+               <string>Poly Method</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_2">
+               <item row="1" column="0">
+                <widget class="QRadioButton" name="radioButton_GP">
+                 <property name="text">
+                  <string>Grid Projection</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QRadioButton" name="radioButton_GT">
+                 <property name="text">
+                  <string>Greedy Triangulation</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QRadioButton" name="radioButton_P">
+                 <property name="text">
+                  <string>Poisson</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -735,7 +795,7 @@ min-width: 250px;
      <x>0</x>
      <y>0</y>
      <width>1169</width>
-     <height>25</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">

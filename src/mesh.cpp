@@ -116,8 +116,9 @@ void mesh::polygonateCloudMC(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMes
   * \param output pointer to resultant mesh
   */
 void mesh::polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::PolygonMesh::Ptr triangles) {
-
     // Get Poisson result
+    parameters* params = parameters::GetInstance();
+
     pcl::PointCloud<PointT>::Ptr filtered(new pcl::PointCloud<PointT>());
     pcl::PassThrough<PointT> filter;
     filter.setInputCloud(cloudToPolygonate);
@@ -145,7 +146,7 @@ void mesh::polygonateCloudPoisson(PointCloudT::Ptr cloudToPolygonate, pcl::Polyg
     concatenateFields(*filtered, *cloud_normals, *cloud_smoothed_normals);
 
     pcl::Poisson<NormalRGBT> poisson;
-    poisson.setDepth(9);
+    poisson.setDepth(params->POSdepth);
     poisson.setInputCloud(cloud_smoothed_normals);
     poisson.setInputCloud(cloud_smoothed_normals);
     poisson.reconstruct(*triangles);
