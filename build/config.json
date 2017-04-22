@@ -23,16 +23,16 @@
 		},
 	"SIFT" :
 		{
-			"min_scale" : 0.05,
+			"min_scale" : 0.003,
 			"n_octaves" : 8,
 			"n_scales_per_octave" : 10,
-			"min_contrast" : 1.5
+			"min_contrast" : 0.3
 		},
 	"registration" :
 		{
 			"normalsRadius" : 0.05,
-			"fpfh" : 1.5,
-			"reject" : 1.5,
+			"fpfh" : 0.75,
+			"reject" : 0.75,
 			"corrDist" : 0.2
 		},
 

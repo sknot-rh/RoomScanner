@@ -287,7 +287,6 @@ void RoomScanner::saveButtonPressedFun() {
     pcl::io::savePCDFile (s, *tmp);
 
 
-
     pcl::PCLImage::Ptr image (new pcl::PCLImage());
     pcl::io::PointCloudImageExtractorFromRGBField<PointT> pcie;
     pcie.setPaintNaNsWithBlack (true);

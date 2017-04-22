@@ -22,7 +22,6 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     PointCloudT::Ptr src (new PointCloudT);
     PointCloudT::Ptr tgt (new PointCloudT);
 
-    pcl::VoxelGrid<PointT> grid;
     if (downsample)
     {
         filters::voxelGridFilter(cloud_src, src, 0.05);
@@ -192,6 +191,7 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     pcl::registration::TransformationEstimationSVD<PointT, PointT> trans_est;
     trans_est.estimateRigidTransformation (*keypoints_src, *keypoints_tgt, *good_correspondences, transform);
     transformPointCloud (*src_origin, *src_origin, transform);
+    pcl::io::savePCDFile ("transformed.pcd", *src_origin);
     return true;
 }
 

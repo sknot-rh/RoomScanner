@@ -23,10 +23,10 @@ public:
     // Default parameters (config file is not found)
 
     // Parameters for sift computation
-    double SIFTmin_scale = 0.05;
+    double SIFTmin_scale = 0.003;
     int SIFTn_octaves = 8;
     int SIFTn_scales_per_octave = 10;
-    double SIFTmin_contrast = 1.5;
+    double SIFTmin_contrast = 0.3;
 
     // Parameters for MLS
     int MLSpolynomialOrder = 2;
@@ -50,8 +50,8 @@ public:
     // Parameters for registration module
     //fpfh
     double REGnormalsRadius = 0.05;
-    double REGfpfh = 1.5;
-    double REGreject = 1.5;
+    double REGfpfh = 0.75;
+    double REGreject = 0.75;
     //icp
     double REGcorrDist = 0.2;
 
