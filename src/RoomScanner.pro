@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     mesh.cpp \
     registration.cpp \
     texturing.cpp \
-    filters.cpp
+    filters.cpp \
+    clicklabel.cpp
 
 HEADERS  += application.h \
     parameters.h \
@@ -26,7 +27,8 @@ HEADERS  += application.h \
     pointrepr.h \
     mesh.h \
     registration.h \
-    texturing.h
+    texturing.h \
+    clicklabel.h
 
 FORMS    += application.ui
 

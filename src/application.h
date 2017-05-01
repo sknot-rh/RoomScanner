@@ -1,5 +1,5 @@
-#ifndef PCLVIEWER_H
-#define PCLVIEWER_H
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
 #include <iostream>
 #include <fstream>
@@ -27,6 +27,7 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/console/parse.h>
+#include <pcl/console/time.h>
 #include <pcl/keypoints/sift_keypoint.h>
 #include <pcl/keypoints/impl/sift_keypoint.hpp>
 #include <pcl/io/point_cloud_image_extractors.h>
@@ -47,6 +48,7 @@
 #include "mesh.h"
 #include "registration.h"
 #include "texturing.h"
+#include "clicklabel.h"
 
 namespace Ui
 {
@@ -64,7 +66,7 @@ public:
     void cloud_cb_ (const PointCloudAT::ConstPtr &ncloud);
     void cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output);
     void polyButtonPressedFunc();
-    void loading(QLabel* label);
+    void loading(clickLabel* label);
     void registrateNClouds();
     void saveButtonPressedFun();
     void smoothAction();
@@ -138,11 +140,13 @@ protected:
 
 private:
     Ui::RoomScanner *ui;
-    QLabel* labelRegistrate;
-    QLabel* labelPolygonate;
-    QLabel* labelSave;
-    QLabel* labelSmooth;
+    clickLabel* labelRegistrate;
+    clickLabel* labelPolygonate;
+    clickLabel* labelSave;
+    clickLabel* labelSmooth;
 
 };
 
-#endif // PCLVIEWER_H
+
+
+#endif // APPLICATION_H

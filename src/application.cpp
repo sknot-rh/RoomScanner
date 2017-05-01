@@ -256,7 +256,7 @@ void RoomScanner::saveButtonPressed() {
         return;
     }
     boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::saveButtonPressedFun, this));
-    labelSave = new QLabel;
+    labelSave = new clickLabel(thr2);
     loading(labelSave);
 }
 
@@ -363,7 +363,7 @@ void RoomScanner::polyButtonPressed() {
         if (sensorConnected) {
             ui->tabWidget->setCurrentIndex(1);
             boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
-            labelPolygonate = new QLabel;
+            labelPolygonate = new clickLabel(thr2);
             loading(labelPolygonate);
         }
         else {
@@ -382,7 +382,7 @@ void RoomScanner::polyButtonPressed() {
         else {
             ui->tabWidget->setCurrentIndex(1);
             boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
-            labelPolygonate = new QLabel;
+            labelPolygonate = new clickLabel(thr2);
             loading(labelPolygonate);
         }
     }
@@ -391,7 +391,7 @@ void RoomScanner::polyButtonPressed() {
 
 /** \brief loading screen
   */
-void RoomScanner::loading(QLabel* label) {
+void RoomScanner::loading(clickLabel* label) {
     if (!movie->isValid()) {
         PCL_INFO("Invalid loading image %s\n", movie->fileName().toStdString());
         return;
@@ -416,6 +416,9 @@ void RoomScanner::polyButtonPressedFunc() {
     PointCloudT::Ptr output (new PointCloudT);
     PointCloudT::Ptr holder (new PointCloudT);
     triangles.reset(new pcl::PolygonMesh);
+
+    pcl::console::TicToc tt;
+    tt.tic();
 
     //                                                     /+++ polygonate kinect frame
     //                               /+++ sensor connected?
@@ -520,6 +523,7 @@ void RoomScanner::polyButtonPressedFunc() {
         triangles = trianglesDecimated;
     }
 
+    PCL_INFO("Reconstruction took %g ms\n",tt.toc());
     // Smoothing mesh
     // not sure if necessary, surface is already smooth. This'd just decimate another details
     // mesh::smoothMesh(triangles, triangles);
@@ -588,8 +592,8 @@ void RoomScanner::regButtonPressed() {
     //stop = true;
     stream = false;
     PCL_INFO("Registrating %d point clouds.\n", clouds.size());
-    labelRegistrate = new QLabel;
     boost::thread* thr = new boost::thread(boost::bind(&RoomScanner::registrateNClouds, this));
+    labelRegistrate = new clickLabel(thr);
     loading(labelRegistrate);
 }
 
@@ -609,16 +613,16 @@ void RoomScanner::registrateNClouds() {
     viewer->addPointCloud(clouds[0], "source");
 
     if (texturing::stitchImages(images)) {
-        PCL_INFO("Texture created in file texture.png\n");
+        PCL_INFO("Texture created in file texture.jpg\n");
 
     }
     else {
         PCL_INFO("Sorry, no texture\n");
     }
 
-
+    pcl::console::TicToc tt;
+    tt.tic();
     for (int i = 1; i < clouds.size(); i++) {
-
         source = clouds[i-1];
         PCL_INFO ("source %d\n", source->points.size());
         target = clouds[i];
@@ -640,6 +644,7 @@ void RoomScanner::registrateNClouds() {
         GlobalTransform = GlobalTransform * pairTransform;
 
     }
+    PCL_INFO("Registration took %g ms\n",tt.toc());
 
     viewer->removeAllPointClouds();
     filters::voxelGridFilter(regResult, regResult, 0.02);
@@ -700,7 +705,7 @@ void RoomScanner::streamButtonPressed() {
 void RoomScanner::actionSmoothTriggered() {
 
     boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::smoothAction, this));
-    labelSmooth = new QLabel;
+    labelSmooth = new clickLabel(thr2);
     loading(labelSmooth);
 }
 
@@ -942,6 +947,7 @@ void RoomScanner::keyboardEventOccurred (const pcl::visualization::KeyboardEvent
     RoomScanner::saveButtonPressed();
   }
 }
+
 
 /** \brief destructor
   */
