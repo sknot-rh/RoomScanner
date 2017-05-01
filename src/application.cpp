@@ -258,6 +258,7 @@ void RoomScanner::saveButtonPressed() {
     boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::saveButtonPressedFun, this));
     labelSave = new clickLabel(thr2);
     loading(labelSave);
+    //thr2->join();
 }
 
 /** \brief save current frame from sensor
@@ -346,6 +347,7 @@ void RoomScanner::loadActionPressed() {
 
             cloudFromFile->sensor_orientation_ = params->m;
             filters::cloudSmoothFBF(cloudFromFile, cloudFromFile);
+            //filters::voxelGridFilter(cloudFromFile, cloudFromFile, 0.1);
             viewer->removeAllPointClouds();
             viewer->addPointCloud(cloudFromFile,"cloudFromFile");
             clouds.push_back(cloudFromFile); 
@@ -365,6 +367,7 @@ void RoomScanner::polyButtonPressed() {
             boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
             labelPolygonate = new clickLabel(thr2);
             loading(labelPolygonate);
+            //thr2->join();
         }
         else {
             // empty clouds & no sensor
@@ -384,6 +387,8 @@ void RoomScanner::polyButtonPressed() {
             boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
             labelPolygonate = new clickLabel(thr2);
             loading(labelPolygonate);
+            //thr2->join();
+            //labelPolygonate->close();
         }
     }
     ui->qvtkWidget_2->update();
@@ -478,13 +483,13 @@ void RoomScanner::polyButtonPressedFunc() {
         if (registered) {
             PCL_INFO("Registered clouds to polygonate\n");
             if (ui->radioButton_GT->isChecked()) {
-                mesh::polygonateCloudGreedyProj(output, triangles);
+                mesh::polygonateCloudGreedyProj(regResult, triangles);
             }
             else if (ui->radioButton_GP->isChecked()){
-                mesh::polygonateCloudGridProj(output, triangles);
+                mesh::polygonateCloudGridProj(regResult, triangles);
             }
             else {
-                mesh::polygonateCloudPoisson(output, triangles);
+                mesh::polygonateCloudPoisson(regResult, triangles);
             }
         }
         else {
@@ -593,8 +598,11 @@ void RoomScanner::regButtonPressed() {
     stream = false;
     PCL_INFO("Registrating %d point clouds.\n", clouds.size());
     boost::thread* thr = new boost::thread(boost::bind(&RoomScanner::registrateNClouds, this));
+
     labelRegistrate = new clickLabel(thr);
     loading(labelRegistrate);
+    //thr->join();
+    //labelRegistrate->close();
 }
 
 /** \brief runs registration of frames saved in clouds vector
@@ -622,6 +630,8 @@ void RoomScanner::registrateNClouds() {
 
     pcl::console::TicToc tt;
     tt.tic();
+
+    regResult = clouds[0];
     for (int i = 1; i < clouds.size(); i++) {
         source = clouds[i-1];
         PCL_INFO ("source %d\n", source->points.size());
@@ -636,8 +646,12 @@ void RoomScanner::registrateNClouds() {
         }
 
         PointCloudT::Ptr temp (new PointCloudT);
+        PointCloudT::Ptr temp2 (new PointCloudT);
+        //get transformation between two clouds and transformed source
         reg.pairAlign (source, target, temp, pairTransform, true);
-        pcl::transformPointCloud (*temp, *regResult, GlobalTransform);
+        pcl::transformPointCloud (*temp, *temp2, GlobalTransform);
+        *regResult += *temp2;
+        filters::voxelGridFilter(regResult, regResult, 0.02);
         ui->qvtkWidget->update();
 
         //update the global transform
@@ -647,14 +661,16 @@ void RoomScanner::registrateNClouds() {
     PCL_INFO("Registration took %g ms\n",tt.toc());
 
     viewer->removeAllPointClouds();
-    filters::voxelGridFilter(regResult, regResult, 0.02);
+
     //filters::normalFilter(regResult, regResult);
     viewer->addPointCloud(regResult, "result");
     pcl::io::savePCDFileBinary ("registeredOutput.pcd", *regResult);
     PCL_INFO( "Registrated Point Cloud has %d points.\n", regResult->points.size());
-    labelRegistrate->close();
+
     ui->qvtkWidget->update();
     registered = true;
+
+    labelRegistrate->close();
 }
 
 /** \brief if app is at another than 1st tam, it is reduntant to stream data
@@ -707,6 +723,7 @@ void RoomScanner::actionSmoothTriggered() {
     boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::smoothAction, this));
     labelSmooth = new clickLabel(thr2);
     loading(labelSmooth);
+    //thr2->join();
 }
 
 /** \brief smooth input cloud

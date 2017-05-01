@@ -24,6 +24,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 
     if (downsample)
     {
+        PCL_INFO("downsampling before registration\n");
         filters::voxelGridFilter(cloud_src, src, 0.05);
         filters::voxelGridFilter(cloud_tgt, tgt, 0.05);
         /*grid.setLeafSize (0.05, 0.05, 0.05);
@@ -66,7 +67,6 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     // Align
     pcl::IterativeClosestPointNonLinear<PointNormalT, PointNormalT> reg;
     reg.setTransformationEpsilon (1e-26);
-    // Set the maximum distance between two correspondences (src<->tgt) to 10cm
     // Note: adjust this based on the size of your datasets
     reg.setMaxCorrespondenceDistance (param->REGcorrDist);
     // Set the point representation
@@ -96,7 +96,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 
         if (i < 98) {
             pcl::transformPointCloud (*src, *(registration::regFrame), Ti); //send undersampled output
-            //emit regFrameSignal();
+            emit regFrameSignal();
         }
         else {
             pcl::transformPointCloud (*cloud_src, *(registration::regFrame), Ti); //send final output
@@ -119,12 +119,12 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     targetToSource = Ti.inverse();
 
     // Transform target back in source frame
-    pcl::transformPointCloud (*cloud_tgt, *output, targetToSource);
+    pcl::transformPointCloud (*cloud_src, *output, Ti);
 
     //add the source to the transformed target
-    *output += *cloud_src;
+    //*output += *cloud_src;
 
-    final_transform = targetToSource;
+    final_transform = Ti;
 }
 
 /** \brief Computes transdormation between source and target pointcloud
