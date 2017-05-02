@@ -614,11 +614,13 @@ void RoomScanner::registrateNClouds() {
     registration reg;
     connect(&reg, SIGNAL(regFrameSignal()), this, SLOT(regFrameSlot()));
 
-    Eigen::Matrix4f GlobalTransform = Eigen::Matrix4f::Identity (), pairTransform;
+    Eigen::Matrix4f GlobalTransform = Eigen::Matrix4f::Identity ();
+    Eigen::Matrix4f pairTransform1 = Eigen::Matrix4f::Identity ();
+    Eigen::Matrix4f pairTransform2 = Eigen::Matrix4f::Identity ();
     viewer->removeAllPointClouds();
     // size of vector check is performed before
-    viewer->addPointCloud(clouds[1], "target");
-    viewer->addPointCloud(clouds[0], "source");
+    viewer->addPointCloud(clouds[0], "target");
+    viewer->addPointCloud(clouds[1], "source");
 
     if (texturing::stitchImages(images)) {
         PCL_INFO("Texture created in file texture.jpg\n");
@@ -631,31 +633,32 @@ void RoomScanner::registrateNClouds() {
     pcl::console::TicToc tt;
     tt.tic();
 
-    regResult = clouds[0];
+    regResult = clouds[0]; //target 1
     for (int i = 1; i < clouds.size(); i++) {
-        source = clouds[i-1];
+        source = clouds[i];
         PCL_INFO ("source %d\n", source->points.size());
-        target = clouds[i];
+        target = clouds[i-1];
+        pcl::transformPointCloud (*source, *source, GlobalTransform);
         viewer->updatePointCloud(target, "target");
 
         // estimated source position done with fpfh features
-        if (!reg.computeTransformation(source, target))  {
+        if (!reg.computeTransformation(source, target, pairTransform1))  {
             labelRegistrate->close();
             QMessageBox::warning(this, "Error", "No keypoints in input cloud! Stopping registration.");
             return;
         }
 
         PointCloudT::Ptr temp (new PointCloudT);
-        PointCloudT::Ptr temp2 (new PointCloudT);
         //get transformation between two clouds and transformed source
-        reg.pairAlign (source, target, temp, pairTransform, true);
-        pcl::transformPointCloud (*temp, *temp2, GlobalTransform);
-        *regResult += *temp2;
+        reg.pairAlign (source, target, temp, pairTransform2, true);
+        //pcl::transformPointCloud (*temp, *target, GlobalTransform);
+        pcl::copyPointCloud (*temp, *source);
+        *regResult += *source;
         filters::voxelGridFilter(regResult, regResult, 0.02);
         ui->qvtkWidget->update();
 
         //update the global transform
-        GlobalTransform = GlobalTransform * pairTransform;
+        GlobalTransform = GlobalTransform * pairTransform1 * pairTransform2;
 
     }
     PCL_INFO("Registration took %g ms\n",tt.toc());
@@ -671,6 +674,7 @@ void RoomScanner::registrateNClouds() {
     registered = true;
 
     labelRegistrate->close();
+
 }
 
 /** \brief if app is at another than 1st tam, it is reduntant to stream data

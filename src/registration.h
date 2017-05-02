@@ -38,7 +38,7 @@ public:
                                           const PointCloudT::Ptr &keypoints_src,
                                           const PointCloudT::Ptr &keypoints_tgt,
                                           pcl::Correspondences &remaining_correspondences);
-    bool computeTransformation (const PointCloudT::Ptr &src, const PointCloudT::Ptr &tgt);
+    bool computeTransformation (const PointCloudT::Ptr &src, const PointCloudT::Ptr &tgt, Eigen::Matrix4f &transform);
 
     static PointCloudT::Ptr regFrame;
 

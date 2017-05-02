@@ -14,8 +14,7 @@ PointCloudT::Ptr registration::regFrame (new PointCloudT);
   * \param final_transform the resultant transform between source and target
   * \param downsample bool value if downsample input data
   */
-void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, bool downsample)
-{
+void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, bool downsample) {
 
     parameters *param = parameters::GetInstance();
     // Downsample for consistency and speed
@@ -27,12 +26,6 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
         PCL_INFO("downsampling before registration\n");
         filters::voxelGridFilter(cloud_src, src, 0.05);
         filters::voxelGridFilter(cloud_tgt, tgt, 0.05);
-        /*grid.setLeafSize (0.05, 0.05, 0.05);
-        grid.setInputCloud (cloud_src);
-        grid.filter (*src);
-
-        grid.setInputCloud (cloud_tgt);
-        grid.filter (*tgt);*/
     }
     else
     {
@@ -96,13 +89,12 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 
         if (i < 98) {
             pcl::transformPointCloud (*src, *(registration::regFrame), Ti); //send undersampled output
-            emit regFrameSignal();
+            //emit regFrameSignal();
         }
         else {
             pcl::transformPointCloud (*cloud_src, *(registration::regFrame), Ti); //send final output
             emit regFrameSignal();
             PCL_INFO("Final output sent\n");
-
         }
 
 
@@ -115,16 +107,23 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
         prev = reg.getLastIncrementalTransformation ();
     }
 
-    // Get the transformation from target to source
+
+    /*// Get the transformation from target to source
     targetToSource = Ti.inverse();
 
     // Transform target back in source frame
-    pcl::transformPointCloud (*cloud_src, *output, Ti);
+    pcl::transformPointCloud (*cloud_tgt, *output, targetToSource);
 
     //add the source to the transformed target
-    //*output += *cloud_src;
+    *output += *cloud_src;
 
-    final_transform = Ti;
+    final_transform = targetToSource;*/
+
+    targetToSource = Ti;
+    final_transform = targetToSource;
+
+    pcl::transformPointCloud (*cloud_src, *output, targetToSource);
+
 }
 
 /** \brief Computes transdormation between source and target pointcloud
@@ -132,10 +131,9 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
   * \param tgt_origin the target PointCloud
   * \return true if transformation found successfully
   */
-bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, const PointCloudT::Ptr &tgt_origin)
-{
+bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, const PointCloudT::Ptr &tgt_origin, Eigen::Matrix4f &transform) {
     PCL_INFO("computeTransformation\n");
-    Eigen::Matrix4f transform;
+    //Eigen::Matrix4f transform;
 
     parameters *params = parameters::GetInstance();
     PointCloudT::Ptr keypoints_src (new PointCloudT), keypoints_tgt (new PointCloudT);
@@ -191,7 +189,6 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     pcl::registration::TransformationEstimationSVD<PointT, PointT> trans_est;
     trans_est.estimateRigidTransformation (*keypoints_src, *keypoints_tgt, *good_correspondences, transform);
     transformPointCloud (*src_origin, *src_origin, transform);
-    pcl::io::savePCDFile ("transformed.pcd", *src_origin);
     return true;
 }
 
@@ -260,8 +257,7 @@ void registration::estimateFPFH (const PointCloudT::Ptr &cloud, const pcl::Point
   * \param resultant normals cloud
   * \param radius in which search for neighbors
   */
-void registration::estimateNormals (const PointCloudT::Ptr &cloud, pcl::PointCloud<pcl::Normal> &normals, float radius)
-{
+void registration::estimateNormals (const PointCloudT::Ptr &cloud, pcl::PointCloud<pcl::Normal> &normals, float radius) {
    PCL_INFO("estimateNormals\n");
     pcl::NormalEstimationOMP<PointT, pcl::Normal> normal_est;
     normal_est.setNumberOfThreads(4);
@@ -275,8 +271,7 @@ void registration::estimateNormals (const PointCloudT::Ptr &cloud, pcl::PointClo
   * \param cloud input point cloud
   * \param resultant keypoints found by SIFT algorithm
   */
-void registration::estimateKeypoints (const PointCloudT::Ptr &cloud, PointCloudT &keypoints)
-{
+void registration::estimateKeypoints (const PointCloudT::Ptr &cloud, PointCloudT &keypoints) {
     parameters* param = parameters::GetInstance();
     PCL_INFO("estimateKeypoints\n");
     pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift;
