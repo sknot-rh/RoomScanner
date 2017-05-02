@@ -14,6 +14,8 @@
 #include <QMessageBox>
 #include <QMovie>
 #include <QFileDialog>
+#include <QMetaObject>
+
 
 // Point Cloud Library
 #include <pcl/point_cloud.h>
@@ -67,10 +69,15 @@ public:
     void cloudSmooth(PointCloudT::Ptr cloudToSmooth, PointCloudT::Ptr output);
     void polyButtonPressedFunc();
     void loading(clickLabel* label);
-    void registrateNClouds();
+    void registerNClouds();
     void saveButtonPressedFun();
     void smoothAction();
+    //void loadActionPressedFun();
     void keyboardEventOccurred (const pcl::visualization::KeyboardEvent &event, void* viewer_void);
+
+signals:
+    void closeLabelSignal(int);
+    void resetCameraSignal();
 
 public slots:
     void resetButtonPressed(void);
@@ -109,6 +116,10 @@ public slots:
 
     void actionQuitTriggered(void);
 
+    void closeLabelSlot(int index);
+
+    void resetCameraSlot();
+
 protected:
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
     boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;
@@ -140,10 +151,16 @@ protected:
 
 private:
     Ui::RoomScanner *ui;
-    clickLabel* labelRegistrate;
+    clickLabel* labelRegister;
+    int LREG = 0;
     clickLabel* labelPolygonate;
+    int LPOL = 1;
     clickLabel* labelSave;
+    int LSAV = 2;
     clickLabel* labelSmooth;
+    int LSMO = 3;
+    clickLabel* labelLoad;
+    int LLOA = 4;
 
 };
 

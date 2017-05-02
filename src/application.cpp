@@ -24,9 +24,7 @@ RoomScanner::RoomScanner (QWidget *parent) :
     kinectCloud.reset(new PointCloudT);
     key_cloud.reset(new PointCloudAT);
 
-
     //Tell to sensor in which position is expected input
-
     parameters* params = parameters::GetInstance();
     params->m = Eigen::AngleAxisf(M_PI, Eigen::Vector3f::UnitX())
         * Eigen::AngleAxisf(0.0f,  Eigen::Vector3f::UnitY())
@@ -71,7 +69,6 @@ RoomScanner::RoomScanner (QWidget *parent) :
     }
 
     stream = true;
-    //stop = false;
 
     //Connect reset button
     connect(ui->pushButton_reset, SIGNAL (clicked ()), this, SLOT (resetButtonPressed ()));
@@ -118,6 +115,11 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Connect quit action
     connect(ui->actionQuit, SIGNAL (triggered()), this, SLOT (actionQuitTriggered ()));
 
+    //Connect closing labels
+    connect(this, SIGNAL(closeLabelSignal(int)), this, SLOT(closeLabelSlot(int)));
+
+    //Connect reseting camera
+    connect(this, SIGNAL(resetCameraSignal()), this, SLOT(resetCameraSlot()));
 
     //Add empty pointclouds
     viewer->addPointCloud(kinectCloud, "kinectCloud");
@@ -127,6 +129,7 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //viewer->setBackgroundColor(0.5f, 0.5f, 0.5f);
     ui->tabWidget->setCurrentIndex(0);
 
+    //load config
     loadConfigFile();
 
 }
@@ -158,12 +161,12 @@ void RoomScanner::drawFrame() {
 
         if (ui->actionShow_keypoints->isChecked() == true) {
             parameters* params = parameters::GetInstance();
-            // Downsample data for faster computation
+            // downsample data for faster computation
             PointCloudT::Ptr tmp;
             tmp.reset(new PointCloudT);
             filters::downsample(kinectCloud, *tmp, 0.05);
 
-            // Estimate the sift interest points using Intensity values from RGB values
+            // estimate the sift interest points
             pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift;
             pcl::PointCloud<pcl::PointWithScale> result;
             pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT> ());
@@ -183,7 +186,7 @@ void RoomScanner::drawFrame() {
             viewer->updatePointCloud(key_cloud,"keypoints");
         }
         viewer->updatePointCloud(kinectCloud,"kinectCloud");
-        ui->qvtkWidget->update ();
+        emit(resetCameraSignal());
     }
 }
 
@@ -198,20 +201,20 @@ void RoomScanner::cloud_cb_ (const PointCloudAT::ConstPtr &ncloud) {
             cloudWidth = ncloud->width;
             cloudHeight = ncloud->height;
 
-            // Resize the XYZ and RGB point vector
+            // resize the XYZ and RGB point vector
             size_t newSize = ncloud->height*ncloud->width;
             cloudX.resize(newSize);
             cloudY.resize(newSize);
             cloudZ.resize(newSize);
             cloudRGB.resize(newSize);
 
-            // Assign pointers to copy data
+            // assign pointers to copy data
             float *pX = &cloudX[0];
             float *pY = &cloudY[0];
             float *pZ = &cloudZ[0];
             unsigned long *pRGB = &cloudRGB[0];
 
-            // Copy data (using pcl::copyPointCloud, the color stream jitters!!! Why?)
+            // copy data (using pcl::copyPointCloud, the color stream jitters!!! Why?)
             //pcl::copyPointCloud(*ncloud, *cloud);
             for (int j = 0; j<ncloud->height; j++) {
                 for (int i = 0; i<ncloud->width; i++,pX++,pY++,pZ++,pRGB++) {
@@ -222,7 +225,7 @@ void RoomScanner::cloud_cb_ (const PointCloudAT::ConstPtr &ncloud) {
                     (*pRGB) = P.rgba;
                 }
             }
-            // Data copied
+            // data copied
             mtx_.unlock();
         }
     }
@@ -239,6 +242,13 @@ void RoomScanner::coordSysToggled(bool value) {
         viewer->removeCoordinateSystem("viewer", 0);
     }
     ui->qvtkWidget->update();
+}
+
+void RoomScanner::resetCameraSlot() {
+    viewer->resetCamera();
+    ui->qvtkWidget->update();
+    meshViewer->resetCamera();
+    ui->qvtkWidget_2->update();
 }
 
 /** \brief reset camera
@@ -258,7 +268,6 @@ void RoomScanner::saveButtonPressed() {
     boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::saveButtonPressedFun, this));
     labelSave = new clickLabel(thr2);
     loading(labelSave);
-    //thr2->join();
 }
 
 /** \brief save current frame from sensor
@@ -267,7 +276,7 @@ void RoomScanner::saveButtonPressedFun() {
     PointCloudT::Ptr tmp (new PointCloudT);
     PointCloudT::Ptr output (new PointCloudT);
     stream = false; // "safe" copy
-    // Allocate enough space and copy the basics
+    // allocate enough space and copy the basics
     tmp->header   = kinectCloud->header;
     tmp->width    = kinectCloud->width;
     tmp->height   = kinectCloud->height;
@@ -287,13 +296,10 @@ void RoomScanner::saveButtonPressedFun() {
     //save raw frame
     pcl::io::savePCDFile (s, *tmp);
 
-
     pcl::PCLImage::Ptr image (new pcl::PCLImage());
     pcl::io::PointCloudImageExtractorFromRGBField<PointT> pcie;
     pcie.setPaintNaNsWithBlack (true);
     pcie.extract(*tmp, *image);
-
-
 
     //save texture file
     std::stringstream ss2;
@@ -311,8 +317,20 @@ void RoomScanner::saveButtonPressedFun() {
     clouds.push_back(output);
     lastFrameToggled();
     stream = true;
-    labelSave->close();
+    //labelSave->close();
+    emit(closeLabelSignal(LSAV));
 }
+
+
+/** \brief runs second thread for reading PC from file
+ * but file picker is gui element and it does not work well in new thread
+  */
+/*void RoomScanner::loadActionPressed() {
+    boost::thread* thr = new boost::thread(boost::bind(&RoomScanner::loadActionPressedFun, this));
+    labelLoad = new clickLabel(thr);
+    loading(labelLoad);
+}
+*/
 
 /** \brief load point cloud from file
   */
@@ -325,7 +343,6 @@ void RoomScanner::loadActionPressed() {
     if( !fileNames.isEmpty() )
     {
         for (int i = 0; i < fileNames.count(); i++) {
-            //ui->lstFiles->addItem(fileNames.at(i));
             std::string utf8_fileName = fileNames.at(i).toUtf8().constData();
             PointCloudT::Ptr cloudFromFile (new PointCloudT);
             if (pcl::io::loadPCDFile<PointT> (utf8_fileName, *cloudFromFile) == -1) // load the file
@@ -347,14 +364,16 @@ void RoomScanner::loadActionPressed() {
 
             cloudFromFile->sensor_orientation_ = params->m;
             filters::cloudSmoothFBF(cloudFromFile, cloudFromFile);
-            //filters::voxelGridFilter(cloudFromFile, cloudFromFile, 0.1);
             viewer->removeAllPointClouds();
             viewer->addPointCloud(cloudFromFile,"cloudFromFile");
             clouds.push_back(cloudFromFile); 
-            ui->qvtkWidget->update();
-            viewer->resetCamera();
+            //this is some weird bug with multithreading and refreshing gui
+            //ui->qvtkWidget->update();
+            //viewer->resetCamera();
+            emit(resetCameraSignal());
         }
     }
+    //emit(closeLabelSignal(LLOA));
 }
 
 /** \brief runs loading screen and runs second thread
@@ -367,7 +386,6 @@ void RoomScanner::polyButtonPressed() {
             boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
             labelPolygonate = new clickLabel(thr2);
             loading(labelPolygonate);
-            //thr2->join();
         }
         else {
             // empty clouds & no sensor
@@ -387,8 +405,6 @@ void RoomScanner::polyButtonPressed() {
             boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::polyButtonPressedFunc, this));
             labelPolygonate = new clickLabel(thr2);
             loading(labelPolygonate);
-            //thr2->join();
-            //labelPolygonate->close();
         }
     }
     ui->qvtkWidget_2->update();
@@ -476,7 +492,6 @@ void RoomScanner::polyButtonPressedFunc() {
             QMessageBox::warning(this, "Error", "No pointcloud to polygonate!");
             PCL_INFO("No cloud to polygonate!\n");
             return;
-
         }
     }
     else {
@@ -494,8 +509,6 @@ void RoomScanner::polyButtonPressedFunc() {
         }
         else {
             PCL_INFO("Cloud to polygonate\n");
-            //uncomment before release!!!
-            //filters::voxelGridFilter(clouds.back(), clouds.back(), 0.02);
             filters::cloudSmoothFBF(clouds.back(), clouds.back());
             if (ui->radioButton_GT->isChecked()) {
                 mesh::polygonateCloudGreedyProj(clouds.back(), triangles);
@@ -509,9 +522,7 @@ void RoomScanner::polyButtonPressedFunc() {
         }
     }
 
-
     meshViewer->removePolygonMesh("mesh");
-
 
     if (ui->groupBox_6->isChecked()) {
         // Hole Filling
@@ -520,7 +531,6 @@ void RoomScanner::polyButtonPressedFunc() {
         PCL_INFO("After holefilling: %d\n", trianglesFilled->polygons.size());
         triangles = trianglesFilled;
     }
-
 
     if (ui->groupBox_7->isChecked()) {
         pcl::PolygonMesh::Ptr trianglesDecimated(new pcl::PolygonMesh);
@@ -541,10 +551,13 @@ void RoomScanner::polyButtonPressedFunc() {
     meshViewer->addPolygonMesh(*triangles, "mesh");
     ui->qvtkWidget_2->update();
 
-    labelPolygonate->close();
+    emit(closeLabelSignal(LPOL));
+    //QMetaObject::invokeMethod(this, "closeLabelSlot", Qt::BlockingQueuedConnection, Q_ARG(<clickLabel*>, labelPolygonate));
+    //labelPolygonate->close();
 
     PCL_INFO("Mesh done\n");
     //meshViewer->resetCamera();
+    emit(resetCameraSignal());
 
 }
 
@@ -591,23 +604,24 @@ void RoomScanner::actionClearTriggered()
   */
 void RoomScanner::regButtonPressed() {
     if (clouds.size() < 2) {
+        QMessageBox::warning(this, "Error", "To few clouds to registrate!");
         PCL_INFO("To few clouds to registrate!\n");
         return;
     }
     //stop = true;
     stream = false;
     PCL_INFO("Registrating %d point clouds.\n", clouds.size());
-    boost::thread* thr = new boost::thread(boost::bind(&RoomScanner::registrateNClouds, this));
+    boost::thread* thr = new boost::thread(boost::bind(&RoomScanner::registerNClouds, this));
 
-    labelRegistrate = new clickLabel(thr);
-    loading(labelRegistrate);
+    labelRegister = new clickLabel(thr);
+    loading(labelRegister);
     //thr->join();
-    //labelRegistrate->close();
+    //labelRegister->close();
 }
 
 /** \brief runs registration of frames saved in clouds vector
   */
-void RoomScanner::registrateNClouds() {
+void RoomScanner::registerNClouds() {
     regResult.reset(new PointCloudT);
     PointCloudT::Ptr source, target;
 
@@ -643,7 +657,8 @@ void RoomScanner::registrateNClouds() {
 
         // estimated source position done with fpfh features
         if (!reg.computeTransformation(source, target, pairTransform1))  {
-            labelRegistrate->close();
+            //labelRegister->close();
+            emit(closeLabelSignal(LREG));
             QMessageBox::warning(this, "Error", "No keypoints in input cloud! Stopping registration.");
             return;
         }
@@ -672,8 +687,8 @@ void RoomScanner::registrateNClouds() {
 
     ui->qvtkWidget->update();
     registered = true;
-
-    labelRegistrate->close();
+    emit(closeLabelSignal(LREG));
+    //labelRegister->close();
 
 }
 
@@ -707,9 +722,17 @@ void RoomScanner::keypointsToggled() {
   */
 void RoomScanner::regFrameSlot() {
     PCL_INFO("Signal receieved\n");
-    viewer->updatePointCloud(registration::regFrame, "source");
-    ui->qvtkWidget->update();
-    viewer->resetCamera();
+    try {
+        //this causes std::length_error and i do not know, how to fix this :( (only with VTK 7.1)
+        //viewer->updatePointCloud(registration::regFrame, "source");
+        emit(resetCameraSignal());
+    }
+    catch (const std::length_error& le) {
+          return;
+    }
+    /*ui->qvtkWidget->update();
+    viewer->resetCamera();*/
+
 }
 
 /** \brief runs loading screen and second thread
@@ -718,16 +741,17 @@ void RoomScanner::streamButtonPressed() {
     stream = true;
     viewer->removeAllPointClouds();
     viewer->addPointCloud(kinectCloud, "kinectCloud");
-    ui->qvtkWidget->update();
-    viewer->resetCamera();
+    emit(resetCameraSignal());
 }
 
 void RoomScanner::actionSmoothTriggered() {
-
+    if (clouds.empty()) {
+        QMessageBox::warning(this, "Error", "Nothing to smooth!");
+        PCL_INFO("Nothing to smooth\n");
+    }
     boost::thread* thr2 = new boost::thread(boost::bind(&RoomScanner::smoothAction, this));
     labelSmooth = new clickLabel(thr2);
     loading(labelSmooth);
-    //thr2->join();
 }
 
 /** \brief smooth input cloud
@@ -736,29 +760,30 @@ void RoomScanner::smoothAction() {
     stream = false;
     PCL_INFO("Smoothing input cloud\n");
 
+    pcl::console::TicToc tt;
+    tt.tic();
+
     if (!clouds.empty()) {
-        filters::voxelGridFilter(clouds.back(), clouds.back(), 0.02);
-        filters::cloudSmoothMLS(clouds.back(), clouds.back());
-        //filters::normalFilter(clouds.back(), clouds.back());
-        viewer->removeAllPointClouds();
-        viewer->addPointCloud(clouds.back(), "smoothCloud");
+        if (registered){
+            filters::voxelGridFilter(regResult, regResult, 0.02);
+            filters::cloudSmoothMLS(regResult, regResult);
+            filters::normalFilter(regResult, regResult);
+            viewer->removeAllPointClouds();
+            viewer->addPointCloud(regResult, "smoothCloud");
+        }
+        else {
+            filters::voxelGridFilter(clouds.back(), clouds.back(), 0.02);
+            filters::cloudSmoothMLS(clouds.back(), clouds.back());
+            viewer->removeAllPointClouds();
+            viewer->addPointCloud(clouds.back(), "smoothCloud");
+        }
     }
-    else if (!registered) {
-        PCL_INFO("Nothing to smooth\n");
-        return;
-    }
-    else {
-        filters::voxelGridFilter(regResult, regResult, 0.02);
-        filters::cloudSmoothMLS(regResult, regResult);
-        //filters::voxelGridFilter(clouds[0], clouds[0]);
-        filters::normalFilter(regResult, regResult);
-        viewer->removeAllPointClouds();
-        viewer->addPointCloud(regResult, "smoothCloud");
-    }
-    labelSmooth->close();
-    ui->qvtkWidget->update();
+    PCL_INFO("Smoothing took %g ms\n",tt.toc());
+    emit closeLabelSignal(LSMO);
     //Does not work with vtk7.1
     //viewer->resetCamera();
+    //ui->qvtkWidget->update();
+    emit(resetCameraSignal());
 
 }
 
@@ -969,6 +994,31 @@ void RoomScanner::keyboardEventOccurred (const pcl::visualization::KeyboardEvent
   }
 }
 
+/**
+ * \brief close loading screen
+ * \param index which label to close
+ */
+void RoomScanner::closeLabelSlot(int index) {
+    switch (index) {
+    case 0:
+        labelRegister->close();
+        break;
+    case 1:
+        labelPolygonate->close();
+        break;
+    case 2:
+        labelSave->close();
+        break;
+    case 3:
+        labelSmooth->close();
+        break;
+    case 4:
+        labelLoad->close();
+        break;
+    default:
+        break;
+    }
+}
 
 /** \brief destructor
   */

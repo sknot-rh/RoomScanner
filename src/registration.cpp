@@ -17,7 +17,6 @@ PointCloudT::Ptr registration::regFrame (new PointCloudT);
 void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloudT::Ptr cloud_tgt, PointCloudT::Ptr output, Eigen::Matrix4f &final_transform, bool downsample) {
 
     parameters *param = parameters::GetInstance();
-    // Downsample for consistency and speed
     PointCloudT::Ptr src (new PointCloudT);
     PointCloudT::Ptr tgt (new PointCloudT);
 
@@ -33,8 +32,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
         tgt = cloud_tgt;
     }
 
-
-    // Compute surface normals and curvature
+    // compute surface normals and curvature
     PointCloudWithNormals::Ptr points_with_normals_src (new PointCloudWithNormals);
     PointCloudWithNormals::Ptr points_with_normals_tgt (new PointCloudWithNormals);
 
@@ -42,7 +40,6 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     pcl::search::KdTree<PointT>::Ptr tree (new pcl::search::KdTree<PointT> ());
     norm_est.setSearchMethod (tree);
     norm_est.setKSearch (30);
-
     norm_est.setInputCloud (src);
     norm_est.compute (*points_with_normals_src);
     pcl::copyPointCloud (*src, *points_with_normals_src);
@@ -51,20 +48,18 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     norm_est.compute (*points_with_normals_tgt);
     pcl::copyPointCloud (*tgt, *points_with_normals_tgt);
 
-    // Instantiate our custom point representation
+    // instantiate custom point representation
     PointRepr point_representation;
     // weight the 'curvature' dimension so that it is balanced against x, y, and z
     float alpha[4] = {1.0, 1.0, 1.0, 1.0};
     point_representation.setRescaleValues (alpha);
 
-    // Align
+    // align
     pcl::IterativeClosestPointNonLinear<PointNormalT, PointNormalT> reg;
     reg.setTransformationEpsilon (1e-26);
-    // Note: adjust this based on the size of your datasets
+    // note: adjust this based on the size of your datasets
     reg.setMaxCorrespondenceDistance (param->REGcorrDist);
-    // Set the point representation
     reg.setPointRepresentation (boost::make_shared<const PointRepr> (point_representation));
-
     reg.setInputSource (points_with_normals_src);
     reg.setInputTarget (points_with_normals_tgt);
 
@@ -76,11 +71,8 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     for (int i = 0; i < 100; ++i)
     {
 
-        PCL_INFO ("Iteration Nr. %d.\n", i);
-
+        PCL_INFO ("Iteration Nr. %d\n", i);
         points_with_normals_src = reg_result;
-
-        // Estimate
         reg.setInputSource (points_with_normals_src);
         reg.align (*reg_result);
 
@@ -89,14 +81,17 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 
         if (i < 98) {
             pcl::transformPointCloud (*src, *(registration::regFrame), Ti); //send undersampled output
-            //emit regFrameSignal();
+            try {
+                emit regFrameSignal();
+            }
+            catch (const std::length_error& le) {
+            }
         }
         else {
             pcl::transformPointCloud (*cloud_src, *(registration::regFrame), Ti); //send final output
             emit regFrameSignal();
             PCL_INFO("Final output sent\n");
         }
-
 
         //if the difference between this transformation and the previous one
         //is smaller than the threshold, refine the process by reducing
@@ -106,18 +101,6 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
 
         prev = reg.getLastIncrementalTransformation ();
     }
-
-
-    /*// Get the transformation from target to source
-    targetToSource = Ti.inverse();
-
-    // Transform target back in source frame
-    pcl::transformPointCloud (*cloud_tgt, *output, targetToSource);
-
-    //add the source to the transformed target
-    *output += *cloud_src;
-
-    final_transform = targetToSource;*/
 
     targetToSource = Ti;
     final_transform = targetToSource;
@@ -139,9 +122,6 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     PointCloudT::Ptr keypoints_src (new PointCloudT), keypoints_tgt (new PointCloudT);
     PointCloudT::Ptr src (new PointCloudT), tgt (new PointCloudT);
 
-    //PointCloudT::Ptr src (new PointCloudT), tgt (new PointCloudT);
-
-    // Preprocessing
     filters::voxelGridFilter(src_origin, src, 0.05f); // we want downsampled copies of clouds for computation...direct downsampling would affect output quality
     filters::voxelGridFilter(tgt_origin, tgt, 0.05f);
 
@@ -164,27 +144,27 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
         return false;
     }
 
-    // Compute normals for all points keypoint
+    // compute normals for all points keypoint
     pcl::PointCloud<pcl::Normal>::Ptr normals_src (new pcl::PointCloud<pcl::Normal>),
         normals_tgt (new pcl::PointCloud<pcl::Normal>);
     registration::estimateNormals (src, *normals_src, params->REGnormalsRadius);
     registration::estimateNormals (tgt, *normals_tgt, params->REGnormalsRadius);
     PCL_INFO ("Estimated %lu and %lu normals for the source and target datasets.\n", normals_src->points.size (), normals_tgt->points.size ());
 
-    // Compute FPFH features at each keypoint
+    // compute FPFH features at each keypoint
     pcl::PointCloud<pcl::FPFHSignature33>::Ptr fpfhs_src (new pcl::PointCloud<pcl::FPFHSignature33>),
         fpfhs_tgt (new pcl::PointCloud<pcl::FPFHSignature33>);
     registration::estimateFPFH (src, normals_src, keypoints_src, *fpfhs_src);
     registration::estimateFPFH (tgt, normals_tgt, keypoints_tgt, *fpfhs_tgt);
 
-    // Find correspondences between keypoints in FPFH space
+    // find correspondences between keypoints in FPFH space
     pcl::CorrespondencesPtr all_correspondences (new pcl::Correspondences), good_correspondences (new pcl::Correspondences);
     registration::findCorrespondences (fpfhs_src, fpfhs_tgt, *all_correspondences);
 
     // Reject correspondences based on their XYZ distance
     registration::rejectBadCorrespondences (all_correspondences, keypoints_src, keypoints_tgt, *good_correspondences);
 
-    // Obtain the best transformation between the two sets of keypoints given the remaining correspondences
+    // obtain the best transformation between the two sets of keypoints given the remaining correspondences
     //pcl::registration::TransformationEstimationSVDScale<PointT, PointT> trans_est;
     pcl::registration::TransformationEstimationSVD<PointT, PointT> trans_est;
     trans_est.estimateRigidTransformation (*keypoints_src, *keypoints_tgt, *good_correspondences, transform);
