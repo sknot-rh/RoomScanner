@@ -608,7 +608,6 @@ void RoomScanner::regButtonPressed() {
         PCL_INFO("To few clouds to registrate!\n");
         return;
     }
-    //stop = true;
     stream = false;
     PCL_INFO("Registrating %d point clouds.\n", clouds.size());
     boost::thread* thr = new boost::thread(boost::bind(&RoomScanner::registerNClouds, this));
