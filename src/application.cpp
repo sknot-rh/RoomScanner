@@ -647,7 +647,10 @@ void RoomScanner::registerNClouds() {
     tt.tic();
 
     regResult = clouds[0]; //target 1
+    viewer->addText("", 20, 20, "text");
     for (int i = 1; i < clouds.size(); i++) {
+        std::string state = "Registrating " + std::to_string(i) + "/" + std::to_string(clouds.size()-1);
+        viewer->updateText(state, 10, 20, "text");
         source = clouds[i];
         PCL_INFO ("source %d\n", source->points.size());
         target = clouds[i-1];
@@ -675,6 +678,7 @@ void RoomScanner::registerNClouds() {
         GlobalTransform = GlobalTransform * pairTransform1 * pairTransform2;
 
     }
+    viewer->removeShape("text");
     PCL_INFO("Registration took %g ms\n",tt.toc());
 
     viewer->removeAllPointClouds();
