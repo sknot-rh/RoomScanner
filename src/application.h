@@ -15,6 +15,7 @@
 #include <QMovie>
 #include <QFileDialog>
 #include <QMetaObject>
+#include <QDebug>
 
 
 // Point Cloud Library

@@ -350,6 +350,20 @@ void RoomScanner::loadActionPressed() {
                 PCL_ERROR ("Couldn't read pcd file!\n");
                 return;
             }
+
+            if (cloudFromFile->isOrganized()) {
+                pcl::PCLImage::Ptr image (new pcl::PCLImage());
+                pcl::io::PointCloudImageExtractorFromRGBField<PointT> pcie;
+                pcie.setPaintNaNsWithBlack (true);
+                pcie.extract(*cloudFromFile, *image);
+
+                //save texture file
+                std::stringstream ss2;
+                ss2 << "frame_" << images.size()<<  ".png";
+                std::string s = ss2.str();
+                pcl::io::savePNGFile(s, *image);
+                images.push_back(s);
+            }
             for (size_t i = 0; i < cloudFromFile->size(); i++)
             {
                 cloudFromFile->points[i].a = 255;
@@ -965,18 +979,23 @@ void RoomScanner::saveModelButtonPressed() {
     QString fileName;
     if (dialog.exec())
         fileName = dialog.selectedFiles().at(0);
-    std::string extension = fileName.split(".",QString::SkipEmptyParts).at(1).toUtf8().constData();
-    if (extension.compare("ply") == 0) {
-        PCL_INFO("Saving %s\n",  fileName.toUtf8().constData());
-        pcl::io::savePLYFile(fileName.toUtf8().constData(), *triangles);
-    }
-    else if (extension.compare("obj") == 0) {
-        PCL_INFO("Saving %s\n",  fileName.toUtf8().constData());
-        pcl::io::saveOBJFile(fileName.toUtf8().constData(), *triangles);
+    if (fileName.contains(".")) {
+        std::string extension = fileName.split(".",QString::SkipEmptyParts).at(1).toUtf8().constData();
+        if (extension.compare("ply") == 0) {
+            PCL_INFO("Saving %s\n",  fileName.toUtf8().constData());
+            pcl::io::savePLYFile(fileName.toUtf8().constData(), *triangles);
+        }
+        else if (extension.compare("obj") == 0) {
+            PCL_INFO("Saving %s\n",  fileName.toUtf8().constData());
+            pcl::io::saveOBJFile(fileName.toUtf8().constData(), *triangles);
+        }
+        else {
+            PCL_INFO("Unsupported format.\n");
+            return;
+        }
     }
     else {
-        PCL_INFO("Unsupported format.\n");
-        return;
+        QMessageBox::warning(this, "Error", "Bad file name!");
     }
 }
 
