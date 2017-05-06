@@ -367,7 +367,7 @@ void RoomScanner::loadActionPressed() {
             for (size_t i = 0; i < cloudFromFile->size(); i++)
             {
                 cloudFromFile->points[i].a = 255;
-                if (cloudFromFile->points[i].r == cloudFromFile->points[i].g && cloudFromFile->points[i].g == cloudFromFile->points[i].b && cloudFromFile->points[i].b == 0 ) {
+                if (cloudFromFile->points[i].r == 0 && cloudFromFile->points[i].g == 0 && cloudFromFile->points[i].b == 0 ) {
                     cloudFromFile->points[i].r = 127;
                     cloudFromFile->points[i].g = 127;
                     cloudFromFile->points[i].b = 127;
