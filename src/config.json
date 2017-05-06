@@ -3,27 +3,60 @@
 		{
 			"polynomialOrder" : 2,
 			"usePolynomialFit" : true,
-			"searchRadius" : 0.05,
-			"sqrGaussParam" : 0.0016,
-			"_upsamplingRadius" : 0.025,
-			"upsamplingRadius" : 0.08,
-			"_upsamplingStepSize" : 0.015,
-			"upsamplingStepSize" : 0.003,
+			"searchRadius" : 0.10,
+			"sqrGaussParam" : 0.04,
+			"upsamplingRadius" : 0.015,
+			"upsamplingStepSize" : 0.01,
 			"dilationIterations" : 2,
-			"dilationVoxelSize" : 0.04,
+			"dilationVoxelSize" : 0.02,
 			"computeNormals" : false
 		},
 	"gridFilter" :
 		{
-			"leafSize" : 0.01,
-			"_leafSize" : 0.02
+			"leafSize" : 0.01
 		},
 	"greedyProjection" :
 		{
-			"_searchRadius" : 0.06,
-			"_mu" : 2.5,
-			"searchRadius" : 0.03,
+			"searchRadius" : 0.05,
 			"mu" : 2.5,
 			"maximumNearestNeighbors" : 200
+		},
+	"SIFT" :
+		{
+			"min_scale" : 0.003,
+			"n_octaves" : 8,
+			"n_scales_per_octave" : 10,
+			"min_contrast" : 0.3
+		},
+	"registration" :
+		{
+			"normalsRadius" : 0.05,
+			"fpfh" : 0.75,
+			"reject" : 0.75,
+			"corrDist" : 0.2
+		},
+
+	"fastBFilter" :
+		{
+			"sigmaS" : 10,
+			"sigmaR" : 0.1
+		},
+
+	"decimation" :
+		{
+			"targetReductionFactor" : 0.2
+		},
+
+	"holeFill" :
+		{
+			"size" : 0.2
+		},
+	"gridProj" :
+		{
+			"size" : 0.01
+		},
+        "poissonProj" :
+		{
+			"depth" : 9
 		}
 }
