@@ -645,7 +645,6 @@ void RoomScanner::registerNClouds() {
     Eigen::Matrix4f pairTransform1 = Eigen::Matrix4f::Identity ();
     Eigen::Matrix4f pairTransform2 = Eigen::Matrix4f::Identity ();
     viewer->removeAllPointClouds();
-    // size of vector check is performed before
     viewer->addPointCloud(clouds[0], "target");
     viewer->addPointCloud(clouds[1], "source");
 
@@ -670,12 +669,14 @@ void RoomScanner::registerNClouds() {
         target = clouds[i-1];
         pcl::transformPointCloud (*source, *source, GlobalTransform);
         viewer->updatePointCloud(target, "target");
+        viewer->updatePointCloud(source, "source");
 
         // estimated source position done with fpfh features
         if (!reg.computeTransformation(source, target, pairTransform1))  {
             //labelRegister->close();
             emit(closeLabelSignal(LREG));
-            QMessageBox::warning(this, "Error", "No keypoints in input cloud! Stopping registration.");
+            QMessageBox::warning(this, "Error", "Error occured! Stopping registration.");
+            viewer->removeShape("text");
             return;
         }
 
