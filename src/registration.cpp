@@ -83,7 +83,7 @@ void registration::pairAlign (const PointCloudT::Ptr cloud_src, const PointCloud
     // Run the same optimization in a loop
     Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
     PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
-    reg.setMaximumIterations (20);
+    reg.setMaximumIterations (10);
 
     for (int i = 0; i < 100; ++i)
     {
@@ -139,8 +139,8 @@ bool registration::computeTransformation (const PointCloudT::Ptr &src_origin, co
     PointCloudT::Ptr keypoints_src (new PointCloudT), keypoints_tgt (new PointCloudT);
     PointCloudT::Ptr src (new PointCloudT), tgt (new PointCloudT);
 
-    filters::voxelGridFilter(src_origin, src, 0.05f); // we want downsampled copies of clouds for computation...direct downsampling would affect output quality
-    filters::voxelGridFilter(tgt_origin, tgt, 0.05f);
+    filters::voxelGridFilter(src_origin, src, 0.02f); // we want downsampled copies of clouds for computation...direct downsampling would affect output quality
+    filters::voxelGridFilter(tgt_origin, tgt, 0.02f);
 
     PCL_INFO ("after filtering clouds have %lu and %lu points for the source and target datasets.\n", src->points.size (), tgt->points.size ());
 

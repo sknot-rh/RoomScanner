@@ -138,6 +138,9 @@ RoomScanner::RoomScanner (QWidget *parent) :
     //Connect reseting camera
     connect(this, SIGNAL(resetCameraSignal()), this, SLOT(resetCameraSlot()));
 
+    //Connect keypoint action
+    connect(ui->actionSave_registered_cloud, SIGNAL(triggered()), this, SLOT(saveRegFrame()));
+
     //Add empty pointclouds
     viewer->addPointCloud(kinectCloud, "kinectCloud");
 
@@ -583,8 +586,6 @@ void RoomScanner::polyButtonPressedFunc() {
     ui->qvtkWidget_2->update();
 
     emit(closeLabelSignal(LPOL));
-    //QMetaObject::invokeMethod(this, "closeLabelSlot", Qt::BlockingQueuedConnection, Q_ARG(<clickLabel*>, labelPolygonate));
-    //labelPolygonate->close();
 
     PCL_INFO("Mesh done\n");
     //meshViewer->resetCamera();
@@ -688,7 +689,7 @@ void RoomScanner::registerNClouds() {
         viewer->updatePointCloud(target, "target");
         viewer->updatePointCloud(source, "source");
 
-        // estimated source position done with fpfh features
+        // estimate transformation using fpfh features
         if (!reg.computeTransformation(source, target, pairTransform1))  {
             //labelRegister->close();
             emit(closeLabelSignal(LREG));
@@ -717,7 +718,7 @@ void RoomScanner::registerNClouds() {
 
     //filters::normalFilter(regResult, regResult);
     viewer->addPointCloud(regResult, "result");
-    pcl::io::savePCDFileBinary ("registeredOutput.pcd", *regResult);
+    //pcl::io::savePCDFileBinary ("registeredOutput.pcd", *regResult);
     PCL_INFO( "Registrated Point Cloud has %d points.\n", regResult->points.size());
 
     ui->qvtkWidget->update();
@@ -1057,6 +1058,37 @@ void RoomScanner::closeLabelSlot(int index) {
         break;
     default:
         break;
+    }
+}
+/**
+ * @brief saves registrated frame
+ */
+
+void RoomScanner::saveRegFrame() {
+    if (!registered) {
+        QMessageBox::warning(this, "Error", "No registered data!");
+        return;
+    }
+
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter(tr("Point Cloud (*.pcd)"));
+    QString fileName;
+    if (dialog.exec())
+        fileName = dialog.selectedFiles().at(0);
+    if (fileName.contains(".")) {
+        std::string extension = fileName.split(".",QString::SkipEmptyParts).at(1).toUtf8().constData();
+        if (extension.compare("pcd") != 0) {
+            PCL_INFO("Unsupported format.\n");
+            return;
+        }
+        else {
+            PCL_INFO("Saving %s\n",  fileName.toUtf8().constData());
+            pcl::io::savePCDFile(fileName.toUtf8().constData(), *regResult);
+        }
+    }
+    else {
+        QMessageBox::warning(this, "Error", "Bad file name!");
     }
 }
 

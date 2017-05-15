@@ -138,6 +138,8 @@ public slots:
 
     void resetCameraSlot();
 
+    void saveRegFrame();
+
 protected:
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
     boost::shared_ptr<pcl::visualization::PCLVisualizer> meshViewer;

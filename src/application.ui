@@ -1,22 +1,3 @@
-<!--
-    This file is part of RoomScanner.
-
-    RoomScanner is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    RoomScanner is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with RoomScanner.  If not, see <http://www.gnu.org/licenses/>.
-
--->
-
-
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>RoomScanner</class>
@@ -309,7 +290,7 @@ background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
              <x>0</x>
              <y>0</y>
              <width>1113</width>
-             <height>1274</height>
+             <height>1465</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -814,7 +795,7 @@ min-width: 250px;
      <x>0</x>
      <y>0</y>
      <width>1169</width>
-     <height>19</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">
@@ -826,6 +807,7 @@ min-width: 250px;
     <addaction name="actionShow_captured_frames"/>
     <addaction name="actionShow_Coordinate_System"/>
     <addaction name="actionSmooth_cloud"/>
+    <addaction name="actionSave_registered_cloud"/>
     <addaction name="actionClear"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -881,6 +863,11 @@ min-width: 250px;
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionSave_registered_cloud">
+   <property name="text">
+    <string>Save registered cloud</string>
    </property>
   </action>
  </widget>
